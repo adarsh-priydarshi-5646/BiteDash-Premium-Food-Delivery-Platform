@@ -1,4 +1,4 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   frontend:
+    name: Frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -22,7 +23,8 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - run: npm ci
+      - name: Install
+        run: npm ci
         working-directory: frontend
 
       - name: Lint
@@ -41,6 +43,7 @@ jobs:
           VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
 
   backend-lint:
+    name: Backend Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -51,17 +54,22 @@ jobs:
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
 
-      - run: npm ci
+      - name: Install
+        run: npm ci
         working-directory: backend
 
       - name: Syntax check all files
         run: |
+          echo "Checking all JS files..."
           for file in $(find . -name "*.js" -not -path "./node_modules/*"); do
+            echo "Checking: $file"
             node --check "$file"
           done
+          echo "✅ All files valid"
         working-directory: backend
 
   backend-security:
+    name: Backend Security
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -72,26 +80,37 @@ jobs:
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
 
-      - run: npm ci
+      - name: Install
+        run: npm ci
         working-directory: backend
 
       - name: Security audit
-        run: npm audit --audit-level=high || echo "::warning::Vulnerabilities found"
+        run: |
+          npm audit --audit-level=high || echo "::warning::Security vulnerabilities found"
         working-directory: backend
 
   status:
+    name: CI Status
     needs: [frontend, backend-lint, backend-security]
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: CI Status
+      - name: Check CI Status
         run: |
+          echo "========== CI RESULTS =========="
+          echo "Frontend: ${{ needs.frontend.result }}"
+          echo "Backend Lint: ${{ needs.backend-lint.result }}"
+          echo "Backend Security: ${{ needs.backend-security.result }}"
+          echo "================================"
+          
           if [ "${{ needs.frontend.result }}" != "success" ]; then
             echo "❌ Frontend failed"
             exit 1
           fi
+          
           if [ "${{ needs.backend-lint.result }}" != "success" ]; then
             echo "❌ Backend lint failed"
             exit 1
           fi
-          echo "✅ CI Passed"
+          
+          echo "✅ CI Pipeline Passed"

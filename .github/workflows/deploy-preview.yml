@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   preview:
+    name: Deploy Preview
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -47,9 +48,30 @@ jobs:
         with:
           script: |
             const url = '${{ steps.deploy.outputs.preview-url }}';
-            await github.rest.issues.createComment({
+            
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: `🚀 **Preview:** ${url}`
+              issue_number: context.issue.number
             });
+            
+            const existing = comments.find(c => c.body.includes('🚀 Preview:'));
+            const body = `🚀 **Preview:** ${url}\n\n_Updated: ${new Date().toISOString()}_`;
+            
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
+            console.log('✅ Preview comment added');
