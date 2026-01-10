@@ -9,6 +9,10 @@ permissions:
   contents: write
   deployments: write
 
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 jobs:
   test:
     name: Test
@@ -60,11 +64,8 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
 
-      - name: Verify build
-        run: |
-          test -f dist/index.html || exit 1
-          echo "✅ Build verified"
-        working-directory: frontend
+      - name: Verify
+        run: test -f frontend/dist/index.html && echo "✅ Build OK"
 
   deploy:
     name: Deploy
@@ -73,26 +74,24 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
       - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+        run: npm i -g vercel@latest
 
-      - name: Pull Vercel Config
+      - name: Pull Vercel Environment
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Build with Vercel
+      - name: Build Project
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Deploy to Vercel
+      - name: Deploy Project
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
   release:
     name: Release
@@ -118,26 +117,7 @@ jobs:
                 name: `Release ${tag}`,
                 generate_release_notes: true
               });
-              console.log('✅ Release created:', tag);
+              console.log('✅ Release:', tag);
             } catch (e) {
-              console.log('Release skipped:', e.message);
+              console.log('Skipped:', e.message);
             }
-
-  status:
-    name: Pipeline Status
-    needs: [test, build, deploy, release]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Check Status
-        run: |
-          echo "Test: ${{ needs.test.result }}"
-          echo "Build: ${{ needs.build.result }}"
-          echo "Deploy: ${{ needs.deploy.result }}"
-          echo "Release: ${{ needs.release.result }}"
-          
-          if [ "${{ needs.test.result }}" != "success" ]; then exit 1; fi
-          if [ "${{ needs.build.result }}" != "success" ]; then exit 1; fi
-          if [ "${{ needs.deploy.result }}" != "success" ]; then exit 1; fi
-          
-          echo "✅ Release pipeline completed"
