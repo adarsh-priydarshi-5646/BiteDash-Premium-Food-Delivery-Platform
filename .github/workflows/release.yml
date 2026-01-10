@@ -9,87 +9,82 @@ permissions:
   contents: write
   deployments: write
 
-env:
-  NODE_VERSION: '20'
-
 jobs:
   test:
+    name: Test
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         include:
-          - name: Frontend Tests
-            directory: frontend
-            test-command: npm test
-          - name: Frontend Lint
-            directory: frontend
-            test-command: npm run lint
+          - name: Lint
+            cmd: npm run lint
+          - name: Test
+            cmd: npm test
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '20'
           cache: 'npm'
-          cache-dependency-path: ${{ matrix.directory }}/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
-        working-directory: ${{ matrix.directory }}
-        run: npm ci
+      - run: npm ci
+        working-directory: frontend
 
       - name: ${{ matrix.name }}
-        working-directory: ${{ matrix.directory }}
-        run: ${{ matrix.test-command }}
+        run: ${{ matrix.cmd }}
+        working-directory: frontend
 
   build:
+    name: Build
     needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
+      - run: npm ci
         working-directory: frontend
-        run: npm ci
 
       - name: Build
-        working-directory: frontend
         run: npm run build
+        working-directory: frontend
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
 
       - name: Verify build
+        run: |
+          test -f dist/index.html || exit 1
+          echo "✅ Build verified"
         working-directory: frontend
-        run: test -f dist/index.html && echo "✅ Build OK"
 
-      - name: Upload build
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: build
           path: frontend/dist
 
   deploy:
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
-      - name: Download build
-        uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v4
         with:
           name: build
           path: frontend/dist
 
       - name: Deploy to Vercel
+        id: deploy
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -98,8 +93,13 @@ jobs:
           vercel-args: '--prod'
           working-directory: frontend
 
+      - name: Deploy Status
+        run: |
+          echo "✅ Deployed: ${{ steps.deploy.outputs.preview-url }}"
+
   release:
-    needs: build
+    name: Release
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -108,9 +108,10 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const version = require('./frontend/package.json').version;
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('./frontend/package.json', 'utf8'));
             const date = new Date().toISOString().split('T')[0];
-            const tag = `v${version}-${date}`;
+            const tag = `v${pkg.version}-${date}-${context.sha.substring(0, 7)}`;
             
             try {
               await github.rest.repos.createRelease({
@@ -120,6 +121,33 @@ jobs:
                 name: `Release ${tag}`,
                 generate_release_notes: true
               });
+              console.log('✅ Release created:', tag);
             } catch (e) {
-              console.log('Release exists or failed:', e.message);
+              console.log('Release skipped:', e.message);
             }
+
+  status:
+    name: Pipeline Status
+    needs: [test, build, deploy, release]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check Status
+        run: |
+          echo "========== RELEASE PIPELINE =========="
+          echo "Test: ${{ needs.test.result }}"
+          echo "Build: ${{ needs.build.result }}"
+          echo "Deploy: ${{ needs.deploy.result }}"
+          echo "Release: ${{ needs.release.result }}"
+          echo "======================================"
+          
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "❌ Test failed"
+            exit 1
+          fi
+          if [ "${{ needs.build.result }}" != "success" ]; then
+            echo "❌ Build failed"
+            exit 1
+          fi
+          
+          echo "✅ Release pipeline completed"
