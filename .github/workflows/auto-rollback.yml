@@ -67,7 +67,7 @@ jobs:
 
       - name: Create PR
         if: steps.rollback.outputs.revert_failed != 'true' && steps.rollback.outputs.branch
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const branch = '${{ steps.rollback.outputs.branch }}';
@@ -95,7 +95,7 @@ jobs:
 
       - name: Create Issue if Failed
         if: steps.rollback.outputs.revert_failed == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const sha = '${{ github.event.workflow_run.head_sha }}';
