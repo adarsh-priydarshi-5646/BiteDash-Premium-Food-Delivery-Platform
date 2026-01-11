@@ -9,7 +9,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { serverUrl } from '../App';
-import { FaRupeeSign, FaUniversity, FaCreditCard, FaMobileAlt, FaShieldAlt } from 'react-icons/fa';
+import {
+  FaRupeeSign,
+  FaUniversity,
+  FaCreditCard,
+  FaMobileAlt,
+  FaShieldAlt,
+} from 'react-icons/fa';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 import { ClipLoader } from 'react-spinners';
 
@@ -59,9 +65,13 @@ function BankDetails() {
     setLoading(true);
 
     try {
-      const result = await axios.post(`${serverUrl}/api/user/update-bank-details`, bankDetails, {
-        withCredentials: true,
-      });
+      const result = await axios.post(
+        `${serverUrl}/api/user/update-bank-details`,
+        bankDetails,
+        {
+          withCredentials: true,
+        },
+      );
       alert('Bank details updated successfully!');
       setLoading(false);
     } catch (error) {
@@ -87,9 +97,14 @@ function BankDetails() {
             onClick={() => navigate(-1)}
             className="group flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-sm hover:shadow-md border border-gray-100 transition-all"
           >
-            <IoIosArrowRoundBack size={24} className="text-gray-600 group-hover:text-[#ff4d2d]" />
+            <IoIosArrowRoundBack
+              size={24}
+              className="text-gray-600 group-hover:text-[#ff4d2d]"
+            />
           </button>
-          <h1 className="text-3xl font-extrabold text-gray-900">Financial Center</h1>
+          <h1 className="text-3xl font-extrabold text-gray-900">
+            Financial Center
+          </h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -99,7 +114,9 @@ function BankDetails() {
             <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
               <div className="relative z-10">
-                <p className="text-gray-400 font-medium mb-1">Total Lifetime Earnings</p>
+                <p className="text-gray-400 font-medium mb-1">
+                  Total Lifetime Earnings
+                </p>
                 <h2 className="text-5xl font-bold flex items-center gap-1 mb-6">
                   <span className="text-3xl text-[#ff4d2d]">
                     <FaRupeeSign />
@@ -153,8 +170,12 @@ function BankDetails() {
                 <FaUniversity size={24} />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Bank Information</h2>
-                <p className="text-sm text-gray-500">Update your payout details securely</p>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Bank Information
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Update your payout details securely
+                </p>
               </div>
             </div>
 
@@ -197,7 +218,9 @@ function BankDetails() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">IFSC Code</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">
+                      IFSC Code
+                    </label>
                     <input
                       type="text"
                       name="ifscCode"
@@ -209,7 +232,9 @@ function BankDetails() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Bank Name</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">
+                      Bank Name
+                    </label>
                     <div className="relative">
                       <span className="absolute left-4 top-3.5 text-gray-400">
                         <FaUniversity />
@@ -229,7 +254,10 @@ function BankDetails() {
 
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">
-                    UPI ID <span className="text-gray-400 font-normal">(Optional)</span>
+                    UPI ID{' '}
+                    <span className="text-gray-400 font-normal">
+                      (Optional)
+                    </span>
                   </label>
                   <div className="relative">
                     <span className="absolute left-4 top-3.5 text-gray-400">

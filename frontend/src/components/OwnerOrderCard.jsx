@@ -7,7 +7,12 @@
  */
 import axios from 'axios';
 import React, { useState } from 'react';
-import { MdPhone, MdDeliveryDining, MdAccessTime, MdPerson } from 'react-icons/md';
+import {
+  MdPhone,
+  MdDeliveryDining,
+  MdAccessTime,
+  MdPerson,
+} from 'react-icons/md';
 import { serverUrl } from '../App';
 import { useDispatch } from 'react-redux';
 import { updateOrderStatus } from '../redux/userSlice';
@@ -21,7 +26,7 @@ function OwnerOrderCard({ data }) {
       const result = await axios.post(
         `${serverUrl}/api/order/update-status/${orderId}/${shopId}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(updateOrderStatus({ orderId, shopId, status }));
       setAvailableBoys(result.data.availableBoys);
@@ -56,7 +61,9 @@ function OwnerOrderCard({ data }) {
               <MdPerson size={20} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">{data.user.fullName}</h2>
+              <h2 className="text-lg font-bold text-gray-900">
+                {data.user.fullName}
+              </h2>
               <span className="text-xs font-mono text-gray-400">
                 ID: #{data._id.slice(-6).toUpperCase()}
               </span>
@@ -64,7 +71,9 @@ function OwnerOrderCard({ data }) {
           </div>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-extrabold text-[#ff4d2d]">₹{data.shopOrders.subtotal}</div>
+          <div className="text-2xl font-extrabold text-[#ff4d2d]">
+            ₹{data.shopOrders.subtotal}
+          </div>
           <div className="flex items-center justify-end gap-1 text-xs text-gray-400 mt-1">
             <MdAccessTime />
             {new Date(data.createdAt).toLocaleTimeString([], {
@@ -77,19 +86,30 @@ function OwnerOrderCard({ data }) {
 
       <div className="bg-gray-50 rounded-xl p-4 mb-6 space-y-3">
         {data.shopOrders.shopOrderItems.map((item, index) => (
-          <div key={index} className="flex items-center justify-between text-sm">
+          <div
+            key={index}
+            className="flex items-center justify-between text-sm"
+          >
             <div className="flex items-center gap-3">
               <div className="bg-white text-gray-800 font-bold w-6 h-6 flex items-center justify-center rounded-md text-xs border border-gray-200 shadow-sm">
                 {item.quantity}x
               </div>
               <span className="text-gray-700 font-medium">{item.name}</span>
             </div>
-            <span className="text-gray-500 font-mono">₹{item.price * item.quantity}</span>
+            <span className="text-gray-500 font-mono">
+              ₹{item.price * item.quantity}
+            </span>
           </div>
         ))}
         <div className="border-t border-gray-200 pt-2 mt-2 flex justify-between text-xs font-semibold text-gray-500 uppercase tracking-widest">
           <span>Payment</span>
-          <span className={data.paymentMethod === 'cod' ? 'text-orange-600' : 'text-green-600'}>
+          <span
+            className={
+              data.paymentMethod === 'cod'
+                ? 'text-orange-600'
+                : 'text-green-600'
+            }
+          >
             {data.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online'}
           </span>
         </div>
@@ -104,21 +124,26 @@ function OwnerOrderCard({ data }) {
             {data.shopOrders.status}
           </div>
 
-          {data.shopOrders.status !== 'delivered' && data.shopOrders.status !== 'cancelled' && (
-            <select
-              className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-semibold py-2.5 px-4 rounded-xl focus:border-[#ff4d2d] focus:ring-2 focus:ring-[#ff4d2d]/20 outline-none cursor-pointer transition-all hover:border-gray-300"
-              value={data.shopOrders.status}
-              onChange={(e) =>
-                handleUpdateStatus(data._id, data.shopOrders.shop._id, e.target.value)
-              }
-            >
-              <option value="pending">Pending</option>
-              <option value="preparing">Accept (Preparing)</option>
-              <option value="ready">Ready for Pickup</option>
-              <option value="out of delivery">Out for Delivery</option>
-              <option value="delivered">Delivered</option>
-            </select>
-          )}
+          {data.shopOrders.status !== 'delivered' &&
+            data.shopOrders.status !== 'cancelled' && (
+              <select
+                className="bg-gray-50 border border-gray-200 text-gray-700 text-sm font-semibold py-2.5 px-4 rounded-xl focus:border-[#ff4d2d] focus:ring-2 focus:ring-[#ff4d2d]/20 outline-none cursor-pointer transition-all hover:border-gray-300"
+                value={data.shopOrders.status}
+                onChange={(e) =>
+                  handleUpdateStatus(
+                    data._id,
+                    data.shopOrders.shop._id,
+                    e.target.value,
+                  )
+                }
+              >
+                <option value="pending">Pending</option>
+                <option value="preparing">Accept (Preparing)</option>
+                <option value="ready">Ready for Pickup</option>
+                <option value="out of delivery">Out for Delivery</option>
+                <option value="delivered">Delivered</option>
+              </select>
+            )}
         </div>
 
         {(data.shopOrders.status === 'preparing' ||

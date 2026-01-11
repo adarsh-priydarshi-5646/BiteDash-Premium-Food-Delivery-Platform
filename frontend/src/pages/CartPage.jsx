@@ -44,7 +44,9 @@ function CartPage() {
         {cartItems?.length === 0 ? (
           <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-200">
             <FaShoppingCart className="text-gray-300 text-6xl mx-auto mb-4" />
-            <h3 className="text-gray-900 text-xl font-bold mb-2">Your cart is empty</h3>
+            <h3 className="text-gray-900 text-xl font-bold mb-2">
+              Your cart is empty
+            </h3>
             <p className="text-gray-500 mb-6">
               Looks like you haven't added anything to your cart yet
             </p>
@@ -69,7 +71,9 @@ function CartPage() {
               <div className="sticky top-24 bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
                 <div className="flex items-center gap-2 mb-6 pb-4 border-b border-gray-200">
                   <FaReceipt className="text-[#E23744]" />
-                  <h2 className="text-xl font-bold text-gray-900">Bill Details</h2>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Bill Details
+                  </h2>
                 </div>
 
                 <div className="space-y-3 mb-4">
@@ -100,7 +104,9 @@ function CartPage() {
                 <div className="border-t border-gray-200 pt-4 mb-6">
                   <div className="flex justify-between text-gray-900">
                     <span className="text-lg font-bold">TO PAY</span>
-                    <span className="text-xl font-bold text-[#E23744]">₹{grandTotal}</span>
+                    <span className="text-xl font-bold text-[#E23744]">
+                      ₹{grandTotal}
+                    </span>
                   </div>
                 </div>
 

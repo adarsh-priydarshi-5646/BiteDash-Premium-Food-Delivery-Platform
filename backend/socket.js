@@ -16,7 +16,7 @@ export const socketHandler = (io) => {
             socketId: socket.id,
             isOnline: true,
           },
-          { new: true }
+          { new: true },
         );
 
         socket.join(userId);
@@ -55,7 +55,7 @@ export const socketHandler = (io) => {
           {
             socketId: null,
             isOnline: false,
-          }
+          },
         );
       } catch (error) {
         console.error(error);

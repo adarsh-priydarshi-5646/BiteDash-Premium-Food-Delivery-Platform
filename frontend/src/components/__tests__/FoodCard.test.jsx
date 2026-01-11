@@ -8,7 +8,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import FoodCard from '../FoodCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, updateQuantity, removeCartItem } from '../../redux/userSlice';
+import {
+  addToCart,
+  updateQuantity,
+  removeCartItem,
+} from '../../redux/userSlice';
 
 const mockDispatch = vi.fn();
 vi.mock('react-redux', async () => {
@@ -69,7 +73,7 @@ describe('FoodCard Component', () => {
       expect.objectContaining({
         id: '1',
         quantity: 1,
-      })
+      }),
     );
     expect(mockDispatch).toHaveBeenCalled();
   });

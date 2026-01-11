@@ -52,7 +52,7 @@ function AddressAutocomplete({ onSelect, placeholder, initialValue = '' }) {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.geoapify.com/v1/geocode/autocomplete?text=${query}&apiKey=${apiKey}&limit=5`
+        `https://api.geoapify.com/v1/geocode/autocomplete?text=${query}&apiKey=${apiKey}&limit=5`,
       );
       setSuggestions(response.data.features || []);
       setShowDropdown(true);

@@ -45,7 +45,7 @@ const shopSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Shop = mongoose.model('Shop', shopSchema);

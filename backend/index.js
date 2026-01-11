@@ -23,7 +23,10 @@ import shopRouter from './routes/shop.routes.js';
 import orderRouter from './routes/order.routes.js';
 
 import { rateLimiter } from './middlewares/rateLimit.middleware.js';
-import { securityHeaders, sanitizeRequest } from './middlewares/security.middleware.js';
+import {
+  securityHeaders,
+  sanitizeRequest,
+} from './middlewares/security.middleware.js';
 import { socketHandler } from './socket.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -61,7 +64,7 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-  })
+  }),
 );
 
 app.set('trust proxy', 1);
@@ -110,7 +113,10 @@ if (process.env.NODE_ENV === 'production') {
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);
   res.status(err.status || 500).json({
-    error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,
+    error:
+      process.env.NODE_ENV === 'production'
+        ? 'Internal server error'
+        : err.message,
   });
 });
 
@@ -123,7 +129,7 @@ socketHandler(io);
 server.listen(port, () => {
   connectDb();
   console.log(
-    `Server started on port ${port} | Mode: ${process.env.NODE_ENV || 'development'} | PID: ${process.pid}`
+    `Server started on port ${port} | Mode: ${process.env.NODE_ENV || 'development'} | PID: ${process.pid}`,
   );
 });
 

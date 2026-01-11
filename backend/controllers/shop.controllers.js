@@ -39,7 +39,7 @@ export const createEditShop = async (req, res) => {
           owner: req.userId,
           isDefault: false,
         },
-        { new: true }
+        { new: true },
       );
     }
 
@@ -47,7 +47,9 @@ export const createEditShop = async (req, res) => {
     return res.status(201).json(shop);
   } catch (error) {
     console.error('Create shop error:', error);
-    return res.status(500).json({ message: 'Failed to create shop. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to create shop. Please try again.' });
   }
 };
 
@@ -65,7 +67,9 @@ export const getMyShop = async (req, res) => {
     return res.status(200).json(shop);
   } catch (error) {
     console.error('Get my shop error:', error);
-    return res.status(500).json({ message: 'Failed to get shop. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to get shop. Please try again.' });
   }
 };
 
@@ -80,7 +84,9 @@ export const getShopByCity = async (req, res) => {
       isDefault: false,
     }).populate('items');
 
-    const defaultShop = await Shop.findOne({ isDefault: true }).populate('items');
+    const defaultShop = await Shop.findOne({ isDefault: true }).populate(
+      'items',
+    );
 
     const shops = defaultShop ? [defaultShop, ...cityShops] : cityShops;
 
@@ -90,6 +96,8 @@ export const getShopByCity = async (req, res) => {
     return res.status(200).json(shops);
   } catch (error) {
     console.error('Get shop by city error:', error);
-    return res.status(500).json({ message: 'Failed to get shops. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to get shops. Please try again.' });
   }
 };

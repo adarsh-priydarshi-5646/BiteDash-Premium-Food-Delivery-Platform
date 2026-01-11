@@ -48,7 +48,7 @@ describe('CartPage Component', () => {
     render(
       <BrowserRouter>
         <CartPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Your cart is empty')).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('CartPage Component', () => {
     render(
       <BrowserRouter>
         <CartPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Pizza')).toBeInTheDocument();

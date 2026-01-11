@@ -41,13 +41,18 @@ describe('EditItem Component', () => {
   it('fetches and displays item data', async () => {
     useSelector.mockReturnValue({ myShopData: { _id: 's1' } });
     axios.get.mockResolvedValueOnce({
-      data: { name: 'Old Pizza', price: 150, category: 'Pizza', foodType: 'veg' },
+      data: {
+        name: 'Old Pizza',
+        price: 150,
+        category: 'Pizza',
+        foodType: 'veg',
+      },
     });
 
     render(
       <BrowserRouter>
         <EditItem />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
@@ -58,19 +63,28 @@ describe('EditItem Component', () => {
   it('submits updated data', async () => {
     useSelector.mockReturnValue({ myShopData: { _id: 's1' } });
     axios.get.mockResolvedValueOnce({
-      data: { name: 'Old Pizza', price: 150, category: 'Pizza', foodType: 'veg' },
+      data: {
+        name: 'Old Pizza',
+        price: 150,
+        category: 'Pizza',
+        foodType: 'veg',
+      },
     });
     axios.post.mockResolvedValueOnce({ data: { items: [] } });
 
     render(
       <BrowserRouter>
         <EditItem />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
-    await waitFor(() => expect(screen.getByDisplayValue('Old Pizza')).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByDisplayValue('Old Pizza')).toBeInTheDocument(),
+    );
 
-    fireEvent.change(screen.getByDisplayValue('Old Pizza'), { target: { value: 'New Pizza' } });
+    fireEvent.change(screen.getByDisplayValue('Old Pizza'), {
+      target: { value: 'New Pizza' },
+    });
 
     const submitBtn = screen.getByText('Save Changes');
     fireEvent.click(submitBtn);
@@ -79,7 +93,7 @@ describe('EditItem Component', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.stringContaining('/edit-item/123'),
         expect.any(FormData),
-        expect.anything()
+        expect.anything(),
       );
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });

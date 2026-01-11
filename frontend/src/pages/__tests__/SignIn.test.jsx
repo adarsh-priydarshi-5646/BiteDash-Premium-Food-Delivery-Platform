@@ -21,7 +21,9 @@ vi.mock('react-router-dom', async () => {
 
 vi.mock('../../hooks/useGetCity', () => ({
   default: () => ({
-    getCity: vi.fn().mockResolvedValue({ city: 'Test City', address: 'Test Address' }),
+    getCity: vi
+      .fn()
+      .mockResolvedValue({ city: 'Test City', address: 'Test Address' }),
   }),
 }));
 
@@ -46,7 +48,7 @@ describe('SignIn Component', () => {
     render(
       <BrowserRouter>
         <SignIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
@@ -57,14 +59,20 @@ describe('SignIn Component', () => {
     render(
       <BrowserRouter>
         <SignIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     const toggleBtn = screen.getByText('Show');
     fireEvent.click(toggleBtn);
-    expect(screen.getByPlaceholderText('Password')).toHaveAttribute('type', 'text');
+    expect(screen.getByPlaceholderText('Password')).toHaveAttribute(
+      'type',
+      'text',
+    );
 
     fireEvent.click(screen.getByText('Hide'));
-    expect(screen.getByPlaceholderText('Password')).toHaveAttribute('type', 'password');
+    expect(screen.getByPlaceholderText('Password')).toHaveAttribute(
+      'type',
+      'password',
+    );
   });
 
   it('handles form submission successfully', async () => {
@@ -73,13 +81,15 @@ describe('SignIn Component', () => {
     render(
       <BrowserRouter>
         <SignIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.change(screen.getByPlaceholderText('Email'), {
       target: { value: 'test@example.com' },
     });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByPlaceholderText('Password'), {
+      target: { value: 'password123' },
+    });
 
     const loginBtn = screen.getByRole('button', { name: 'Login' });
     fireEvent.click(loginBtn);
@@ -88,7 +98,7 @@ describe('SignIn Component', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.stringContaining('/api/auth/signin'),
         { email: 'test@example.com', password: 'password123' },
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(mockDispatch).toHaveBeenCalled();
     });
@@ -102,13 +112,15 @@ describe('SignIn Component', () => {
     render(
       <BrowserRouter>
         <SignIn />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.change(screen.getByPlaceholderText('Email'), {
       target: { value: 'wrong@example.com' },
     });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'wrongpass' } });
+    fireEvent.change(screen.getByPlaceholderText('Password'), {
+      target: { value: 'wrongpass' },
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Login' }));
 

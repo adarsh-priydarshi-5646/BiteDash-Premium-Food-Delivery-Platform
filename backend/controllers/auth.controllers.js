@@ -20,10 +20,14 @@ export const signUp = async (req, res) => {
       return res.status(400).json({ message: 'User Already exist.' });
     }
     if (password.length < 6) {
-      return res.status(400).json({ message: 'password must be at least 6 characters.' });
+      return res
+        .status(400)
+        .json({ message: 'password must be at least 6 characters.' });
     }
     if (mobile.length < 10) {
-      return res.status(400).json({ message: 'mobile no must be at least 10 digits.' });
+      return res
+        .status(400)
+        .json({ message: 'mobile no must be at least 10 digits.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -48,7 +52,9 @@ export const signUp = async (req, res) => {
     return res.status(201).json(user);
   } catch (error) {
     console.error('Sign up error:', error);
-    return res.status(500).json({ message: 'Sign up failed. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Sign up failed. Please try again.' });
   }
 };
 
@@ -80,7 +86,9 @@ export const signIn = async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.error('Sign in error:', error);
-    return res.status(500).json({ message: 'Sign in failed. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Sign in failed. Please try again.' });
   }
 };
 
@@ -90,7 +98,9 @@ export const signOut = async (req, res) => {
     return res.status(200).json({ message: 'log out successfully' });
   } catch (error) {
     console.error('Sign out error:', error);
-    return res.status(500).json({ message: 'Sign out failed. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Sign out failed. Please try again.' });
   }
 };
 
@@ -121,7 +131,9 @@ export const sendOtp = async (req, res) => {
     });
   } catch (error) {
     console.error('Send OTP error:', error);
-    return res.status(500).json({ message: 'Failed to send OTP. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to send OTP. Please try again.' });
   }
 };
 
@@ -142,7 +154,9 @@ export const verifyOtp = async (req, res) => {
     return res.status(200).json({ message: 'otp verify successfully' });
   } catch (error) {
     console.error('Verify OTP error:', error);
-    return res.status(500).json({ message: 'OTP verification failed. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'OTP verification failed. Please try again.' });
   }
 };
 
@@ -165,7 +179,9 @@ export const resetPassword = async (req, res) => {
     return res.status(200).json({ message: 'password reset successfully' });
   } catch (error) {
     console.error('Reset password error:', error);
-    return res.status(500).json({ message: 'Password reset failed. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Password reset failed. Please try again.' });
   }
 };
 
@@ -196,6 +212,8 @@ export const googleAuth = async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.error('Google auth error:', error);
-    return res.status(500).json({ message: 'Google authentication failed. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Google authentication failed. Please try again.' });
   }
 };

@@ -40,13 +40,17 @@ describe('CreateEditShop Component', () => {
   it('renders Create mode initially', () => {
     useSelector.mockReturnValue({
       myShopData: null,
-      user: { currentCity: 'Mumbai', currentState: 'MH', currentAddress: 'Test Addr' },
+      user: {
+        currentCity: 'Mumbai',
+        currentState: 'MH',
+        currentAddress: 'Test Addr',
+      },
     });
 
     render(
       <BrowserRouter>
         <CreateEditShop />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Create Restaurant')).toBeInTheDocument();
@@ -68,7 +72,7 @@ describe('CreateEditShop Component', () => {
     render(
       <BrowserRouter>
         <CreateEditShop />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Edit Restaurant')).toBeInTheDocument();
@@ -82,26 +86,36 @@ describe('CreateEditShop Component', () => {
     render(
       <BrowserRouter>
         <CreateEditShop />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
 
     const input = screen.getByLabelText((content, element) => {
-      return element.tagName.toLowerCase() === 'input' && element.type === 'file';
+      return (
+        element.tagName.toLowerCase() === 'input' && element.type === 'file'
+      );
     });
 
     const inputs = document.querySelectorAll('input[type="file"]');
-    if (inputs.length > 0) fireEvent.change(inputs[0], { target: { files: [file] } });
+    if (inputs.length > 0)
+      fireEvent.change(inputs[0], { target: { files: [file] } });
 
     fireEvent.change(screen.getByPlaceholderText('e.g. The Spicy Spoon'), {
       target: { value: 'New Shop' },
     });
-    fireEvent.change(screen.getByPlaceholderText('City'), { target: { value: 'City' } });
-    fireEvent.change(screen.getByPlaceholderText('State'), { target: { value: 'State' } });
-    fireEvent.change(screen.getByPlaceholderText('Complete address including pincode'), {
-      target: { value: 'Address' },
+    fireEvent.change(screen.getByPlaceholderText('City'), {
+      target: { value: 'City' },
     });
+    fireEvent.change(screen.getByPlaceholderText('State'), {
+      target: { value: 'State' },
+    });
+    fireEvent.change(
+      screen.getByPlaceholderText('Complete address including pincode'),
+      {
+        target: { value: 'Address' },
+      },
+    );
 
     const submitBtn = screen.getByText('Save Restaurant Details');
     fireEvent.click(submitBtn);

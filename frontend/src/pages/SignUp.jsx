@@ -43,7 +43,7 @@ function SignUp() {
           mobile,
           role,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(setUserData(result.data));
       setErr('');
@@ -71,7 +71,7 @@ function SignUp() {
           role,
           mobile,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(setUserData(data));
       setErr('');
@@ -83,13 +83,20 @@ function SignUp() {
   };
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">
-      <div className="absolute top-6 left-6 cursor-pointer" onClick={() => navigate('/')}>
-        <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">BiteDash</h1>
+      <div
+        className="absolute top-6 left-6 cursor-pointer"
+        onClick={() => navigate('/')}
+      >
+        <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">
+          BiteDash
+        </h1>
       </div>
 
       <div className="w-full max-w-[440px] bg-white p-2">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-medium text-gray-800 tracking-wide mb-2">Sign up</h2>
+          <h2 className="text-3xl font-medium text-gray-800 tracking-wide mb-2">
+            Sign up
+          </h2>
           <p className="text-gray-500 text-sm">to continue to BiteDash</p>
         </div>
 
@@ -174,10 +181,16 @@ function SignUp() {
             onClick={handleSignUp}
             disabled={loading}
           >
-            {loading ? <ClipLoader size={20} color="white" /> : 'Create Account'}
+            {loading ? (
+              <ClipLoader size={20} color="white" />
+            ) : (
+              'Create Account'
+            )}
           </button>
 
-          {err && <div className="text-red-500 text-sm text-center py-1">{err}</div>}
+          {err && (
+            <div className="text-red-500 text-sm text-center py-1">{err}</div>
+          )}
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
@@ -199,7 +212,10 @@ function SignUp() {
 
         <div className="mt-8 text-center text-gray-600">
           Already have an account?{' '}
-          <span className="text-[#E23744] cursor-pointer" onClick={() => navigate('/signin')}>
+          <span
+            className="text-[#E23744] cursor-pointer"
+            onClick={() => navigate('/signin')}
+          >
             Login
           </span>
         </div>

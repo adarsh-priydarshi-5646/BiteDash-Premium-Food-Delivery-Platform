@@ -37,7 +37,8 @@ const seedDefaultRestaurant = async () => {
 
     const defaultShop = await Shop.create({
       name: 'BiteDash Express',
-      image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
+      image:
+        'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
       owner: defaultOwner._id,
       city: 'All Cities',
       state: 'All States',
@@ -54,7 +55,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Pizza',
         foodType: 'veg',
         price: 299,
-        image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -62,7 +64,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Burgers',
         foodType: 'non veg',
         price: 199,
-        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -70,7 +73,8 @@ const seedDefaultRestaurant = async () => {
         category: 'North Indian',
         foodType: 'veg',
         price: 249,
-        image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -78,7 +82,8 @@ const seedDefaultRestaurant = async () => {
         category: 'North Indian',
         foodType: 'non veg',
         price: 299,
-        image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -86,7 +91,8 @@ const seedDefaultRestaurant = async () => {
         category: 'South Indian',
         foodType: 'veg',
         price: 149,
-        image: 'https://images.unsplash.com/photo-1630383249896-424e482df921?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1630383249896-424e482df921?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -94,7 +100,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Snacks',
         foodType: 'veg',
         price: 179,
-        image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -102,7 +109,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Snacks',
         foodType: 'non veg',
         price: 199,
-        image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -110,7 +118,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Sandwiches',
         foodType: 'veg',
         price: 99,
-        image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -118,7 +127,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Chinese',
         foodType: 'veg',
         price: 129,
-        image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -126,7 +136,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Fast Food',
         foodType: 'veg',
         price: 79,
-        image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -134,7 +145,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Desserts',
         foodType: 'veg',
         price: 59,
-        image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80',
         shop: defaultShop._id,
       },
       {
@@ -142,7 +154,8 @@ const seedDefaultRestaurant = async () => {
         category: 'Main Course',
         foodType: 'veg',
         price: 189,
-        image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80',
+        image:
+          'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80',
         shop: defaultShop._id,
       },
     ];

@@ -9,7 +9,11 @@
 export const validatePlaceOrder = (data) => {
   const errors = [];
 
-  if (!data.cartItems || !Array.isArray(data.cartItems) || data.cartItems.length === 0) {
+  if (
+    !data.cartItems ||
+    !Array.isArray(data.cartItems) ||
+    data.cartItems.length === 0
+  ) {
     errors.push('Cart cannot be empty');
   }
 
@@ -56,7 +60,9 @@ export const validateRating = (rating) => {
 };
 
 export const validateCartItem = (item) => {
-  return item.id && item.name && item.price > 0 && item.quantity > 0 && item.shop;
+  return (
+    item.id && item.name && item.price > 0 && item.quantity > 0 && item.shop
+  );
 };
 
 export default {

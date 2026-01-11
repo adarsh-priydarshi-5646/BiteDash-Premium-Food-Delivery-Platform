@@ -101,7 +101,8 @@ const Documentation = () => {
 
   const currentIndex = navItems.findIndex((item) => item.id === activeSection);
   const prevSection = currentIndex > 0 ? navItems[currentIndex - 1] : null;
-  const nextSection = currentIndex < navItems.length - 1 ? navItems[currentIndex + 1] : null;
+  const nextSection =
+    currentIndex < navItems.length - 1 ? navItems[currentIndex + 1] : null;
 
   if (loading) {
     return (
@@ -137,7 +138,10 @@ const Documentation = () => {
             <a href="/docs" className="text-sm font-medium text-gray-900">
               Docs
             </a>
-            <a href="/" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+            <a
+              href="/"
+              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
               App
             </a>
             <a
@@ -203,11 +207,16 @@ const Documentation = () => {
                     Home
                   </a>
                   <FaChevronRight size={10} />
-                  <a href="/docs" className="hover:text-gray-900 transition-colors">
+                  <a
+                    href="/docs"
+                    className="hover:text-gray-900 transition-colors"
+                  >
                     Docs
                   </a>
                   <FaChevronRight size={10} />
-                  <span className="text-gray-900 font-medium">{sections[activeSection].title}</span>
+                  <span className="text-gray-900 font-medium">
+                    {sections[activeSection].title}
+                  </span>
                 </div>
 
                 {/* Content */}
@@ -238,7 +247,9 @@ const Documentation = () => {
                     prose-img:rounded-2xl prose-img:shadow-2xl prose-img:my-12 prose-img:border-4 prose-img:border-gray-200
                     [&>*:first-child]:mt-0 [&>*:last-child]:mb-0
                     [&_mark]:bg-yellow-300 [&_mark]:px-2 [&_mark]:py-0.5 [&_mark]:rounded [&_mark]:font-bold [&_mark]:text-gray-900 [&_mark]:shadow-sm"
-                  dangerouslySetInnerHTML={{ __html: sections[activeSection].html }}
+                  dangerouslySetInnerHTML={{
+                    __html: sections[activeSection].html,
+                  }}
                 />
 
                 {/* Navigation */}
@@ -248,7 +259,9 @@ const Documentation = () => {
                       onClick={() => navigateToSection(prevSection.id)}
                       className="flex flex-col items-start group"
                     >
-                      <span className="text-sm text-gray-500 mb-1">Previous</span>
+                      <span className="text-sm text-gray-500 mb-1">
+                        Previous
+                      </span>
                       <span className="text-base font-medium text-gray-900 group-hover:text-[#E23744] transition-colors">
                         {prevSection.label}
                       </span>

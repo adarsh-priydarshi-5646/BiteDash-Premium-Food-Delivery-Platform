@@ -70,7 +70,9 @@ export const findUserById = async (userId) => {
  * Create new user
  */
 export const createUser = async (userData) => {
-  const hashedPassword = userData.password ? await hashPassword(userData.password) : undefined;
+  const hashedPassword = userData.password
+    ? await hashPassword(userData.password)
+    : undefined;
 
   return await User.create({
     ...userData,

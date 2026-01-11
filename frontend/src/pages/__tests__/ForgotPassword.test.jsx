@@ -28,7 +28,7 @@ describe('ForgotPassword Component', () => {
     render(
       <BrowserRouter>
         <ForgotPassword />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Forgot Password')).toBeInTheDocument();
@@ -41,18 +41,24 @@ describe('ForgotPassword Component', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.stringContaining('/send-otp'),
         expect.anything(),
-        expect.anything()
+        expect.anything(),
       );
     });
 
-    await waitFor(() => expect(screen.getByPlaceholderText('Enter OTP')).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText('Enter OTP')).toBeInTheDocument(),
+    );
 
     axios.post.mockResolvedValueOnce({ data: { success: true } });
-    fireEvent.change(screen.getByPlaceholderText('Enter OTP'), { target: { value: '123456' } });
+    fireEvent.change(screen.getByPlaceholderText('Enter OTP'), {
+      target: { value: '123456' },
+    });
     fireEvent.click(screen.getByText('Verify'));
 
     await waitFor(() =>
-      expect(screen.getByPlaceholderText('Enter New Password')).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText('Enter New Password'),
+      ).toBeInTheDocument(),
     );
 
     axios.post.mockResolvedValueOnce({ data: { success: true } });

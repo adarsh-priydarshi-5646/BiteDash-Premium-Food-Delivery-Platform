@@ -13,7 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import UserOrderCard from '../components/UserOrderCard';
 import OwnerOrderCard from '../components/OwnerOrderCard';
 import DeliveryHistoryCard from '../components/DeliveryHistoryCard';
-import { setMyOrders, updateOrderStatus, updateRealtimeOrderStatus } from '../redux/userSlice';
+import {
+  setMyOrders,
+  updateOrderStatus,
+  updateRealtimeOrderStatus,
+} from '../redux/userSlice';
 
 function MyOrders() {
   const { userData, myOrders, socket } = useSelector((state) => state.user);
@@ -39,7 +43,11 @@ function MyOrders() {
         const shopOrder = order.shopOrders.find((so) => so._id === shopOrderId);
         if (shopOrder) {
           dispatch(
-            updateRealtimeOrderStatus({ orderId, shopId: shopOrder.shop._id, status: 'delivered' })
+            updateRealtimeOrderStatus({
+              orderId,
+              shopId: shopOrder.shop._id,
+              status: 'delivered',
+            }),
           );
         }
       }
@@ -66,7 +74,9 @@ function MyOrders() {
             </button>
             <div className="flex-1">
               <h1 className="text-3xl font-bold text-gray-900">My Orders</h1>
-              <p className="text-gray-600 text-sm mt-1">Track your order history and status</p>
+              <p className="text-gray-600 text-sm mt-1">
+                Track your order history and status
+              </p>
             </div>
             {myOrders && myOrders.length > 0 && (
               <div className="bg-[#E23744] text-white px-4 py-2 rounded-full">
@@ -87,14 +97,17 @@ function MyOrders() {
                 <OwnerOrderCard data={order} key={index} />
               ) : userData.role == 'deliveryBoy' ? (
                 <DeliveryHistoryCard data={order} key={index} />
-              ) : null
+              ) : null,
             )
           ) : (
             <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-200">
               <FaClipboardList className="text-gray-300 text-6xl mx-auto mb-4" />
-              <h3 className="text-gray-900 text-xl font-bold mb-2">No orders yet</h3>
+              <h3 className="text-gray-900 text-xl font-bold mb-2">
+                No orders yet
+              </h3>
               <p className="text-gray-500 mb-6">
-                Your order history will appear here once you place your first order
+                Your order history will appear here once you place your first
+                order
               </p>
               <button
                 onClick={() => navigate('/')}

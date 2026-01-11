@@ -71,9 +71,13 @@ const LandingPage = () => {
         const { data } = await axios.get(`${serverUrl}/api/item/all-items`);
         const items = data.data || data;
         const highRated = Array.isArray(items)
-          ? items.filter((item) => (item.rating?.average || item.rating || 0) >= 4.0)
+          ? items.filter(
+              (item) => (item.rating?.average || item.rating || 0) >= 4.0,
+            )
           : [];
-        setTrendingItems(highRated.length > 0 ? highRated : Array.isArray(items) ? items : []);
+        setTrendingItems(
+          highRated.length > 0 ? highRated : Array.isArray(items) ? items : [],
+        );
       } catch (error) {
         console.error('Error fetching trending items:', error);
       } finally {
@@ -136,11 +140,17 @@ const LandingPage = () => {
       {/* Top Navbar (Absolute over Hero) */}
       <nav className="absolute top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-5 text-white max-w-[1100px] mx-auto left-0 right-0 font-[400]">
         <div className="flex items-center gap-6">
-          <button className="hover:opacity-80 text-sm hidden md:block">Get the App</button>
+          <button className="hover:opacity-80 text-sm hidden md:block">
+            Get the App
+          </button>
         </div>
         <div className="flex items-center gap-6 md:gap-10 text-[17px]">
-          <button className="hover:opacity-80 text-sm hidden lg:block">Investor Relations</button>
-          <button className="hover:opacity-80 text-sm hidden lg:block">Add restaurant</button>
+          <button className="hover:opacity-80 text-sm hidden lg:block">
+            Investor Relations
+          </button>
+          <button className="hover:opacity-80 text-sm hidden lg:block">
+            Add restaurant
+          </button>
           <button
             onClick={() => navigate('/signin')}
             className="px-4 py-2 border border-white rounded-md hover:bg-white hover:text-[#1c1c1c] transition-all font-medium"
@@ -324,8 +334,12 @@ const LandingPage = () => {
                 />
               </div>
               <div className="p-4">
-                <h2 className="text-[20px] font-[500] text-[#1c1c1c] mb-1">{card.title}</h2>
-                <p className="text-[#4f4f4f] text-[14px] font-[300]">{card.desc}</p>
+                <h2 className="text-[20px] font-[500] text-[#1c1c1c] mb-1">
+                  {card.title}
+                </h2>
+                <p className="text-[#4f4f4f] text-[14px] font-[300]">
+                  {card.desc}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -335,14 +349,17 @@ const LandingPage = () => {
       {/* Collections Section (Zomato Style) */}
       <div className="max-w-[1100px] mx-auto w-full px-4 py-16">
         <div className="mb-10">
-          <h2 className="text-[36px] font-[500] text-[#1c1c1c] mb-2 leading-tight">Collections</h2>
+          <h2 className="text-[36px] font-[500] text-[#1c1c1c] mb-2 leading-tight">
+            Collections
+          </h2>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <p className="text-[#363636] text-[18px] font-[300]">
               Explore curated lists of top restaurants, cafes, pubs, and bars in{' '}
               {currentCity || 'India'}, based on trends
             </p>
             <button className="text-[#d9263a] font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all group">
-              All collections in {currentCity || 'India'} <FaChevronRight className="text-[12px]" />
+              All collections in {currentCity || 'India'}{' '}
+              <FaChevronRight className="text-[12px]" />
             </button>
           </div>
         </div>
@@ -369,7 +386,9 @@ const LandingPage = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 w-full p-5">
-                <h3 className="text-[20px] font-bold text-white mb-1 leading-tight">{col.title}</h3>
+                <h3 className="text-[20px] font-bold text-white mb-1 leading-tight">
+                  {col.title}
+                </h3>
                 <p className="text-white/80 text-[14px] flex items-center gap-2">
                   {col.count} <FaChevronRight className="text-[10px]" />
                 </p>
@@ -404,7 +423,10 @@ const LandingPage = () => {
         {itemsLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-[300px] bg-gray-50 rounded-[20px] animate-pulse"></div>
+              <div
+                key={i}
+                className="h-[300px] bg-gray-50 rounded-[20px] animate-pulse"
+              ></div>
             ))}
           </div>
         ) : (
@@ -415,56 +437,61 @@ const LandingPage = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {(trendingItems.length > 0 ? trendingItems : []).slice(0, 4).map((item, i) => (
-              <motion.div
-                key={item._id || i}
-                variants={fadeInUp}
-                whileHover={{ y: -8 }}
-                className="group relative h-[360px] rounded-[20px] overflow-hidden cursor-pointer shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_30px_60px_rgba(217,38,58,0.12)] transition-all duration-500"
-                onClick={() => navigate('/signup')}
-              >
-                <img
-                  src={item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c'}
-                  alt={item.name}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                />
+            {(trendingItems.length > 0 ? trendingItems : [])
+              .slice(0, 4)
+              .map((item, i) => (
+                <motion.div
+                  key={item._id || i}
+                  variants={fadeInUp}
+                  whileHover={{ y: -8 }}
+                  className="group relative h-[360px] rounded-[20px] overflow-hidden cursor-pointer shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_30px_60px_rgba(217,38,58,0.12)] transition-all duration-500"
+                  onClick={() => navigate('/signup')}
+                >
+                  <img
+                    src={
+                      item.image ||
+                      'https://images.unsplash.com/photo-1546069901-ba9599a7e63c'
+                    }
+                    alt={item.name}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  />
 
-                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:via-black/80 transition-all duration-500 z-10" />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:via-black/80 transition-all duration-500 z-10" />
 
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className="bg-white/95 backdrop-blur-sm text-[#1c1c1c] px-3 py-1 rounded-full text-[13px] font-[800] shadow-xl border border-white/20"
-                  >
-                    ₹{item.price}
-                  </motion.div>
-                </div>
-
-                <div className="absolute top-4 right-4 z-20">
-                  <div className="bg-black/60 backdrop-blur-md text-white px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 text-[13px] font-bold border border-white/20 group-hover:bg-[#d9263a] group-hover:border-[#d9263a] transition-all duration-300 shadow-lg">
-                    <span className="text-yellow-400">★</span>
-                    <span>{item.rating?.average?.toFixed(1) || '4.2'}</span>
+                  <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      className="bg-white/95 backdrop-blur-sm text-[#1c1c1c] px-3 py-1 rounded-full text-[13px] font-[800] shadow-xl border border-white/20"
+                    >
+                      ₹{item.price}
+                    </motion.div>
                   </div>
-                </div>
 
-                <div className="absolute bottom-0 left-0 w-full p-6 z-20 transform group-hover:-translate-y-2 transition-transform duration-500">
-                  <span className="text-red-400 font-bold text-[11px] uppercase tracking-[0.2em] mb-2 block opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                    {item.category || 'Best Seller'}
-                  </span>
-                  <h3 className="text-[24px] font-[800] text-white mb-2 leading-tight group-hover:text-red-50 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                    {item.name}
-                  </h3>
-                  <p className="text-white text-[14px] font-[500] line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75 leading-snug drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-                    {item.description ||
-                      'Freshly prepared with premium ingredients and authentic spices.'}
-                  </p>
-                  <button className="w-full py-3.5 bg-[#d9263a] text-white rounded-xl font-[800] text-sm flex items-center justify-center gap-2 transition-all duration-500 active:scale-95 group-hover:bg-[#ff4d61] shadow-lg group-hover:shadow-red-500/40">
-                    <span>Order Now</span>
-                    <FaChevronRight className="text-[10px] group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="absolute top-4 right-4 z-20">
+                    <div className="bg-black/60 backdrop-blur-md text-white px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 text-[13px] font-bold border border-white/20 group-hover:bg-[#d9263a] group-hover:border-[#d9263a] transition-all duration-300 shadow-lg">
+                      <span className="text-yellow-400">★</span>
+                      <span>{item.rating?.average?.toFixed(1) || '4.2'}</span>
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full p-6 z-20 transform group-hover:-translate-y-2 transition-transform duration-500">
+                    <span className="text-red-400 font-bold text-[11px] uppercase tracking-[0.2em] mb-2 block opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                      {item.category || 'Best Seller'}
+                    </span>
+                    <h3 className="text-[24px] font-[800] text-white mb-2 leading-tight group-hover:text-red-50 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                      {item.name}
+                    </h3>
+                    <p className="text-white text-[14px] font-[500] line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75 leading-snug drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                      {item.description ||
+                        'Freshly prepared with premium ingredients and authentic spices.'}
+                    </p>
+                    <button className="w-full py-3.5 bg-[#d9263a] text-white rounded-xl font-[800] text-sm flex items-center justify-center gap-2 transition-all duration-500 active:scale-95 group-hover:bg-[#ff4d61] shadow-lg group-hover:shadow-red-500/40">
+                      <span>Order Now</span>
+                      <FaChevronRight className="text-[10px] group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
 
             {trendingItems.length === 0 &&
               [1, 2, 3, 4].map((i) => (
@@ -510,8 +537,8 @@ const LandingPage = () => {
                       }
                     </h3>
                     <p className="text-white/70 text-[14px] line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75">
-                      A local favorite in {currentCity || 'Pune'}, prepared fresh daily with the
-                      finest local ingredients.
+                      A local favorite in {currentCity || 'Pune'}, prepared
+                      fresh daily with the finest local ingredients.
                     </p>
                     <button className="w-full py-3.5 bg-[#d9263a] text-white rounded-xl font-[800] text-sm flex items-center justify-center gap-2 transition-all duration-500 active:scale-95 group-hover:bg-[#ff4d61] shadow-lg group-hover:shadow-red-500/40">
                       <span>Order Now</span>
@@ -547,26 +574,33 @@ const LandingPage = () => {
                 <span className="text-[#d9263a]">Taste & Tech</span>
               </h2>
               <p className="text-[#5a5a5a] text-[20px] font-[300] leading-relaxed mb-8">
-                Experience the future of dining. Our intelligent routing and curated restaurant
-                partnerships ensure that every meal is a celebration of flavor, delivered with
-                surgical precision to your doorstep.
+                Experience the future of dining. Our intelligent routing and
+                curated restaurant partnerships ensure that every meal is a
+                celebration of flavor, delivered with surgical precision to your
+                doorstep.
               </p>
 
               <div className="flex flex-wrap gap-12 mb-10">
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-[32px] font-[800] text-[#1c1c1c]">2.5k+</h3>
+                  <h3 className="text-[32px] font-[800] text-[#1c1c1c]">
+                    2.5k+
+                  </h3>
                   <p className="text-[#828282] text-[14px] uppercase tracking-wider font-semibold">
                     Active Partners
                   </p>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-[32px] font-[800] text-[#1c1c1c]">18 Mins</h3>
+                  <h3 className="text-[32px] font-[800] text-[#1c1c1c]">
+                    18 Mins
+                  </h3>
                   <p className="text-[#828282] text-[14px] uppercase tracking-wider font-semibold">
                     Fastest Drop
                   </p>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-[32px] font-[800] text-[#1c1c1c]">4.9/5</h3>
+                  <h3 className="text-[32px] font-[800] text-[#1c1c1c]">
+                    4.9/5
+                  </h3>
                   <p className="text-[#828282] text-[14px] uppercase tracking-wider font-semibold">
                     User Rating
                   </p>
@@ -718,8 +752,13 @@ const LandingPage = () => {
                     const orbitOffset = groupIdx * (Math.PI / 3);
                     const angle = itemIdx * angleStep + orbitOffset;
 
-                    return { ...item, r: orbitGroup.radius, angle, delay: itemIdx * 0.2 };
-                  })
+                    return {
+                      ...item,
+                      r: orbitGroup.radius,
+                      angle,
+                      delay: itemIdx * 0.2,
+                    };
+                  }),
                 )
                 .map((item, idx) => {
                   const isClockwise = item.r === 190 ? -1 : 1;
@@ -750,7 +789,11 @@ const LandingPage = () => {
                             y: [-5, 5, -5], // Subtle bobbing
                           }}
                           transition={{
-                            rotate: { duration: item.speed, repeat: Infinity, ease: 'linear' }, // Match orbit speed
+                            rotate: {
+                              duration: item.speed,
+                              repeat: Infinity,
+                              ease: 'linear',
+                            }, // Match orbit speed
                             scale: {
                               duration: 4,
                               repeat: Infinity,
@@ -815,10 +858,12 @@ const LandingPage = () => {
 
           <div className="lg:w-1/2 text-center lg:text-left">
             <h2 className="text-[36px] md:text-[44px] font-[800] text-white leading-tight mb-4">
-              Get the <span className="text-[#d9263a]">BiteDash</span> Experience
+              Get the <span className="text-[#d9263a]">BiteDash</span>{' '}
+              Experience
             </h2>
             <p className="text-white/60 text-[16px] md:text-[18px] mb-8 leading-relaxed max-w-[450px] mx-auto lg:mx-0">
-              We’ll send you a link to download. Open it on your phone for exclusive rewards.
+              We’ll send you a link to download. Open it on your phone for
+              exclusive rewards.
             </p>
 
             <div className="flex gap-8 mb-8 justify-center lg:justify-start">
@@ -831,7 +876,9 @@ const LandingPage = () => {
                   <div
                     className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${contactType === type ? 'border-[#d9263a] bg-[#d9263a]' : 'border-white/20'}`}
                   >
-                    {contactType === type && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
+                    {contactType === type && (
+                      <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                    )}
                   </div>
                   <span
                     className={`text-[15px] font-medium transition-colors ${contactType === type ? 'text-white' : 'text-white/40'}`}
@@ -845,7 +892,9 @@ const LandingPage = () => {
             <div className="flex flex-col sm:flex-row gap-2 mb-10 max-w-[500px] mx-auto lg:mx-0">
               <input
                 type="text"
-                placeholder={contactType === 'email' ? 'Enter email' : 'Enter phone'}
+                placeholder={
+                  contactType === 'email' ? 'Enter email' : 'Enter phone'
+                }
                 className="flex-1 py-4 px-6 bg-white/5 border border-white/10 rounded-xl outline-none text-white text-[15px] focus:border-[#d9263a] transition-all"
               />
               <button className="bg-[#d9263a] text-white px-8 py-4 rounded-xl font-[800] hover:bg-[#ff4d61] transition-all text-sm">
@@ -870,7 +919,9 @@ const LandingPage = () => {
       </section>
       {/* Explore Options (Refined & Compact) */}
       <section className="max-w-[1100px] mx-auto w-full px-4 py-16 bg-white">
-        <h2 className="text-[32px] font-[800] text-[#1c1c1c] mb-10">Explore options near me</h2>
+        <h2 className="text-[32px] font-[800] text-[#1c1c1c] mb-10">
+          Explore options near me
+        </h2>
 
         <div className="grid grid-cols-1 gap-4">
           {[
@@ -908,12 +959,16 @@ const LandingPage = () => {
               className="bg-[#fafafa] rounded-[16px] overflow-hidden border border-gray-100 hover:border-gray-200 transition-all"
             >
               <button
-                onClick={() => setActiveExplore(activeExplore === item.id ? null : item.id)}
+                onClick={() =>
+                  setActiveExplore(activeExplore === item.id ? null : item.id)
+                }
                 className="w-full flex justify-between items-center p-6 text-left"
               >
                 <div className="flex items-center gap-4">
                   <div className="text-[#d9263a] text-[18px]">{item.icon}</div>
-                  <span className="text-[18px] text-[#1c1c1c] font-[600]">{item.title}</span>
+                  <span className="text-[18px] text-[#1c1c1c] font-[600]">
+                    {item.title}
+                  </span>
                 </div>
                 <motion.div
                   animate={{ rotate: activeExplore === item.id ? 180 : 0 }}
@@ -945,7 +1000,9 @@ const LandingPage = () => {
       <footer className="bg-[#f8f8f8] pt-12 pb-6 w-full">
         <div className="max-w-[1100px] mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
-            <p className="text-[34px] font-[900] italic tracking-tight text-[#000000]">BiteDash</p>
+            <p className="text-[34px] font-[900] italic tracking-tight text-[#000000]">
+              BiteDash
+            </p>
             <div className="flex gap-4">
               <button className="border border-[#cfcfcf] px-4 py-2 rounded-[6px] text-[#1c1c1c] flex items-center gap-2 bg-white text-[15px]">
                 🇮🇳 India <FaChevronDown className="text-[10px]" />
@@ -972,11 +1029,23 @@ const LandingPage = () => {
               },
               {
                 title: 'BITEDASH UNIVERSE',
-                links: ['BiteDash', 'Blinkit', 'Feeding India', 'Hyperpure', 'BiteLand'],
+                links: [
+                  'BiteDash',
+                  'Blinkit',
+                  'Feeding India',
+                  'Hyperpure',
+                  'BiteLand',
+                ],
               },
-              { title: 'FOR RESTAURANTS', links: ['Partner With Us', 'Apps For You'] },
+              {
+                title: 'FOR RESTAURANTS',
+                links: ['Partner With Us', 'Apps For You'],
+              },
               { title: 'FOR ENTERPRISES', links: ['BiteDash For Enterprise'] },
-              { title: 'LEARN MORE', links: ['Privacy', 'Security', 'Terms', 'Sitemap'] },
+              {
+                title: 'LEARN MORE',
+                links: ['Privacy', 'Security', 'Terms', 'Sitemap'],
+              },
             ].map((section, idx) => (
               <div key={idx}>
                 <h2 className="text-[14px] font-[500] text-[#000000] mb-4 tracking-widest">
@@ -998,9 +1067,10 @@ const LandingPage = () => {
 
           <div className="border-t border-[#cfcfcf] pt-6 text-[13px] text-[#4f4f4f] font-[300] leading-tight">
             <p>
-              By continuing past this page, you agree to our Terms of Service, Cookie Policy,
-              Privacy Policy and Content Policies. All trademarks are properties of their respective
-              owners. 2008-2025 © BiteDash™ Ltd. All rights reserved.
+              By continuing past this page, you agree to our Terms of Service,
+              Cookie Policy, Privacy Policy and Content Policies. All trademarks
+              are properties of their respective owners. 2008-2025 © BiteDash™
+              Ltd. All rights reserved.
             </p>
           </div>
         </div>

@@ -32,7 +32,7 @@ function OrderPlaced() {
           const result = await axios.post(
             `${serverUrl}/api/order/verify-stripe-payment`,
             { orderId, sessionId },
-            { withCredentials: true }
+            { withCredentials: true },
           );
 
           dispatch(addMyOrder(result.data));
@@ -40,7 +40,7 @@ function OrderPlaced() {
         } catch (error) {
           console.error('Payment verification failed:', error);
           alert(
-            `Payment verification failed: ${error.response?.data?.message || error.message}\n\nPlease contact support with Order ID: ${orderId}`
+            `Payment verification failed: ${error.response?.data?.message || error.message}\n\nPlease contact support with Order ID: ${orderId}`,
           );
         } finally {
           setVerifying(false);
@@ -69,13 +69,15 @@ function OrderPlaced() {
       const result = await axios.post(
         `${serverUrl}/api/order/verify-stripe-payment`,
         { orderId, sessionId },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       alert('✅ Payment verified successfully!');
       dispatch(addMyOrder(result.data));
       dispatch(clearCart());
     } catch (error) {
-      alert(`❌ Verification failed: ${error.response?.data?.message || error.message}`);
+      alert(
+        `❌ Verification failed: ${error.response?.data?.message || error.message}`,
+      );
     } finally {
       setVerifying(false);
     }
@@ -86,8 +88,12 @@ function OrderPlaced() {
       {verifying ? (
         <div className="flex flex-col items-center">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-[#E23744] mb-6"></div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Verifying Payment...</h1>
-          <p className="text-gray-600">Please wait while we confirm your payment</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Verifying Payment...
+          </h1>
+          <p className="text-gray-600">
+            Please wait while we confirm your payment
+          </p>
         </div>
       ) : (
         <div className="max-w-lg">
@@ -100,10 +106,12 @@ function OrderPlaced() {
           </div>
 
           {}
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Order Placed Successfully!</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Order Placed Successfully!
+          </h1>
           <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-            Thank you for your order! Your food is being prepared and will be delivered soon. Track
-            your order status in "My Orders".
+            Thank you for your order! Your food is being prepared and will be
+            delivered soon. Track your order status in "My Orders".
           </p>
 
           {}
@@ -131,7 +139,9 @@ function OrderPlaced() {
           {}
           {searchParams.get('session_id') && (
             <div className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-              <p className="text-sm text-gray-700 mb-2 font-semibold">Payment Information</p>
+              <p className="text-sm text-gray-700 mb-2 font-semibold">
+                Payment Information
+              </p>
               <p className="text-xs text-gray-600 break-all mb-1">
                 Order ID: {searchParams.get('orderId') || 'Processing...'}
               </p>

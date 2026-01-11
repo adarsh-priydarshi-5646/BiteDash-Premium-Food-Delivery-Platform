@@ -59,7 +59,7 @@ describe('TrackOrderPage Component', () => {
     render(
       <BrowserRouter>
         <TrackOrderPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
@@ -77,7 +77,7 @@ describe('TrackOrderPage Component', () => {
     render(
       <BrowserRouter>
         <TrackOrderPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.queryByText('Track Order')).not.toBeInTheDocument();

@@ -29,7 +29,7 @@ const FoodCard = memo(
           shop: data.shop,
           quantity: 1,
           foodType: data.foodType,
-        })
+        }),
       );
     };
 
@@ -92,23 +92,33 @@ const FoodCard = memo(
         {}
         <div className="p-4">
           {}
-          <h3 className="text-gray-900 font-bold text-base mb-1 line-clamp-2">{data.name}</h3>
+          <h3 className="text-gray-900 font-bold text-base mb-1 line-clamp-2">
+            {data.name}
+          </h3>
 
           {}
           {data.shop && data.shop.name && (
-            <p className="text-gray-500 text-sm mb-2 line-clamp-1">{data.shop.name}</p>
+            <p className="text-gray-500 text-sm mb-2 line-clamp-1">
+              {data.shop.name}
+            </p>
           )}
 
           {}
           {data.description && (
-            <p className="text-gray-600 text-xs mb-2 line-clamp-2">{data.description}</p>
+            <p className="text-gray-600 text-xs mb-2 line-clamp-2">
+              {data.description}
+            </p>
           )}
 
           {}
           <div className="flex items-center justify-between mb-3">
             <div className="flex flex-col">
-              <span className="text-gray-900 font-bold text-lg">₹{data.price}</span>
-              {data.category && <span className="text-gray-500 text-xs">{data.category}</span>}
+              <span className="text-gray-900 font-bold text-lg">
+                ₹{data.price}
+              </span>
+              {data.category && (
+                <span className="text-gray-500 text-xs">{data.category}</span>
+              )}
             </div>
 
             {}
@@ -119,7 +129,9 @@ const FoodCard = memo(
                   {data.rating.average.toFixed(1)}
                 </span>
                 {data.rating.count > 0 && (
-                  <span className="text-xs text-gray-400">({data.rating.count})</span>
+                  <span className="text-xs text-gray-400">
+                    ({data.rating.count})
+                  </span>
                 )}
               </div>
             )}
@@ -160,7 +172,7 @@ const FoodCard = memo(
       prevProps.data.name === nextProps.data.name &&
       prevProps.data.price === nextProps.data.price
     );
-  }
+  },
 );
 
 FoodCard.displayName = 'FoodCard';

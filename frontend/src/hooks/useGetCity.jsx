@@ -8,7 +8,11 @@
 import axios from 'axios';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentAddress, setCurrentCity, setCurrentState } from '../redux/userSlice';
+import {
+  setCurrentAddress,
+  setCurrentCity,
+  setCurrentState,
+} from '../redux/userSlice';
 import { setAddress, setLocation } from '../redux/mapSlice';
 
 /**
@@ -26,10 +30,11 @@ function useGetCity(auto = false) {
         dispatch(setCurrentAddress(fallbackData.address));
         dispatch(setAddress(fallbackData.address));
       }
-      if (fallbackData.lat) dispatch(setLocation({ lat: fallbackData.lat, lon: fallbackData.lon }));
+      if (fallbackData.lat)
+        dispatch(setLocation({ lat: fallbackData.lat, lon: fallbackData.lon }));
       return fallbackData;
     },
-    [dispatch]
+    [dispatch],
   );
 
   const getCity = useCallback(
@@ -39,7 +44,8 @@ function useGetCity(auto = false) {
         const cachedAddress = localStorage.getItem('last_known_address');
 
         const defaultAddress =
-          userData?.addresses?.find((a) => a.isDefault) || userData?.addresses?.[0];
+          userData?.addresses?.find((a) => a.isDefault) ||
+          userData?.addresses?.[0];
         const profileFallback = defaultAddress
           ? {
               city: defaultAddress.city,
@@ -51,7 +57,12 @@ function useGetCity(auto = false) {
           : null;
 
         const getFallbackData = () => {
-          return profileFallback || { city: cachedCity || 'Delhi NCR', address: cachedAddress };
+          return (
+            profileFallback || {
+              city: cachedCity || 'Delhi NCR',
+              address: cachedAddress,
+            }
+          );
         };
 
         if (!navigator.geolocation) {
@@ -60,9 +71,15 @@ function useGetCity(auto = false) {
         }
 
         const checkPermissionAndProceed = async () => {
-          if (isSilent && navigator.permissions && navigator.permissions.query) {
+          if (
+            isSilent &&
+            navigator.permissions &&
+            navigator.permissions.query
+          ) {
             try {
-              const status = await navigator.permissions.query({ name: 'geolocation' });
+              const status = await navigator.permissions.query({
+                name: 'geolocation',
+              });
               if (status.state !== 'granted') {
                 resolve(applyFallback(getFallbackData()));
                 return false;
@@ -85,7 +102,10 @@ function useGetCity(auto = false) {
                     dispatch(setCurrentAddress(fallback.address));
                     dispatch(setAddress(fallback.address));
                   }
-                  if (fallback.lat) dispatch(setLocation({ lat: fallback.lat, lon: fallback.lon }));
+                  if (fallback.lat)
+                    dispatch(
+                      setLocation({ lat: fallback.lat, lon: fallback.lon }),
+                    );
                   resolve(fallback);
                   return;
                 }
@@ -94,7 +114,7 @@ function useGetCity(auto = false) {
                 dispatch(setLocation({ lat: latitude, lon: longitude }));
 
                 const result = await axios.get(
-                  `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=${apiKey}`
+                  `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=${apiKey}`,
                 );
 
                 if (result.data?.results?.length > 0) {
@@ -130,24 +150,26 @@ function useGetCity(auto = false) {
                   });
                 } else {
                   const finalFallback = getFallbackData();
-                  if (finalFallback.city) dispatch(setCurrentCity(finalFallback.city));
+                  if (finalFallback.city)
+                    dispatch(setCurrentCity(finalFallback.city));
                   resolve(finalFallback);
                 }
               } catch (_error) {
                 const finalFallback = getFallbackData();
-                if (finalFallback.city) dispatch(setCurrentCity(finalFallback.city));
+                if (finalFallback.city)
+                  dispatch(setCurrentCity(finalFallback.city));
                 resolve(finalFallback);
               }
             },
             (_error) => {
               resolve(applyFallback(getFallbackData()));
             },
-            { timeout: 8000, enableHighAccuracy: true, maximumAge: 300000 }
+            { timeout: 8000, enableHighAccuracy: true, maximumAge: 300000 },
           );
         });
       });
     },
-    [apiKey, dispatch, userData, applyFallback]
+    [apiKey, dispatch, userData, applyFallback],
   );
 
   useEffect(() => {

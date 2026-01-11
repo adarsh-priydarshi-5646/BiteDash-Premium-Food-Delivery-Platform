@@ -20,7 +20,11 @@ import axios from 'axios';
 import { FaMobileScreenButton } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { serverUrl } from '../App';
-import { addMyOrder, clearCart, setSelectedAddressId } from '../redux/userSlice';
+import {
+  addMyOrder,
+  clearCart,
+  setSelectedAddressId,
+} from '../redux/userSlice';
 import { loadStripe } from '@stripe/stripe-js';
 import AddressModal from '../components/AddressModal';
 import Nav from '../components/Nav';
@@ -33,9 +37,12 @@ import useGetCity from '../hooks/useGetCity';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconRetinaUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
@@ -52,9 +59,8 @@ function RecenterMap({ location }) {
 
 function CheckOut() {
   const { location, address } = useSelector((state) => state.map);
-  const { cartItems, totalAmount, userData, selectedAddressId, authLoading } = useSelector(
-    (state) => state.user
-  );
+  const { cartItems, totalAmount, userData, selectedAddressId, authLoading } =
+    useSelector((state) => state.user);
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [showAddressModal, setShowAddressModal] = useState(false);
   const navigate = useNavigate();
@@ -64,20 +70,27 @@ function CheckOut() {
 
   const deliveryFee = totalAmount > 500 ? 0 : 40;
   const AmountWithDeliveryFee = totalAmount + deliveryFee;
-  const selectedAddress = userData?.addresses?.find((a) => a._id === selectedAddressId);
+  const selectedAddress = userData?.addresses?.find(
+    (a) => a._id === selectedAddressId,
+  );
 
   useEffect(() => {
     if (userData?.addresses?.length > 0 && !selectedAddressId) {
-      const defaultAddr = userData.addresses.find((a) => a.isDefault) || userData.addresses[0];
+      const defaultAddr =
+        userData.addresses.find((a) => a.isDefault) || userData.addresses[0];
       dispatch(setSelectedAddressId(defaultAddr._id));
     }
   }, [userData, selectedAddressId, dispatch]);
 
   useEffect(() => {
     if (selectedAddress) {
-      dispatch(setLocation({ lat: selectedAddress.lat, lon: selectedAddress.lon }));
       dispatch(
-        setAddress(`${selectedAddress.flatNo}, ${selectedAddress.area}, ${selectedAddress.city}`)
+        setLocation({ lat: selectedAddress.lat, lon: selectedAddress.lon }),
+      );
+      dispatch(
+        setAddress(
+          `${selectedAddress.flatNo}, ${selectedAddress.area}, ${selectedAddress.city}`,
+        ),
       );
     }
   }, [selectedAddress, dispatch]);
@@ -138,7 +151,7 @@ function CheckOut() {
           totalAmount: AmountWithDeliveryFee,
           cartItems,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       if (paymentMethod == 'cod') {
@@ -160,7 +173,7 @@ function CheckOut() {
       const { data } = await axios.post(
         `${serverUrl}/api/order/create-stripe-payment`,
         { amount, orderId },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       if (data.url) {
@@ -181,7 +194,9 @@ function CheckOut() {
           <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6 text-[#E23744]">
             <FiShoppingCart size={32} />
           </div>
-          <h2 className="text-2xl font-black text-gray-900 mb-2">Cart is empty</h2>
+          <h2 className="text-2xl font-black text-gray-900 mb-2">
+            Cart is empty
+          </h2>
           <p className="text-gray-500 font-medium mb-8">
             Add some delicious food items to proceed with checkout
           </p>
@@ -211,8 +226,12 @@ function CheckOut() {
               <IoIosArrowRoundBack size={28} />
             </button>
             <div>
-              <h1 className="text-3xl font-extrabold text-gray-900">Checkout</h1>
-              <p className="text-gray-500 font-medium">Safe and touchless delivery available</p>
+              <h1 className="text-3xl font-extrabold text-gray-900">
+                Checkout
+              </h1>
+              <p className="text-gray-500 font-medium">
+                Safe and touchless delivery available
+              </p>
             </div>
           </div>
 
@@ -242,7 +261,9 @@ function CheckOut() {
                         size={40}
                         className="group-hover:scale-110 transition-transform"
                       />
-                      <span className="font-bold">Add a delivery address to proceed</span>
+                      <span className="font-bold">
+                        Add a delivery address to proceed
+                      </span>
                     </button>
                   ) : (
                     userData?.addresses?.map((addr) => (
@@ -266,7 +287,10 @@ function CheckOut() {
                             {addr.label}
                           </span>
                           {selectedAddressId === addr._id && (
-                            <FaCheckCircle className="text-[#E23744]" size={16} />
+                            <FaCheckCircle
+                              className="text-[#E23744]"
+                              size={16}
+                            />
                           )}
                         </div>
                         <h3 className="font-bold text-gray-900 group-hover:text-[#E23744] transition-colors">
@@ -339,7 +363,9 @@ function CheckOut() {
                         <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">
                           Delivering to:
                         </p>
-                        <p className="text-gray-900 font-bold text-sm line-clamp-2">{address}</p>
+                        <p className="text-gray-900 font-bold text-sm line-clamp-2">
+                          {address}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -371,8 +397,12 @@ function CheckOut() {
                       <MdDeliveryDining />
                     </div>
                     <div>
-                      <p className="font-bold text-gray-900">Cash on Delivery</p>
-                      <p className="text-xs text-gray-500 font-medium">Pay when food arrives</p>
+                      <p className="font-bold text-gray-900">
+                        Cash on Delivery
+                      </p>
+                      <p className="text-xs text-gray-500 font-medium">
+                        Pay when food arrives
+                      </p>
                     </div>
                   </button>
 
@@ -394,8 +424,12 @@ function CheckOut() {
                       <FaCreditCard />
                     </div>
                     <div>
-                      <p className="font-bold text-gray-900">Cards / Wallet / UPI</p>
-                      <p className="text-xs text-gray-500 font-medium">Secure online payment</p>
+                      <p className="font-bold text-gray-900">
+                        Cards / Wallet / UPI
+                      </p>
+                      <p className="text-xs text-gray-500 font-medium">
+                        Secure online payment
+                      </p>
                     </div>
                   </button>
                 </div>
@@ -405,7 +439,9 @@ function CheckOut() {
             <div className="lg:col-span-1">
               <div className="sticky top-28 bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-2xl font-extrabold text-gray-900">Summary</h2>
+                  <h2 className="text-2xl font-extrabold text-gray-900">
+                    Summary
+                  </h2>
                   <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">
                     <FaReceipt />
                   </div>
@@ -413,14 +449,21 @@ function CheckOut() {
 
                 <div className="space-y-4 mb-8">
                   {cartItems.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center group">
+                    <div
+                      key={index}
+                      className="flex justify-between items-center group"
+                    >
                       <div className="flex flex-col">
-                        <span className="text-sm font-bold text-gray-800">{item.name}</span>
+                        <span className="text-sm font-bold text-gray-800">
+                          {item.name}
+                        </span>
                         <span className="text-xs text-gray-400 font-medium">
                           Quantity: {item.quantity}
                         </span>
                       </div>
-                      <span className="font-bold text-gray-700">₹{item.price * item.quantity}</span>
+                      <span className="font-bold text-gray-700">
+                        ₹{item.price * item.quantity}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -432,7 +475,9 @@ function CheckOut() {
                   </div>
                   <div className="flex justify-between text-gray-500 font-medium">
                     <span>Delivery Charges</span>
-                    <span className={`${deliveryFee === 0 ? 'text-green-500' : 'text-gray-900'}`}>
+                    <span
+                      className={`${deliveryFee === 0 ? 'text-green-500' : 'text-gray-900'}`}
+                    >
                       {deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`}
                     </span>
                   </div>
@@ -451,13 +496,15 @@ function CheckOut() {
                   onClick={handlePlaceOrder}
                   className="w-full bg-gray-900 text-white py-5 rounded-2xl font-black text-lg hover:bg-black transition-all shadow-xl shadow-gray-200 active:scale-[0.98]"
                 >
-                  {paymentMethod === 'cod' ? 'Place Order' : 'Pay & Place Order'}
+                  {paymentMethod === 'cod'
+                    ? 'Place Order'
+                    : 'Pay & Place Order'}
                 </button>
 
                 <div className="mt-6 p-4 rounded-xl bg-gray-50 border border-gray-100">
                   <p className="text-[10px] text-gray-400 text-center font-bold uppercase tracking-widest leading-relaxed">
-                    By placing the order, you agree to BiteDash's terms & conditions and privacy
-                    policy
+                    By placing the order, you agree to BiteDash's terms &
+                    conditions and privacy policy
                   </p>
                 </div>
               </div>
@@ -466,7 +513,9 @@ function CheckOut() {
         </div>
 
         <AnimatePresence>
-          {showAddressModal && <AddressModal onClose={() => setShowAddressModal(false)} />}
+          {showAddressModal && (
+            <AddressModal onClose={() => setShowAddressModal(false)} />
+          )}
         </AnimatePresence>
       </div>
       <Footer />

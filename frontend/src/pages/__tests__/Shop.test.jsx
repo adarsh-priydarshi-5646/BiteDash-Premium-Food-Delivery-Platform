@@ -54,7 +54,7 @@ describe('Shop Component', () => {
     render(
       <BrowserRouter>
         <Shop />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
@@ -74,12 +74,14 @@ describe('Shop Component', () => {
     render(
       <BrowserRouter>
         <Shop />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
       expect(screen.getByText('No Items Available')).toBeInTheDocument();
-      expect(screen.getByText("This restaurant hasn't added any items yet")).toBeInTheDocument();
+      expect(
+        screen.getByText("This restaurant hasn't added any items yet"),
+      ).toBeInTheDocument();
     });
   });
 });

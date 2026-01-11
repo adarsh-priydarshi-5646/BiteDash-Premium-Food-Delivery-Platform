@@ -20,7 +20,7 @@ import { FaFilter, FaTimes, FaLeaf, FaBolt, FaStar } from 'react-icons/fa';
 function FilterSidebar({ hideCategoryFilter = false }) {
   const dispatch = useDispatch();
   const { selectedCategories, priceRange, sortBy, quickFilters } = useSelector(
-    (state) => state.user
+    (state) => state.user,
   );
 
   const handleCategoryToggle = (category) => {
@@ -62,7 +62,9 @@ function FilterSidebar({ hideCategoryFilter = false }) {
 
       {}
       <div className="mb-6">
-        <h4 className="text-sm font-semibold text-gray-700 mb-3">Quick Filters</h4>
+        <h4 className="text-sm font-semibold text-gray-700 mb-3">
+          Quick Filters
+        </h4>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleQuickFilter('veg')}
@@ -104,8 +106,17 @@ function FilterSidebar({ hideCategoryFilter = false }) {
       <div className="mb-6">
         <h4 className="text-sm font-semibold text-gray-700 mb-3">Sort By</h4>
         <div className="space-y-2">
-          {['popularity', 'rating', 'price-low', 'price-high', 'delivery-time'].map((sort) => (
-            <label key={sort} className="flex items-center cursor-pointer group">
+          {[
+            'popularity',
+            'rating',
+            'price-low',
+            'price-high',
+            'delivery-time',
+          ].map((sort) => (
+            <label
+              key={sort}
+              className="flex items-center cursor-pointer group"
+            >
               <input
                 type="radio"
                 name="sortBy"
@@ -128,12 +139,17 @@ function FilterSidebar({ hideCategoryFilter = false }) {
       {}
       {!hideCategoryFilter && (
         <div className="mb-4">
-          <h4 className="text-sm font-semibold text-gray-700 mb-3">Categories</h4>
+          <h4 className="text-sm font-semibold text-gray-700 mb-3">
+            Categories
+          </h4>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {categories
               .filter((cat) => cat.category !== 'All')
               .map((cat) => (
-                <label key={cat.category} className="flex items-center cursor-pointer group">
+                <label
+                  key={cat.category}
+                  className="flex items-center cursor-pointer group"
+                >
                   <input
                     type="checkbox"
                     checked={selectedCategories.includes(cat.category)}

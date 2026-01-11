@@ -31,9 +31,12 @@ function TrackOrderPage() {
 
   const handleGetOrder = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/order/get-order-by-id/${orderId}`, {
-        withCredentials: true,
-      });
+      const result = await axios.get(
+        `${serverUrl}/api/order/get-order-by-id/${orderId}`,
+        {
+          withCredentials: true,
+        },
+      );
       setCurrentOrder(result.data);
     } catch (error) {
       console.error(error);
@@ -42,12 +45,15 @@ function TrackOrderPage() {
 
   useEffect(() => {
     if (socket) {
-      socket.on('updateDeliveryLocation', ({ deliveryBoyId, latitude, longitude }) => {
-        setLiveLocations((prev) => ({
-          ...prev,
-          [deliveryBoyId]: { lat: latitude, lon: longitude },
-        }));
-      });
+      socket.on(
+        'updateDeliveryLocation',
+        ({ deliveryBoyId, latitude, longitude }) => {
+          setLiveLocations((prev) => ({
+            ...prev,
+            [deliveryBoyId]: { lat: latitude, lon: longitude },
+          }));
+        },
+      );
     }
   }, [socket]);
 
@@ -88,7 +94,9 @@ function TrackOrderPage() {
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 mb-1">{shopOrder.shop.name}</h2>
+                  <h2 className="text-xl font-bold text-gray-900 mb-1">
+                    {shopOrder.shop.name}
+                  </h2>
                   <p className="text-sm text-green-600 font-bold uppercase tracking-wide flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                     {shopOrder.status}
@@ -143,60 +151,75 @@ function TrackOrderPage() {
               </div>
 
               {}
-              {shopOrder.assignedDeliveryBoy && shopOrder.status !== 'delivered' && (
-                <div className="bg-gray-50 rounded-xl p-4 flex items-center justify-between border border-gray-100">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-xl">
-                      👮‍♂️
+              {shopOrder.assignedDeliveryBoy &&
+                shopOrder.status !== 'delivered' && (
+                  <div className="bg-gray-50 rounded-xl p-4 flex items-center justify-between border border-gray-100">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-xl">
+                        👮‍♂️
+                      </div>
+                      <div>
+                        <p className="font-bold text-gray-900">
+                          {shopOrder.assignedDeliveryBoy.fullName}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Your Delivery Partner
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-bold text-gray-900">
-                        {shopOrder.assignedDeliveryBoy.fullName}
-                      </p>
-                      <p className="text-xs text-gray-500">Your Delivery Partner</p>
-                    </div>
+                    <a
+                      href={`tel:${shopOrder.assignedDeliveryBoy.mobile}`}
+                      className="w-10 h-10 rounded-full bg-[#E23744] flex items-center justify-center text-white hover:bg-[#c02a35] transition-colors shadow-sm"
+                    >
+                      <FaPhone />
+                    </a>
                   </div>
-                  <a
-                    href={`tel:${shopOrder.assignedDeliveryBoy.mobile}`}
-                    className="w-10 h-10 rounded-full bg-[#E23744] flex items-center justify-center text-white hover:bg-[#c02a35] transition-colors shadow-sm"
-                  >
-                    <FaPhone />
-                  </a>
-                </div>
-              )}
+                )}
             </div>
 
             {}
-            {shopOrder.assignedDeliveryBoy && shopOrder.status !== 'delivered' && (
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200 h-[400px]">
-                <DeliveryBoyTracking
-                  data={{
-                    deliveryBoyLocation: liveLocations[shopOrder.assignedDeliveryBoy._id] || {
-                      lat: shopOrder.assignedDeliveryBoy.location.coordinates[1],
-                      lon: shopOrder.assignedDeliveryBoy.location.coordinates[0],
-                    },
-                    customerLocation: {
-                      lat: currentOrder.deliveryAddress.latitude,
-                      lon: currentOrder.deliveryAddress.longitude,
-                    },
-                  }}
-                />
-              </div>
-            )}
+            {shopOrder.assignedDeliveryBoy &&
+              shopOrder.status !== 'delivered' && (
+                <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200 h-[400px]">
+                  <DeliveryBoyTracking
+                    data={{
+                      deliveryBoyLocation: liveLocations[
+                        shopOrder.assignedDeliveryBoy._id
+                      ] || {
+                        lat: shopOrder.assignedDeliveryBoy.location
+                          .coordinates[1],
+                        lon: shopOrder.assignedDeliveryBoy.location
+                          .coordinates[0],
+                      },
+                      customerLocation: {
+                        lat: currentOrder.deliveryAddress.latitude,
+                        lon: currentOrder.deliveryAddress.longitude,
+                      },
+                    }}
+                  />
+                </div>
+              )}
 
             {}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-              <h3 className="font-bold text-lg mb-4 text-gray-900">Order Details</h3>
+              <h3 className="font-bold text-lg mb-4 text-gray-900">
+                Order Details
+              </h3>
               <div className="space-y-3">
                 {shopOrder.shopOrderItems?.map((item, i) => (
-                  <div key={i} className="flex justify-between items-center text-sm">
+                  <div
+                    key={i}
+                    className="flex justify-between items-center text-sm"
+                  >
                     <div className="flex items-center gap-2">
                       <span className="w-6 h-6 flex items-center justify-center bg-gray-100 rounded text-xs font-medium text-gray-600">
                         {item.quantity}x
                       </span>
                       <span className="text-gray-800">{item.name}</span>
                     </div>
-                    <span className="font-medium text-gray-900">₹{item.price * item.quantity}</span>
+                    <span className="font-medium text-gray-900">
+                      ₹{item.price * item.quantity}
+                    </span>
                   </div>
                 ))}
 
@@ -210,7 +233,9 @@ function TrackOrderPage() {
                 <div className="flex items-start gap-3">
                   <FaMapMarkerAlt className="text-[#E23744] mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Delivery Address</p>
+                    <p className="font-semibold text-gray-900">
+                      Delivery Address
+                    </p>
                     <p className="text-sm text-gray-600 mt-0.5">
                       {currentOrder.deliveryAddress?.text}
                     </p>

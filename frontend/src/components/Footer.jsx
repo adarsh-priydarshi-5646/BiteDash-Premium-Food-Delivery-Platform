@@ -27,8 +27,8 @@ function Footer() {
           <div>
             <h3 className="text-white text-xl font-bold mb-4">BiteDash</h3>
             <p className="text-sm mb-4">
-              Your favorite food delivered fast and fresh. Order from the best restaurants in your
-              city.
+              Your favorite food delivered fast and fresh. Order from the best
+              restaurants in your city.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-[#ff4d2d] transition">
@@ -47,25 +47,39 @@ function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-white text-lg font-semibold mb-4">
+              Quick Links
+            </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/my-orders" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/my-orders"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   My Orders
                 </Link>
               </li>
               <li>
-                <Link to="/cart" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/cart"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   Cart
                 </Link>
               </li>
               <li>
-                <Link to="/docs" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/docs"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   Technical Docs
                 </Link>
               </li>
@@ -99,7 +113,9 @@ function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Contact Us</h3>
+            <h3 className="text-white text-lg font-semibold mb-4">
+              Contact Us
+            </h3>
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="text-[#ff4d2d] mt-1 flex-shrink-0" />

@@ -9,7 +9,11 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import Nav from './Nav';
 import { categories } from '../constants/categories';
 import CategoryCard from './CategoryCard';
-import { FaCircleChevronLeft, FaCircleChevronRight, FaUtensils } from 'react-icons/fa6';
+import {
+  FaCircleChevronLeft,
+  FaCircleChevronRight,
+  FaUtensils,
+} from 'react-icons/fa6';
 import { FaSearch, FaStore } from 'react-icons/fa';
 import { MdCategory } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
@@ -43,10 +47,14 @@ function UserDashboard() {
     let result = [...itemsInMyCity];
 
     if (selectedCategories.length > 0) {
-      result = result.filter((item) => selectedCategories.includes(item.category));
+      result = result.filter((item) =>
+        selectedCategories.includes(item.category),
+      );
     }
 
-    result = result.filter((item) => item.price >= priceRange.min && item.price <= priceRange.max);
+    result = result.filter(
+      (item) => item.price >= priceRange.min && item.price <= priceRange.max,
+    );
 
     if (quickFilters.veg) {
       result = result.filter((item) => item.isVeg === true);
@@ -68,7 +76,9 @@ function UserDashboard() {
       case 'price-high':
         return result.sort((a, b) => b.price - a.price);
       case 'delivery-time':
-        return result.sort((a, b) => (a.deliveryTime || 60) - (b.deliveryTime || 60));
+        return result.sort(
+          (a, b) => (a.deliveryTime || 60) - (b.deliveryTime || 60),
+        );
       default:
         return result;
     }
@@ -78,7 +88,9 @@ function UserDashboard() {
     const element = ref.current;
     if (element) {
       setLeftButton(element.scrollLeft > 0);
-      setRightButton(element.scrollLeft + element.clientWidth < element.scrollWidth);
+      setRightButton(
+        element.scrollLeft + element.clientWidth < element.scrollWidth,
+      );
     }
   };
 
@@ -93,15 +105,27 @@ function UserDashboard() {
 
   useEffect(() => {
     if (cateScrollRef.current) {
-      updateButton(cateScrollRef, setShowLeftCateButton, setShowRightCateButton);
+      updateButton(
+        cateScrollRef,
+        setShowLeftCateButton,
+        setShowRightCateButton,
+      );
       cateScrollRef.current.addEventListener('scroll', () => {
-        updateButton(cateScrollRef, setShowLeftCateButton, setShowRightCateButton);
+        updateButton(
+          cateScrollRef,
+          setShowLeftCateButton,
+          setShowRightCateButton,
+        );
       });
     }
 
     return () => {
       cateScrollRef?.current?.removeEventListener('scroll', () => {
-        updateButton(cateScrollRef, setShowLeftCateButton, setShowRightCateButton);
+        updateButton(
+          cateScrollRef,
+          setShowLeftCateButton,
+          setShowRightCateButton,
+        );
       });
     };
   }, [categories]);
@@ -138,7 +162,9 @@ function UserDashboard() {
             <div className="mb-10">
               <div className="flex items-center gap-3 mb-6">
                 <MdCategory className="text-[#E23744] text-2xl" />
-                <h2 className="text-gray-800 text-2xl font-bold">Explore by Category</h2>
+                <h2 className="text-gray-800 text-2xl font-bold">
+                  Explore by Category
+                </h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Browse our curated collection of delicious food categories
@@ -191,7 +217,9 @@ function UserDashboard() {
                     Top Restaurants in {currentCity}
                   </h2>
                 </div>
-                <p className="text-gray-600 mb-6">Discover the best restaurants near you</p>
+                <p className="text-gray-600 mb-6">
+                  Discover the best restaurants near you
+                </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {shopInMyCity.slice(0, 8).map((shop, index) => (
@@ -216,7 +244,9 @@ function UserDashboard() {
             <div className="mb-10">
               <div className="flex items-center gap-3 mb-6">
                 <FaUtensils className="text-[#E23744] text-2xl" />
-                <h2 className="text-gray-800 text-2xl font-bold">Popular Dishes</h2>
+                <h2 className="text-gray-800 text-2xl font-bold">
+                  Popular Dishes
+                </h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Explore our handpicked selection of delicious food items
@@ -244,7 +274,9 @@ function UserDashboard() {
                   {filteredItems.length === 0 ? (
                     <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100">
                       <FaUtensils className="text-gray-300 text-5xl mx-auto mb-4" />
-                      <p className="text-gray-500 text-lg">No items found matching your filters</p>
+                      <p className="text-gray-500 text-lg">
+                        No items found matching your filters
+                      </p>
                       <p className="text-gray-400 text-sm mt-2">
                         Try adjusting your filters or explore other categories
                       </p>

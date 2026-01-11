@@ -26,7 +26,7 @@ function ForgotPassword() {
       const result = await axios.post(
         `${serverUrl}/api/auth/send-otp`,
         { email },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setErr('');
       setStep(2);
@@ -42,7 +42,7 @@ function ForgotPassword() {
       const result = await axios.post(
         `${serverUrl}/api/auth/verify-otp`,
         { email, otp },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setErr('');
       setStep(3);
@@ -61,7 +61,7 @@ function ForgotPassword() {
       const result = await axios.post(
         `${serverUrl}/api/auth/reset-password`,
         { email, newPassword },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setErr('');
       setLoading(false);
@@ -80,12 +80,17 @@ function ForgotPassword() {
             className="text-[#ff4d2d] cursor-pointer"
             onClick={() => navigate('/signin')}
           />
-          <h1 className="text-2xl font-bold text-center text-[#ff4d2d]">Forgot Password</h1>
+          <h1 className="text-2xl font-bold text-center text-[#ff4d2d]">
+            Forgot Password
+          </h1>
         </div>
         {step == 1 && (
           <div>
             <div className="mb-6">
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 font-medium mb-1"
+              >
                 Email
               </label>
               <input
@@ -104,14 +109,19 @@ function ForgotPassword() {
             >
               {loading ? <ClipLoader size={20} color="white" /> : 'Send Otp'}
             </button>
-            {err && <p className="text-red-500 text-center my-[10px]">*{err}</p>}
+            {err && (
+              <p className="text-red-500 text-center my-[10px]">*{err}</p>
+            )}
           </div>
         )}
 
         {step == 2 && (
           <div>
             <div className="mb-6">
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 font-medium mb-1"
+              >
                 OTP
               </label>
               <input
@@ -130,13 +140,18 @@ function ForgotPassword() {
             >
               {loading ? <ClipLoader size={20} color="white" /> : 'Verify'}
             </button>
-            {err && <p className="text-red-500 text-center my-[10px]">*{err}</p>}
+            {err && (
+              <p className="text-red-500 text-center my-[10px]">*{err}</p>
+            )}
           </div>
         )}
         {step == 3 && (
           <div>
             <div className="mb-6">
-              <label htmlFor="newPassword" className="block text-gray-700 font-medium mb-1">
+              <label
+                htmlFor="newPassword"
+                className="block text-gray-700 font-medium mb-1"
+              >
                 New Password
               </label>
               <input
@@ -148,7 +163,10 @@ function ForgotPassword() {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="ConfirmPassword" className="block text-gray-700 font-medium mb-1">
+              <label
+                htmlFor="ConfirmPassword"
+                className="block text-gray-700 font-medium mb-1"
+              >
                 Confirm Password
               </label>
               <input
@@ -165,9 +183,15 @@ function ForgotPassword() {
               onClick={handleResetPassword}
               disabled={loading}
             >
-              {loading ? <ClipLoader size={20} color="white" /> : 'Reset Password'}
+              {loading ? (
+                <ClipLoader size={20} color="white" />
+              ) : (
+                'Reset Password'
+              )}
             </button>
-            {err && <p className="text-red-500 text-center my-[10px]">*{err}</p>}
+            {err && (
+              <p className="text-red-500 text-center my-[10px]">*{err}</p>
+            )}
           </div>
         )}
       </div>

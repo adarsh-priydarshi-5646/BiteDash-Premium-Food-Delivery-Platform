@@ -15,7 +15,9 @@ vi.mock('../hooks/useGetShopByCity');
 vi.mock('../hooks/useGetItemsByCity');
 vi.mock('../hooks/useGetMyOrders');
 vi.mock('../hooks/useUpdateLocation');
-vi.mock('../hooks/useGetCity', () => ({ default: () => ({ getCity: vi.fn() }) }));
+vi.mock('../hooks/useGetCity', () => ({
+  default: () => ({ getCity: vi.fn() }),
+}));
 
 vi.mock('socket.io-client', () => ({
   io: () => ({
@@ -71,14 +73,29 @@ vi.mock('framer-motion', () => ({
       viewport,
       ...props
     }) => <div {...props}>{children}</div>,
-    h1: ({ children, initial, animate, transition, ...props }) => <h1 {...props}>{children}</h1>,
-    p: ({ children, initial, animate, transition, ...props }) => <p {...props}>{children}</p>,
-    span: ({ children, initial, animate, transition, whileInView, ...props }) => (
-      <span {...props}>{children}</span>
+    h1: ({ children, initial, animate, transition, ...props }) => (
+      <h1 {...props}>{children}</h1>
     ),
-    button: ({ children, initial, animate, transition, whileHover, whileTap, ...props }) => (
-      <button {...props}>{children}</button>
+    p: ({ children, initial, animate, transition, ...props }) => (
+      <p {...props}>{children}</p>
     ),
+    span: ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileInView,
+      ...props
+    }) => <span {...props}>{children}</span>,
+    button: ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileHover,
+      whileTap,
+      ...props
+    }) => <button {...props}>{children}</button>,
   },
   AnimatePresence: ({ children }) => <>{children}</>,
 }));
@@ -88,7 +105,7 @@ describe('App Component', () => {
     const { findByRole } = render(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     const heading = await findByRole('heading', { name: 'BiteDash', level: 1 });
     expect(heading).toBeInTheDocument();
