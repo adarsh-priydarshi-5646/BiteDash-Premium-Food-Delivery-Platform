@@ -1,6 +1,6 @@
 /**
  * LandingPage Tests - Public homepage for unauthenticated users
- * 
+ *
  * Tests: Hero section, city search, food collections, CTA buttons
  * Mocks: Redux store, React Router navigation
  */
@@ -55,11 +55,25 @@ vi.mock('react-icons/fa', () => {
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, whileHover, whileInView, initial, animate, transition, variants, viewport, ...props }) => <div {...props}>{children}</div>,
+    div: ({
+      children,
+      whileHover,
+      whileInView,
+      initial,
+      animate,
+      transition,
+      variants,
+      viewport,
+      ...props
+    }) => <div {...props}>{children}</div>,
     h1: ({ children, initial, animate, transition, ...props }) => <h1 {...props}>{children}</h1>,
     p: ({ children, initial, animate, transition, ...props }) => <p {...props}>{children}</p>,
-    span: ({ children, initial, animate, transition, whileInView, ...props }) => <span {...props}>{children}</span>,
-    button: ({ children, initial, animate, transition, whileHover, whileTap, ...props }) => <button {...props}>{children}</button>,
+    span: ({ children, initial, animate, transition, whileInView, ...props }) => (
+      <span {...props}>{children}</span>
+    ),
+    button: ({ children, initial, animate, transition, whileHover, whileTap, ...props }) => (
+      <button {...props}>{children}</button>
+    ),
   },
   AnimatePresence: ({ children }) => <>{children}</>,
 }));
@@ -80,14 +94,15 @@ describe('LandingPage Component', () => {
         <LandingPage />
       </BrowserRouter>
     );
-    expect(screen.getByText((content, node) => {
-      const hasText = (node) => node.textContent === "Find the best restaurants, cafés and bars in Delhi NCR";
-      const nodeHasText = hasText(node);
-      const childrenDontHaveText = Array.from(node.children).every(
-        (child) => !hasText(child)
-      );
-      return nodeHasText && childrenDontHaveText;
-    })).toBeInTheDocument();
+    expect(
+      screen.getByText((content, node) => {
+        const hasText = (node) =>
+          node.textContent === 'Find the best restaurants, cafés and bars in Delhi NCR';
+        const nodeHasText = hasText(node);
+        const childrenDontHaveText = Array.from(node.children).every((child) => !hasText(child));
+        return nodeHasText && childrenDontHaveText;
+      })
+    ).toBeInTheDocument();
   });
 
   it('renders Get the App button', () => {

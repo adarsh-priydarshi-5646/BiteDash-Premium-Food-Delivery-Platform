@@ -1,37 +1,37 @@
 /**
  * Documentation Page - Technical docs with markdown rendering
- * 
+ *
  * Features: Sidebar navigation, markdown-to-HTML conversion, code highlighting
  * Sections: Getting Started, API Reference, Architecture, Deployment
  * Uses marked library with HTML sanitization for XSS prevention
  */
-import React, { useState, useEffect, useMemo } from "react";
-import { marked } from "marked";
-import { FaChevronRight, FaBars, FaTimes } from "react-icons/fa";
+import React, { useState, useEffect, useMemo } from 'react';
+import { marked } from 'marked';
+import { FaChevronRight, FaBars, FaTimes } from 'react-icons/fa';
 
 const sanitizeHtml = (html) => {
   const div = document.createElement('div');
   div.innerHTML = html;
-  
+
   const dangerous = ['script', 'iframe', 'object', 'embed', 'form'];
-  dangerous.forEach(tag => {
+  dangerous.forEach((tag) => {
     const elements = div.getElementsByTagName(tag);
     while (elements.length > 0) {
       elements[0].parentNode.removeChild(elements[0]);
     }
   });
-  
+
   const allElements = div.getElementsByTagName('*');
   for (let i = 0; i < allElements.length; i++) {
     const el = allElements[i];
     const attrs = [...el.attributes];
-    attrs.forEach(attr => {
+    attrs.forEach((attr) => {
       if (attr.name.startsWith('on') || attr.value.includes('javascript:')) {
         el.removeAttribute(attr.name);
       }
     });
   }
-  
+
   return div.innerHTML;
 };
 
@@ -39,19 +39,19 @@ const Documentation = () => {
   const [sections, setSections] = useState({});
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("introduction");
+  const [activeSection, setActiveSection] = useState('introduction');
 
   const navItems = [
-    { id: "introduction", label: "Introduction" },
-    { id: "overview", label: "Overview" },
-    { id: "architecture", label: "Architecture" },
-    { id: "core-components", label: "Core Components" },
-    { id: "frontend-guide", label: "Frontend Guide" },
-    { id: "backend-guide", label: "Backend Guide" },
-    { id: "database-models", label: "Database Models" },
-    { id: "api-reference", label: "API Reference" },
-    { id: "optimizations", label: "Optimizations" },
-    { id: "deployment", label: "Deployment" },
+    { id: 'introduction', label: 'Introduction' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'architecture', label: 'Architecture' },
+    { id: 'core-components', label: 'Core Components' },
+    { id: 'frontend-guide', label: 'Frontend Guide' },
+    { id: 'backend-guide', label: 'Backend Guide' },
+    { id: 'database-models', label: 'Database Models' },
+    { id: 'api-reference', label: 'API Reference' },
+    { id: 'optimizations', label: 'Optimizations' },
+    { id: 'deployment', label: 'Deployment' },
   ];
 
   useEffect(() => {
@@ -64,29 +64,29 @@ const Documentation = () => {
 
     const fetchDocs = async () => {
       try {
-        const response = await fetch("/docs/technical-documentation.md");
+        const response = await fetch('/docs/technical-documentation.md');
         const text = await response.text();
-        
+
         const parts = text.split(/^# /m);
         const sectionMap = {};
-        
-        parts.forEach(part => {
+
+        parts.forEach((part) => {
           if (!part.trim()) return;
-          const lines = part.split("\n");
+          const lines = part.split('\n');
           const rawTitle = lines[0].trim();
-          const content = lines.slice(1).join("\n").trim();
-          
+          const content = lines.slice(1).join('\n').trim();
+
           const id = rawTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
           sectionMap[id] = {
             title: rawTitle,
-            html: sanitizeHtml(marked.parse(content))
+            html: sanitizeHtml(marked.parse(content)),
           };
         });
 
         setSections(sectionMap);
         setLoading(false);
       } catch (err) {
-        console.error("Failed to fetch documentation", err);
+        console.error('Failed to fetch documentation', err);
         setLoading(false);
       }
     };
@@ -99,7 +99,7 @@ const Documentation = () => {
     setIsSidebarOpen(false);
   };
 
-  const currentIndex = navItems.findIndex(item => item.id === activeSection);
+  const currentIndex = navItems.findIndex((item) => item.id === activeSection);
   const prevSection = currentIndex > 0 ? navItems[currentIndex - 1] : null;
   const nextSection = currentIndex < navItems.length - 1 ? navItems[currentIndex + 1] : null;
 
@@ -120,7 +120,7 @@ const Documentation = () => {
       <header className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50">
         <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
@@ -134,11 +134,15 @@ const Documentation = () => {
             </a>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/docs" className="text-sm font-medium text-gray-900">Docs</a>
-            <a href="/" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">App</a>
-            <a 
-              href="https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App" 
-              target="_blank" 
+            <a href="/docs" className="text-sm font-medium text-gray-900">
+              Docs
+            </a>
+            <a href="/" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+              App
+            </a>
+            <a
+              href="https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
@@ -150,21 +154,25 @@ const Documentation = () => {
 
       <div className="flex pt-16 max-w-7xl mx-auto">
         {/* Sidebar */}
-        <aside className={`fixed md:sticky top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 overflow-y-auto z-40 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+        <aside
+          className={`fixed md:sticky top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 overflow-y-auto z-40 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+        >
           <nav className="p-6">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">Documentation</p>
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
+              Documentation
+            </p>
             <ul className="space-y-1">
               {navItems.map((item) => (
                 <li key={item.id}>
-                  <a 
+                  <a
                     href={`#${item.id}`}
                     onClick={(e) => {
                       e.preventDefault();
                       navigateToSection(item.id);
                     }}
                     className={`block px-3 py-2 rounded-md text-sm transition-colors ${
-                      activeSection === item.id 
-                        ? 'bg-gray-100 text-[#E23744] font-medium' 
+                      activeSection === item.id
+                        ? 'bg-gray-100 text-[#E23744] font-medium'
                         : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                   >
@@ -178,7 +186,7 @@ const Documentation = () => {
 
         {/* Backdrop for mobile */}
         {isSidebarOpen && (
-          <div 
+          <div
             onClick={() => setIsSidebarOpen(false)}
             className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-30 md:hidden"
           />
@@ -191,15 +199,19 @@ const Documentation = () => {
               <div>
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
-                  <a href="/" className="hover:text-gray-900 transition-colors">Home</a>
+                  <a href="/" className="hover:text-gray-900 transition-colors">
+                    Home
+                  </a>
                   <FaChevronRight size={10} />
-                  <a href="/docs" className="hover:text-gray-900 transition-colors">Docs</a>
+                  <a href="/docs" className="hover:text-gray-900 transition-colors">
+                    Docs
+                  </a>
                   <FaChevronRight size={10} />
                   <span className="text-gray-900 font-medium">{sections[activeSection].title}</span>
                 </div>
 
                 {/* Content */}
-                <article 
+                <article
                   className="prose prose-slate prose-xl max-w-none
                     prose-headings:font-bold prose-headings:text-gray-900 prose-headings:tracking-tight
                     prose-h1:text-6xl prose-h1:mb-12 prose-h1:mt-4 prose-h1:font-black prose-h1:leading-[1.1] prose-h1:text-gray-900
@@ -232,7 +244,7 @@ const Documentation = () => {
                 {/* Navigation */}
                 <div className="flex items-center justify-between mt-16 pt-8 border-t border-gray-200">
                   {prevSection ? (
-                    <button 
+                    <button
                       onClick={() => navigateToSection(prevSection.id)}
                       className="flex flex-col items-start group"
                     >
@@ -241,10 +253,12 @@ const Documentation = () => {
                         {prevSection.label}
                       </span>
                     </button>
-                  ) : <div />}
-                  
+                  ) : (
+                    <div />
+                  )}
+
                   {nextSection && (
-                    <button 
+                    <button
                       onClick={() => navigateToSection(nextSection.id)}
                       className="flex flex-col items-end group"
                     >
@@ -262,11 +276,13 @@ const Documentation = () => {
 
         {/* Right Sidebar - On This Page */}
         <aside className="hidden xl:block w-56 h-[calc(100vh-4rem)] overflow-y-auto sticky top-16 px-4 py-8">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">On this page</p>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            On this page
+          </p>
           <ul className="space-y-3 text-sm border-l border-gray-200">
             {navItems.slice(0, 8).map((item) => (
               <li key={item.id}>
-                <a 
+                <a
                   href={`#${item.id}`}
                   onClick={(e) => {
                     e.preventDefault();

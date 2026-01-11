@@ -1,16 +1,16 @@
 /**
  * useGetMyShop Hook - Fetches owner's restaurant data
- * 
+ *
  * Makes GET /shop/my-shop for authenticated owners
  * Updates ownerSlice with shop details and menu items
  * Runs when userData changes (login/logout)
  */
-import axios from "axios";
-import React, { useEffect } from "react";
-import { serverUrl } from "../App";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserData } from "../redux/userSlice";
-import { setMyShopData } from "../redux/ownerSlice";
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { serverUrl } from '../App';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserData } from '../redux/userSlice';
+import { setMyShopData } from '../redux/ownerSlice';
 
 function useGetMyshop() {
   const dispatch = useDispatch();

@@ -1,11 +1,11 @@
 /**
  * Shop Model - Restaurant/Shop schema with owner & menu items
- * 
+ *
  * Fields: name, image, city, state, address, owner (User ref), items (Item refs)
  * Features: isDefault flag for demo shop, populated items array for menu
  * One-to-one relationship with owner, one-to-many with items
  */
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const shopSchema = new mongoose.Schema(
   {
@@ -19,7 +19,7 @@ const shopSchema = new mongoose.Schema(
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     city: {
@@ -37,7 +37,7 @@ const shopSchema = new mongoose.Schema(
     items: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Item",
+        ref: 'Item',
       },
     ],
     isDefault: {
@@ -48,5 +48,5 @@ const shopSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Shop = mongoose.model("Shop", shopSchema);
+const Shop = mongoose.model('Shop', shopSchema);
 export default Shop;

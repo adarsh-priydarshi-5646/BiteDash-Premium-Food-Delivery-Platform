@@ -1,23 +1,23 @@
 /**
  * Forgot Password Page - OTP-based password reset
- * 
+ *
  * Steps: 1) Enter email → 2) Verify OTP → 3) Set new password
  * OTP sent via SendGrid, expires in 5 minutes
  * Loading spinner during API calls, error handling
  */
-import axios from "axios";
-import React, { useState } from "react";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import { serverUrl } from "../App";
-import { ClipLoader } from "react-spinners";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { IoIosArrowRoundBack } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+import { serverUrl } from '../App';
+import { ClipLoader } from 'react-spinners';
 function ForgotPassword() {
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [err, setErr] = useState("");
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [err, setErr] = useState('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleSendOtp = async () => {
@@ -28,7 +28,7 @@ function ForgotPassword() {
         { email },
         { withCredentials: true }
       );
-      setErr("");
+      setErr('');
       setStep(2);
       setLoading(false);
     } catch (error) {
@@ -44,7 +44,7 @@ function ForgotPassword() {
         { email, otp },
         { withCredentials: true }
       );
-      setErr("");
+      setErr('');
       setStep(3);
       setLoading(false);
     } catch (error) {
@@ -63,9 +63,9 @@ function ForgotPassword() {
         { email, newPassword },
         { withCredentials: true }
       );
-      setErr("");
+      setErr('');
       setLoading(false);
-      navigate("/signin");
+      navigate('/signin');
     } catch (error) {
       setErr(error?.response?.data?.message);
       setLoading(false);
@@ -78,19 +78,14 @@ function ForgotPassword() {
           <IoIosArrowRoundBack
             size={30}
             className="text-[#ff4d2d] cursor-pointer"
-            onClick={() => navigate("/signin")}
+            onClick={() => navigate('/signin')}
           />
-          <h1 className="text-2xl font-bold text-center text-[#ff4d2d]">
-            Forgot Password
-          </h1>
+          <h1 className="text-2xl font-bold text-center text-[#ff4d2d]">Forgot Password</h1>
         </div>
         {step == 1 && (
           <div>
             <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium mb-1"
-              >
+              <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
                 Email
               </label>
               <input
@@ -107,21 +102,16 @@ function ForgotPassword() {
               onClick={handleSendOtp}
               disabled={loading}
             >
-              {loading ? <ClipLoader size={20} color="white" /> : "Send Otp"}
+              {loading ? <ClipLoader size={20} color="white" /> : 'Send Otp'}
             </button>
-            {err && (
-              <p className="text-red-500 text-center my-[10px]">*{err}</p>
-            )}
+            {err && <p className="text-red-500 text-center my-[10px]">*{err}</p>}
           </div>
         )}
 
         {step == 2 && (
           <div>
             <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium mb-1"
-              >
+              <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
                 OTP
               </label>
               <input
@@ -138,20 +128,15 @@ function ForgotPassword() {
               onClick={handleVerifyOtp}
               disabled={loading}
             >
-              {loading ? <ClipLoader size={20} color="white" /> : "Verify"}
+              {loading ? <ClipLoader size={20} color="white" /> : 'Verify'}
             </button>
-            {err && (
-              <p className="text-red-500 text-center my-[10px]">*{err}</p>
-            )}
+            {err && <p className="text-red-500 text-center my-[10px]">*{err}</p>}
           </div>
         )}
         {step == 3 && (
           <div>
             <div className="mb-6">
-              <label
-                htmlFor="newPassword"
-                className="block text-gray-700 font-medium mb-1"
-              >
+              <label htmlFor="newPassword" className="block text-gray-700 font-medium mb-1">
                 New Password
               </label>
               <input
@@ -163,10 +148,7 @@ function ForgotPassword() {
               />
             </div>
             <div className="mb-6">
-              <label
-                htmlFor="ConfirmPassword"
-                className="block text-gray-700 font-medium mb-1"
-              >
+              <label htmlFor="ConfirmPassword" className="block text-gray-700 font-medium mb-1">
                 Confirm Password
               </label>
               <input
@@ -183,15 +165,9 @@ function ForgotPassword() {
               onClick={handleResetPassword}
               disabled={loading}
             >
-              {loading ? (
-                <ClipLoader size={20} color="white" />
-              ) : (
-                "Reset Password"
-              )}
+              {loading ? <ClipLoader size={20} color="white" /> : 'Reset Password'}
             </button>
-            {err && (
-              <p className="text-red-500 text-center my-[10px]">*{err}</p>
-            )}
+            {err && <p className="text-red-500 text-center my-[10px]">*{err}</p>}
           </div>
         )}
       </div>

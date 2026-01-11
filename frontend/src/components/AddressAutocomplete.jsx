@@ -1,16 +1,16 @@
 /**
  * AddressAutocomplete Component - Location search with suggestions
- * 
+ *
  * Uses Geoapify Autocomplete API for address suggestions
  * Features: Debounced search, dropdown suggestions, select handler
  * Returns full address with lat/lon coordinates
  */
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
-function AddressAutocomplete({ onSelect, placeholder, initialValue = "" }) {
+function AddressAutocomplete({ onSelect, placeholder, initialValue = '' }) {
   const [query, setQuery] = useState(initialValue);
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ function AddressAutocomplete({ onSelect, placeholder, initialValue = "" }) {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    setQuery(initialValue || "");
+    setQuery(initialValue || '');
   }, [initialValue]);
 
   useEffect(() => {
@@ -28,8 +28,8 @@ function AddressAutocomplete({ onSelect, placeholder, initialValue = "" }) {
         setShowDropdown(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -57,7 +57,7 @@ function AddressAutocomplete({ onSelect, placeholder, initialValue = "" }) {
       setSuggestions(response.data.features || []);
       setShowDropdown(true);
     } catch (error) {
-      console.error("Autocomplete error:", error);
+      console.error('Autocomplete error:', error);
     } finally {
       setLoading(false);
     }
@@ -71,13 +71,18 @@ function AddressAutocomplete({ onSelect, placeholder, initialValue = "" }) {
     onSelect({
       lat: feature.geometry.coordinates[1],
       lon: feature.geometry.coordinates[0],
-      city: properties.city || properties.county || "",
-      state: properties.state || "",
-      pincode: properties.postcode || "",
-      area: properties.suburb || properties.neighbourhood || properties.district || properties.city || "",
+      city: properties.city || properties.county || '',
+      state: properties.state || '',
+      pincode: properties.postcode || '',
+      area:
+        properties.suburb ||
+        properties.neighbourhood ||
+        properties.district ||
+        properties.city ||
+        '',
       address: formatted,
-      house_number: properties.housenumber || "",
-      street: properties.street || ""
+      house_number: properties.housenumber || '',
+      street: properties.street || '',
     });
   };
 
@@ -90,7 +95,7 @@ function AddressAutocomplete({ onSelect, placeholder, initialValue = "" }) {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)} // Small delay to allow click on suggestions
-          placeholder={placeholder || "Search your area or locality..."}
+          placeholder={placeholder || 'Search your area or locality...'}
           className="w-full bg-gray-50 border border-gray-100 rounded-xl px-10 py-3 outline-none focus:border-[#E23744] focus:ring-1 focus:ring-[#E23744] transition-all font-medium"
         />
         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">

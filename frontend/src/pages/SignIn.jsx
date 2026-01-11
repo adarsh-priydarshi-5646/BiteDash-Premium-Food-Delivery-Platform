@@ -1,35 +1,35 @@
 /**
  * Sign In Page - User authentication
- * 
+ *
  * Methods: Email/password login, Google OAuth via Firebase
  * Features: Password visibility toggle, remember me, forgot password link
  * Redirects to home on success, shows error toast on failure
  */
-import React from "react";
-import { useState } from "react";
-import { FaRegEye } from "react-icons/fa";
-import { FaRegEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { serverUrl } from "../App";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { ClipLoader } from "react-spinners";
-import { setUserData } from "../redux/userSlice";
-import { useDispatch } from "react-redux";
-import useGetCity from "../hooks/useGetCity";
+import React from 'react';
+import { useState } from 'react';
+import { FaRegEye } from 'react-icons/fa';
+import { FaRegEyeSlash } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { serverUrl } from '../App';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { ClipLoader } from 'react-spinners';
+import { setUserData } from '../redux/userSlice';
+import { useDispatch } from 'react-redux';
+import useGetCity from '../hooks/useGetCity';
 
 function SignIn() {
   const { getCity } = useGetCity();
-  const primaryColor = "#ff4d2d";
-  const hoverColor = "#e64323";
-  const bgColor = "#fff9f6";
-  const borderColor = "#ddd";
+  const primaryColor = '#ff4d2d';
+  const hoverColor = '#e64323';
+  const bgColor = '#fff9f6';
+  const borderColor = '#ddd';
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [err, setErr] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const handleSignIn = async () => {
@@ -44,10 +44,10 @@ function SignIn() {
         { withCredentials: true }
       );
       dispatch(setUserData(result.data));
-      setErr("");
+      setErr('');
       setLoading(false);
-      getCity().catch(e => console.error("Initial city fetch failed:", e));
-      navigate("/");
+      getCity().catch((e) => console.error('Initial city fetch failed:', e));
+      navigate('/');
     } catch (error) {
       setErr(error?.response?.data?.message);
       setLoading(false);
@@ -55,7 +55,7 @@ function SignIn() {
   };
   const handleGoogleAuth = async () => {
     const provider = new GoogleAuthProvider();
-    const { auth } = await import("../firebase");
+    const { auth } = await import('../firebase');
     const result = await signInWithPopup(auth, provider);
     try {
       const { data } = await axios.post(
@@ -63,33 +63,33 @@ function SignIn() {
         {
           fullName: result.user.displayName || result.user.email.split('@')[0],
           email: result.user.email,
-          mobile: result.user.phoneNumber || "0000000000",
-          role: "user",
+          mobile: result.user.phoneNumber || '0000000000',
+          role: 'user',
         },
         { withCredentials: true }
       );
       dispatch(setUserData(data));
-      getCity().catch(e => console.error("Initial city fetch failed:", e));
-      navigate("/");
+      getCity().catch((e) => console.error('Initial city fetch failed:', e));
+      navigate('/');
     } catch (error) {
       console.error(error);
-      setErr(error?.response?.data?.message || "Google sign in failed");
+      setErr(error?.response?.data?.message || 'Google sign in failed');
     }
   };
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">
-       <div className="absolute top-6 left-6 cursor-pointer" onClick={() => navigate("/")}>
-          <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">BiteDash</h1>
-       </div>
+      <div className="absolute top-6 left-6 cursor-pointer" onClick={() => navigate('/')}>
+        <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">BiteDash</h1>
+      </div>
 
       <div className="w-full max-w-[400px] bg-white p-2">
         <div className="text-center mb-8">
-           <h2 className="text-3xl font-medium text-gray-800 tracking-wide mb-6">Login</h2>
+          <h2 className="text-3xl font-medium text-gray-800 tracking-wide mb-6">Login</h2>
         </div>
 
         <div className="space-y-4">
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all">
-             <input
+            <input
               type="email"
               className="w-full px-4 py-3 outline-none text-gray-700 placeholder-gray-400"
               placeholder="Email"
@@ -100,20 +100,20 @@ function SignIn() {
           </div>
 
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all relative">
-             <input
-                type={showPassword ? "text" : "password"}
-                className="w-full px-4 py-3 outline-none text-gray-700 placeholder-gray-400 pr-12"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                required
-              />
-              <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#E23744] text-sm font-medium"
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                {!showPassword ? "Show" : "Hide"}
-              </button>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              className="w-full px-4 py-3 outline-none text-gray-700 placeholder-gray-400 pr-12"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              required
+            />
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#E23744] text-sm font-medium"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {!showPassword ? 'Show' : 'Hide'}
+            </button>
           </div>
 
           <button
@@ -121,14 +121,10 @@ function SignIn() {
             onClick={handleSignIn}
             disabled={loading}
           >
-            {loading ? <ClipLoader size={20} color="white" /> : "Login"}
+            {loading ? <ClipLoader size={20} color="white" /> : 'Login'}
           </button>
 
-          {err && (
-            <div className="text-red-500 text-sm text-center py-1">
-              {err}
-            </div>
-          )}
+          {err && <div className="text-red-500 text-sm text-center py-1">{err}</div>}
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
@@ -140,16 +136,19 @@ function SignIn() {
           </div>
 
           <button
-             className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
-             onClick={handleGoogleAuth}
-           >
-             <FcGoogle size={22} />
-             <span>Continue with Google</span>
-           </button>
+            className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
+            onClick={handleGoogleAuth}
+          >
+            <FcGoogle size={22} />
+            <span>Continue with Google</span>
+          </button>
         </div>
 
         <div className="mt-8 text-center text-gray-600">
-           New to BiteDash? <span className="text-[#E23744] cursor-pointer" onClick={() => navigate("/signup")}>Create account</span>
+          New to BiteDash?{' '}
+          <span className="text-[#E23744] cursor-pointer" onClick={() => navigate('/signup')}>
+            Create account
+          </span>
         </div>
       </div>
     </div>

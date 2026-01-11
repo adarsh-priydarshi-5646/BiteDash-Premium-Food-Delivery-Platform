@@ -1,6 +1,6 @@
 /**
  * ErrorBoundary Component - React error boundary for crash handling
- * 
+ *
  * Catches JavaScript errors in child component tree
  * Shows fallback UI with error message and home button
  * Logs error details for debugging
@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     });
   }
 
@@ -38,11 +38,9 @@ class ErrorBoundary extends React.Component {
             <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <FaExclamationTriangle className="text-red-500 text-4xl" />
             </div>
-            
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">
-              Oops! Something went wrong
-            </h1>
-            
+
+            <h1 className="text-2xl font-bold text-gray-900 mb-3">Oops! Something went wrong</h1>
+
             <p className="text-gray-600 mb-6">
               We're sorry for the inconvenience. The page encountered an unexpected error.
             </p>

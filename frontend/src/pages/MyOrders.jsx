@@ -1,64 +1,53 @@
 /**
  * My Orders Page - Order history with real-time updates
- * 
+ *
  * Role-based: UserOrderCard (customers), OwnerOrderCard (restaurants)
  * Features: Order status, items list, track/rate/delete actions
  * Socket.IO integration for live status updates
  */
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { FaClipboardList } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import UserOrderCard from "../components/UserOrderCard";
-import OwnerOrderCard from "../components/OwnerOrderCard";
-import DeliveryHistoryCard from "../components/DeliveryHistoryCard"; 
-import {
-  setMyOrders,
-  updateOrderStatus,
-  updateRealtimeOrderStatus,
-} from "../redux/userSlice";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { IoIosArrowRoundBack } from 'react-icons/io';
+import { FaClipboardList } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import UserOrderCard from '../components/UserOrderCard';
+import OwnerOrderCard from '../components/OwnerOrderCard';
+import DeliveryHistoryCard from '../components/DeliveryHistoryCard';
+import { setMyOrders, updateOrderStatus, updateRealtimeOrderStatus } from '../redux/userSlice';
 
 function MyOrders() {
   const { userData, myOrders, socket } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    socket?.on("newOrder", (data) => {
+    socket?.on('newOrder', (data) => {
       if (data.shopOrders?.owner._id == userData._id) {
         dispatch(setMyOrders([data, ...myOrders]));
       }
     });
 
-    socket?.on("update-status", ({ orderId, shopId, status, userId }) => {
+    socket?.on('update-status', ({ orderId, shopId, status, userId }) => {
       if (userId == userData._id) {
         dispatch(updateRealtimeOrderStatus({ orderId, shopId, status }));
       }
     });
 
-    socket?.on("orderDelivered", ({ orderId, shopOrderId, message }) => {
-      
-      
-      
-      
-      
-      
-      
+    socket?.on('orderDelivered', ({ orderId, shopOrderId, message }) => {
       const order = myOrders.find((o) => o._id === orderId);
       if (order) {
         const shopOrder = order.shopOrders.find((so) => so._id === shopOrderId);
         if (shopOrder) {
-             dispatch(updateRealtimeOrderStatus({ orderId, shopId: shopOrder.shop._id, status: "delivered" }));
-             
-             
+          dispatch(
+            updateRealtimeOrderStatus({ orderId, shopId: shopOrder.shop._id, status: 'delivered' })
+          );
         }
       }
     });
 
     return () => {
-      socket?.off("newOrder");
-      socket?.off("update-status");
+      socket?.off('newOrder');
+      socket?.off('update-status');
     };
   }, [socket]);
 
@@ -69,7 +58,7 @@ function MyOrders() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
           <div className="flex items-center gap-4 mb-4">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate('/')}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               aria-label="Go back"
             >
@@ -92,11 +81,11 @@ function MyOrders() {
         <div className="space-y-4">
           {myOrders && myOrders.length > 0 ? (
             myOrders.map((order, index) =>
-              userData.role == "user" ? (
+              userData.role == 'user' ? (
                 <UserOrderCard data={order} allOrders={myOrders} key={index} />
-              ) : userData.role == "owner" ? (
+              ) : userData.role == 'owner' ? (
                 <OwnerOrderCard data={order} key={index} />
-              ) : userData.role == "deliveryBoy" ? (
+              ) : userData.role == 'deliveryBoy' ? (
                 <DeliveryHistoryCard data={order} key={index} />
               ) : null
             )
@@ -108,7 +97,7 @@ function MyOrders() {
                 Your order history will appear here once you place your first order
               </p>
               <button
-                onClick={() => navigate("/")}
+                onClick={() => navigate('/')}
                 className="px-6 py-3 bg-[#E23744] text-white font-semibold rounded-lg hover:bg-[#c02a35] transition-colors"
               >
                 Explore Food Items

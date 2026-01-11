@@ -1,15 +1,21 @@
 /**
  * FilterSidebar Component - Food listing filters
- * 
+ *
  * Filters: Category checkboxes, price range slider, sort options
  * Quick filters: Veg only, Fast delivery, Top rated
  * Dispatches Redux actions, clear all filters button
  */
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleCategory, setPriceRange, setSortBy, toggleQuickFilter, clearFilters } from "../redux/userSlice";
-import { categories } from "../constants/categories";
-import { FaFilter, FaTimes, FaLeaf, FaBolt, FaStar } from "react-icons/fa";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  toggleCategory,
+  setPriceRange,
+  setSortBy,
+  toggleQuickFilter,
+  clearFilters,
+} from '../redux/userSlice';
+import { categories } from '../constants/categories';
+import { FaFilter, FaTimes, FaLeaf, FaBolt, FaStar } from 'react-icons/fa';
 
 function FilterSidebar({ hideCategoryFilter = false }) {
   const dispatch = useDispatch();
@@ -41,7 +47,10 @@ function FilterSidebar({ hideCategoryFilter = false }) {
           <FaFilter className="text-[#E23744]" />
           Filters
         </h3>
-        {(selectedCategories.length > 0 || quickFilters.veg || quickFilters.fastDelivery || quickFilters.topRated) && (
+        {(selectedCategories.length > 0 ||
+          quickFilters.veg ||
+          quickFilters.fastDelivery ||
+          quickFilters.topRated) && (
           <button
             onClick={handleClearAll}
             className="text-sm text-[#E23744] hover:text-[#c02a35] font-medium transition-colors"
@@ -121,19 +130,21 @@ function FilterSidebar({ hideCategoryFilter = false }) {
         <div className="mb-4">
           <h4 className="text-sm font-semibold text-gray-700 mb-3">Categories</h4>
           <div className="space-y-2 max-h-64 overflow-y-auto">
-            {categories.filter(cat => cat.category !== 'All').map((cat) => (
-              <label key={cat.category} className="flex items-center cursor-pointer group">
-                <input
-                  type="checkbox"
-                  checked={selectedCategories.includes(cat.category)}
-                  onChange={() => handleCategoryToggle(cat.category)}
-                  className="w-4 h-4 text-[#E23744] border-gray-300 rounded focus:ring-[#E23744] cursor-pointer"
-                />
-                <span className="ml-2 text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
-                  {cat.category}
-                </span>
-              </label>
-            ))}
+            {categories
+              .filter((cat) => cat.category !== 'All')
+              .map((cat) => (
+                <label key={cat.category} className="flex items-center cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(cat.category)}
+                    onChange={() => handleCategoryToggle(cat.category)}
+                    className="w-4 h-4 text-[#E23744] border-gray-300 rounded focus:ring-[#E23744] cursor-pointer"
+                  />
+                  <span className="ml-2 text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
+                    {cat.category}
+                  </span>
+                </label>
+              ))}
           </div>
         </div>
       )}

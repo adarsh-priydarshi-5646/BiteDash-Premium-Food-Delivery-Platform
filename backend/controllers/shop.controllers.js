@@ -1,13 +1,13 @@
 /**
  * Shop Controller - Restaurant/Shop CRUD operations with city-based filtering
- * 
+ *
  * Endpoints: createEditShop, getMyShop, getShopByCity
  * Features: Image upload via Cloudinary, owner-shop relationship, default shop support
  * Uses regex sanitization to prevent ReDoS attacks in city search
  */
-import Shop from "../models/shop.model.js";
-import uploadOnCloudinary from "../utils/cloudinary.js";
-import { escapeRegex } from "../utils/sanitize.js";
+import Shop from '../models/shop.model.js';
+import uploadOnCloudinary from '../utils/cloudinary.js';
+import { escapeRegex } from '../utils/sanitize.js';
 
 export const createEditShop = async (req, res) => {
   try {
@@ -43,20 +43,20 @@ export const createEditShop = async (req, res) => {
       );
     }
 
-    await shop.populate("owner items");
+    await shop.populate('owner items');
     return res.status(201).json(shop);
   } catch (error) {
-    console.error("Create shop error:", error);
-    return res.status(500).json({ message: "Failed to create shop. Please try again." });
+    console.error('Create shop error:', error);
+    return res.status(500).json({ message: 'Failed to create shop. Please try again.' });
   }
 };
 
 export const getMyShop = async (req, res) => {
   try {
     const shop = await Shop.findOne({ owner: req.userId })
-      .populate("owner")
+      .populate('owner')
       .populate({
-        path: "items",
+        path: 'items',
         options: { sort: { updatedAt: -1 } },
       });
     if (!shop) {
@@ -64,8 +64,8 @@ export const getMyShop = async (req, res) => {
     }
     return res.status(200).json(shop);
   } catch (error) {
-    console.error("Get my shop error:", error);
-    return res.status(500).json({ message: "Failed to get shop. Please try again." });
+    console.error('Get my shop error:', error);
+    return res.status(500).json({ message: 'Failed to get shop. Please try again.' });
   }
 };
 
@@ -74,22 +74,22 @@ export const getShopByCity = async (req, res) => {
     const { city } = req.params;
 
     const safeCity = escapeRegex(city);
-    
-    const cityShops = await Shop.find({
-      city: { $regex: new RegExp(`^${safeCity}$`, "i") },
-      isDefault: false,
-    }).populate("items");
 
-    const defaultShop = await Shop.findOne({ isDefault: true }).populate("items");
+    const cityShops = await Shop.find({
+      city: { $regex: new RegExp(`^${safeCity}$`, 'i') },
+      isDefault: false,
+    }).populate('items');
+
+    const defaultShop = await Shop.findOne({ isDefault: true }).populate('items');
 
     const shops = defaultShop ? [defaultShop, ...cityShops] : cityShops;
 
     if (!shops || shops.length === 0) {
-      return res.status(400).json({ message: "shops not found" });
+      return res.status(400).json({ message: 'shops not found' });
     }
     return res.status(200).json(shops);
   } catch (error) {
-    console.error("Get shop by city error:", error);
-    return res.status(500).json({ message: "Failed to get shops. Please try again." });
+    console.error('Get shop by city error:', error);
+    return res.status(500).json({ message: 'Failed to get shops. Please try again.' });
   }
 };

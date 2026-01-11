@@ -1,11 +1,11 @@
 /**
  * Item Model - Food menu item with pricing, category & rating system
- * 
+ *
  * Fields: name, image, category, foodType (veg/non-veg), price, shop reference
  * Features: Embedded rating object with count & average for 5-star system
  * Linked to Shop model, supports Cloudinary image URLs
  */
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const itemSchema = new mongoose.Schema(
   {
@@ -19,22 +19,22 @@ const itemSchema = new mongoose.Schema(
     },
     shop: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Shop",
+      ref: 'Shop',
     },
     category: {
       type: String,
       enum: [
-        "Snacks",
-        "Main Course",
-        "Desserts",
-        "Pizza",
-        "Burgers",
-        "Sandwiches",
-        "South Indian",
-        "North Indian",
-        "Chinese",
-        "Fast Food",
-        "Others",
+        'Snacks',
+        'Main Course',
+        'Desserts',
+        'Pizza',
+        'Burgers',
+        'Sandwiches',
+        'South Indian',
+        'North Indian',
+        'Chinese',
+        'Fast Food',
+        'Others',
       ],
       required: true,
     },
@@ -45,7 +45,7 @@ const itemSchema = new mongoose.Schema(
     },
     foodType: {
       type: String,
-      enum: ["veg", "non veg"],
+      enum: ['veg', 'non veg'],
       required: true,
     },
     rating: {
@@ -56,5 +56,5 @@ const itemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Item = mongoose.model("Item", itemSchema);
+const Item = mongoose.model('Item', itemSchema);
 export default Item;

@@ -37,31 +37,34 @@
 ## ✨ Features
 
 ### 👤 Customer Features
-| Feature | Description |
-|:--------|:------------|
-| 🔐 **Authentication** | Email/Password + Google OAuth (Firebase) |
-| 🏪 **Restaurant Discovery** | Browse by city, category, ratings |
-| 🔍 **Smart Search** | Real-time search with filters (price, veg/non-veg, rating) |
-| 🛒 **Cart Management** | Persistent cart with localStorage |
-| 💳 **Secure Payments** | Stripe integration + Cash on Delivery |
-| 📍 **Live Tracking** | Real-time order tracking with Socket.IO |
-| 📱 **Responsive UI** | Mobile-first design with TailwindCSS |
+
+| Feature                     | Description                                                |
+| :-------------------------- | :--------------------------------------------------------- |
+| 🔐 **Authentication**       | Email/Password + Google OAuth (Firebase)                   |
+| 🏪 **Restaurant Discovery** | Browse by city, category, ratings                          |
+| 🔍 **Smart Search**         | Real-time search with filters (price, veg/non-veg, rating) |
+| 🛒 **Cart Management**      | Persistent cart with localStorage                          |
+| 💳 **Secure Payments**      | Stripe integration + Cash on Delivery                      |
+| 📍 **Live Tracking**        | Real-time order tracking with Socket.IO                    |
+| 📱 **Responsive UI**        | Mobile-first design with TailwindCSS                       |
 
 ### 🏪 Restaurant Owner Features
-| Feature | Description |
-|:--------|:------------|
-| 📊 **Analytics Dashboard** | Revenue, orders, best-sellers |
-| 🍽️ **Menu Management** | Add/Edit/Delete items with Cloudinary images |
-| 📦 **Order Management** | Accept/Reject orders in real-time |
-| 🛵 **Delivery Assignment** | Auto-assign nearby delivery partners |
+
+| Feature                    | Description                                  |
+| :------------------------- | :------------------------------------------- |
+| 📊 **Analytics Dashboard** | Revenue, orders, best-sellers                |
+| 🍽️ **Menu Management**     | Add/Edit/Delete items with Cloudinary images |
+| 📦 **Order Management**    | Accept/Reject orders in real-time            |
+| 🛵 **Delivery Assignment** | Auto-assign nearby delivery partners         |
 
 ### 🛵 Delivery Partner Features
-| Feature | Description |
-|:--------|:------------|
-| 📋 **Order Queue** | View available deliveries nearby |
-| 🗺️ **Route Navigation** | Pickup & delivery locations |
-| ✅ **OTP Verification** | Secure delivery confirmation |
-| 💰 **Earnings Tracker** | Daily/Monthly earnings stats |
+
+| Feature                 | Description                      |
+| :---------------------- | :------------------------------- |
+| 📋 **Order Queue**      | View available deliveries nearby |
+| 🗺️ **Route Navigation** | Pickup & delivery locations      |
+| ✅ **OTP Verification** | Secure delivery confirmation     |
+| 💰 **Earnings Tracker** | Daily/Monthly earnings stats     |
 
 ---
 
@@ -190,7 +193,8 @@ BiteDash/
 ## ⚙️ Installation
 
 ### Prerequisites
-- Node.js v18+ 
+
+- Node.js v18+
 - MongoDB Atlas account
 - Stripe account
 - Cloudinary account
@@ -281,11 +285,11 @@ VITE_API_BASE=http://localhost:8000
 
 ### User Roles
 
-| Role | Email | Password | Access |
-|:-----|:------|:---------|:-------|
-| **Customer** | `user@bitedash.com` | `password123` | Order food, track delivery |
-| **Owner** | `owner@bitedash.com` | `password123` | Manage restaurant & menu |
-| **Delivery** | `rider@bitedash.com` | `password123` | Accept & deliver orders |
+| Role         | Email                | Password      | Access                     |
+| :----------- | :------------------- | :------------ | :------------------------- |
+| **Customer** | `user@bitedash.com`  | `password123` | Order food, track delivery |
+| **Owner**    | `owner@bitedash.com` | `password123` | Manage restaurant & menu   |
+| **Delivery** | `rider@bitedash.com` | `password123` | Accept & deliver orders    |
 
 > 🔑 **Master OTP**: `5646` (for delivery verification & password reset)
 
@@ -303,21 +307,23 @@ VITE_API_BASE=http://localhost:8000
 ## 📡 API Reference
 
 ### Authentication
-| Method | Endpoint | Description |
-|:-------|:---------|:------------|
-| POST | `/api/auth/signup` | Register user |
-| POST | `/api/auth/signin` | Login user |
-| POST | `/api/auth/google` | Google OAuth |
-| GET | `/api/auth/current` | Get current user |
-| POST | `/api/auth/logout` | Logout |
+
+| Method | Endpoint            | Description      |
+| :----- | :------------------ | :--------------- |
+| POST   | `/api/auth/signup`  | Register user    |
+| POST   | `/api/auth/signin`  | Login user       |
+| POST   | `/api/auth/google`  | Google OAuth     |
+| GET    | `/api/auth/current` | Get current user |
+| POST   | `/api/auth/logout`  | Logout           |
 
 ### Orders
-| Method | Endpoint | Description |
-|:-------|:---------|:------------|
-| POST | `/api/order/place-order` | Create order |
-| GET | `/api/order/my-orders` | Get user orders |
-| PUT | `/api/order/status/:id/:shopId` | Update status |
-| POST | `/api/order/verify-otp` | Verify delivery |
+
+| Method | Endpoint                        | Description     |
+| :----- | :------------------------------ | :-------------- |
+| POST   | `/api/order/place-order`        | Create order    |
+| GET    | `/api/order/my-orders`          | Get user orders |
+| PUT    | `/api/order/status/:id/:shopId` | Update status   |
+| POST   | `/api/order/verify-otp`         | Verify delivery |
 
 > 📚 Full API documentation: [/docs](https://food-delivery-full-stack-app-me1o.vercel.app/docs)
 
@@ -337,6 +343,7 @@ npm test -- FoodCard.test.jsx
 ```
 
 **Test Coverage**: 62 tests across 21 test suites
+
 - Unit tests for components
 - Integration tests for pages
 - Redux slice tests
@@ -347,18 +354,19 @@ npm test -- FoodCard.test.jsx
 
 ### GitHub Actions Workflows
 
-| Workflow | Trigger | Description |
-|:---------|:--------|:------------|
-| `ci.yml` | Push/PR | Lint, test, build |
-| `pr-checks.yml` | PR | Auto-label, validate |
-| `deploy.yml` | Push to main | Deploy to Vercel |
-| `security.yml` | Schedule | CodeQL scanning |
-| `auto-merge.yml` | Dependabot | Auto-merge patches |
-| `rollback.yml` | Deploy fail | Auto-rollback |
+| Workflow         | Trigger      | Description          |
+| :--------------- | :----------- | :------------------- |
+| `ci.yml`         | Push/PR      | Lint, test, build    |
+| `pr-checks.yml`  | PR           | Auto-label, validate |
+| `deploy.yml`     | Push to main | Deploy to Vercel     |
+| `security.yml`   | Schedule     | CodeQL scanning      |
+| `auto-merge.yml` | Dependabot   | Auto-merge patches   |
+| `rollback.yml`   | Deploy fail  | Auto-rollback        |
 
 ### Auto-Labeling
 
 PRs are automatically labeled based on changed files:
+
 - 🎨 `frontend` - React changes
 - ⚙️ `backend` - Node.js changes
 - 📚 `docs` - Documentation
@@ -380,13 +388,13 @@ PRs are automatically labeled based on changed files:
 
 ## 📈 Performance
 
-| Metric | Value |
-|:-------|:------|
-| Lighthouse Score | 90+ |
-| Bundle Size (gzip) | ~350 KB |
-| Build Time | ~7 seconds |
-| MongoDB Pool | 100 connections |
-| Rate Limit | 5000+ req/s |
+| Metric             | Value           |
+| :----------------- | :-------------- |
+| Lighthouse Score   | 90+             |
+| Bundle Size (gzip) | ~350 KB         |
+| Build Time         | ~7 seconds      |
+| MongoDB Pool       | 100 connections |
+| Rate Limit         | 5000+ req/s     |
 
 ---
 
@@ -399,6 +407,7 @@ PRs are automatically labeled based on changed files:
 5. Open Pull Request
 
 ### PR Guidelines
+
 - Follow existing code style
 - Add tests for new features
 - Update documentation

@@ -1,6 +1,6 @@
 /**
  * Home Page Tests - Role-based dashboard routing
- * 
+ *
  * Tests: User dashboard, Owner dashboard, DeliveryBoy dashboard rendering
  * Mocks: Redux useSelector for user role detection
  */
@@ -10,46 +10,54 @@ import Home from '../Home';
 import { useSelector } from 'react-redux';
 
 vi.mock('react-redux', async () => {
-    const actual = await vi.importActual('react-redux');
-    return {
-        ...actual,
-        useSelector: vi.fn(),
-    };
+  const actual = await vi.importActual('react-redux');
+  return {
+    ...actual,
+    useSelector: vi.fn(),
+  };
 });
 
-vi.mock('../../components/UserDashboard', () => ({ default: () => <div data-testid="user-dashboard">User Dashboard</div> }));
-vi.mock('../../components/OwnerDashboard', () => ({ default: () => <div data-testid="owner-dashboard">Owner Dashboard</div> }));
-vi.mock('../../components/DeliveryBoy', () => ({ default: () => <div data-testid="delivery-boy">Delivery Boy</div> }));
-vi.mock('../../components/Footer', () => ({ default: () => <div data-testid="footer">Footer</div> }));
+vi.mock('../../components/UserDashboard', () => ({
+  default: () => <div data-testid="user-dashboard">User Dashboard</div>,
+}));
+vi.mock('../../components/OwnerDashboard', () => ({
+  default: () => <div data-testid="owner-dashboard">Owner Dashboard</div>,
+}));
+vi.mock('../../components/DeliveryBoy', () => ({
+  default: () => <div data-testid="delivery-boy">Delivery Boy</div>,
+}));
+vi.mock('../../components/Footer', () => ({
+  default: () => <div data-testid="footer">Footer</div>,
+}));
 
 describe('Home Component', () => {
-    it('renders UserDashboard when role is user', () => {
-        useSelector.mockReturnValue({
-            userData: { role: 'user' }
-        });
-
-        render(<Home />);
-        expect(screen.getByTestId('user-dashboard')).toBeInTheDocument();
-        expect(screen.queryByTestId('owner-dashboard')).not.toBeInTheDocument();
-        expect(screen.getByTestId('footer')).toBeInTheDocument();
+  it('renders UserDashboard when role is user', () => {
+    useSelector.mockReturnValue({
+      userData: { role: 'user' },
     });
 
-    it('renders OwnerDashboard when role is owner', () => {
-        useSelector.mockReturnValue({
-            userData: { role: 'owner' }
-        });
+    render(<Home />);
+    expect(screen.getByTestId('user-dashboard')).toBeInTheDocument();
+    expect(screen.queryByTestId('owner-dashboard')).not.toBeInTheDocument();
+    expect(screen.getByTestId('footer')).toBeInTheDocument();
+  });
 
-        render(<Home />);
-        expect(screen.getByTestId('owner-dashboard')).toBeInTheDocument();
-        expect(screen.queryByTestId('user-dashboard')).not.toBeInTheDocument();
+  it('renders OwnerDashboard when role is owner', () => {
+    useSelector.mockReturnValue({
+      userData: { role: 'owner' },
     });
 
-    it('renders DeliveryBoy when role is deliveryBoy', () => {
-        useSelector.mockReturnValue({
-            userData: { role: 'deliveryBoy' }
-        });
+    render(<Home />);
+    expect(screen.getByTestId('owner-dashboard')).toBeInTheDocument();
+    expect(screen.queryByTestId('user-dashboard')).not.toBeInTheDocument();
+  });
 
-        render(<Home />);
-        expect(screen.getByTestId('delivery-boy')).toBeInTheDocument();
+  it('renders DeliveryBoy when role is deliveryBoy', () => {
+    useSelector.mockReturnValue({
+      userData: { role: 'deliveryBoy' },
     });
+
+    render(<Home />);
+    expect(screen.getByTestId('delivery-boy')).toBeInTheDocument();
+  });
 });

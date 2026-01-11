@@ -1,7 +1,7 @@
 # =============================================================================
 # Stale Issues & PRs - Automatic Cleanup of Inactive Items
 # =============================================================================
-# 
+#
 # Triggers: Daily at midnight UTC, Manual dispatch
 # Action: Labels stale issues/PRs after 30 days, closes after 7 more days
 # Excludes: Items with 'pinned' or 'security' labels
@@ -11,7 +11,7 @@ name: Stale Issues & PRs
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight
+    - cron: '0 0 * * *' # Run daily at midnight
   workflow_dispatch:
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/stale@v10
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          
+
           # Stale issue settings
           stale-issue-message: |
             This issue has been automatically marked as stale because it has not had recent activity.
@@ -35,7 +35,7 @@ jobs:
           days-before-issue-stale: 30
           days-before-issue-close: 7
           exempt-issue-labels: 'pinned,security,bug,enhancement'
-          
+
           # Stale PR settings
           stale-pr-message: |
             This pull request has been automatically marked as stale because it has not had recent activity.
@@ -45,10 +45,10 @@ jobs:
           days-before-pr-stale: 45
           days-before-pr-close: 14
           exempt-pr-labels: 'pinned,work-in-progress,dependencies'
-          
+
           # Close message
           close-issue-message: 'This issue was closed because it has been stale for too long.'
           close-pr-message: 'This PR was closed because it has been stale for too long.'
-          
+
           # Operations per run
           operations-per-run: 100

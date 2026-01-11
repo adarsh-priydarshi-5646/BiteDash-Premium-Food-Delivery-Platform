@@ -1,11 +1,11 @@
 /**
  * User Routes - Profile, addresses, bank details & location management
- * 
+ *
  * Endpoints: /me, /update-profile, /update-location, /addresses, /bank-details, /stats
  * Features: Multiple saved addresses, geolocation updates, owner bank details
  * All routes protected with JWT authentication
  */
-import express from "express";
+import express from 'express';
 import {
   getCurrentUser,
   updateUserLocation,
@@ -16,19 +16,19 @@ import {
   removeAddress,
   updateProfile,
   getProfileStats,
-} from "../controllers/user.controllers.js";
-import isAuth from "../middlewares/auth.middleware.js";
+} from '../controllers/user.controllers.js';
+import isAuth from '../middlewares/auth.middleware.js';
 
 const userRouter = express.Router();
 
-userRouter.get("/current", isAuth, getCurrentUser);
-userRouter.post("/update-location", isAuth, updateUserLocation);
-userRouter.post("/update-bank-details", isAuth, updateBankDetails);
-userRouter.get("/get-bank-details", isAuth, getBankDetails);
-userRouter.post("/add-address", isAuth, addAddress);
-userRouter.put("/update-address", isAuth, updateAddress);
-userRouter.delete("/remove-address/:addressId", isAuth, removeAddress);
-userRouter.put("/update-profile", isAuth, updateProfile);
-userRouter.get("/profile-stats", isAuth, getProfileStats);
+userRouter.get('/current', isAuth, getCurrentUser);
+userRouter.post('/update-location', isAuth, updateUserLocation);
+userRouter.post('/update-bank-details', isAuth, updateBankDetails);
+userRouter.get('/get-bank-details', isAuth, getBankDetails);
+userRouter.post('/add-address', isAuth, addAddress);
+userRouter.put('/update-address', isAuth, updateAddress);
+userRouter.delete('/remove-address/:addressId', isAuth, removeAddress);
+userRouter.put('/update-profile', isAuth, updateProfile);
+userRouter.get('/profile-stats', isAuth, getProfileStats);
 
 export default userRouter;

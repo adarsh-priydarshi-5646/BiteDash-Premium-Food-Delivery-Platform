@@ -1,7 +1,7 @@
 # =============================================================================
 # Release & Deploy - Production Deployment Pipeline
 # =============================================================================
-# 
+#
 # Triggers: Push to main, Manual dispatch
 # Deploys: Frontend to Vercel production
 # Features: Semantic versioning, GitHub releases, deployment tracking
@@ -107,7 +107,7 @@ jobs:
             const pkg = JSON.parse(fs.readFileSync('./frontend/package.json', 'utf8'));
             const date = new Date().toISOString().split('T')[0];
             const tag = `v${pkg.version}-${date}-${context.sha.substring(0, 7)}`;
-            
+
             try {
               await github.rest.repos.createRelease({
                 owner: context.repo.owner,

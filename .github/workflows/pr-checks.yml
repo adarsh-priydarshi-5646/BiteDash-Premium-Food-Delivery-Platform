@@ -1,9 +1,9 @@
 # =============================================================================
 # PR Checks - Complete Pull Request Validation
 # =============================================================================
-# 
+#
 # Triggers: All Pull Requests (opened, updated, reopened)
-# 
+#
 # VALIDATION PERFORMED:
 # ✅ Auto-labeling based on changed files
 # ✅ ESLint code quality check
@@ -12,7 +12,7 @@
 # ✅ Backend syntax validation
 # ✅ Security vulnerability scan
 # ✅ Dependency review for new packages
-# 
+#
 # AUTO-MERGE CONDITIONS:
 # - All checks must pass
 # - PR must have 'auto-merge' label OR be from dependabot
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: dorny/paths-filter@v3
         id: changes
         with:
@@ -63,7 +63,7 @@ jobs:
               'ci': { color: 'e11d48', description: '🔧 CI/CD workflow changes' },
               'dependencies': { color: '0366d6', description: '📦 Dependency updates' },
             };
-            
+
             for (const [name, config] of Object.entries(labelConfig)) {
               try {
                 await github.rest.issues.getLabel({
@@ -90,13 +90,13 @@ jobs:
                 }
               }
             }
-            
+
             const labelsToAdd = [];
             if ('${{ steps.changes.outputs.frontend }}' === 'true') labelsToAdd.push('frontend');
             if ('${{ steps.changes.outputs.backend }}' === 'true') labelsToAdd.push('backend');
             if ('${{ steps.changes.outputs.docs }}' === 'true') labelsToAdd.push('docs');
             if ('${{ steps.changes.outputs.ci }}' === 'true') labelsToAdd.push('ci');
-            
+
             if (labelsToAdd.length > 0) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -144,7 +144,7 @@ jobs:
         run: |
           echo "Building production bundle..."
           npm run build
-          
+
           if [ ! -f "dist/index.html" ]; then
             echo "❌ Build failed"
             exit 1
@@ -173,7 +173,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -194,12 +194,12 @@ jobs:
               ERRORS=$((ERRORS + 1))
             fi
           done
-          
+
           if [ $ERRORS -gt 0 ]; then
             echo "❌ $ERRORS files have syntax errors"
             exit 1
           fi
-          
+
           FILE_COUNT=$(find . -name "*.js" -not -path "./node_modules/*" | wc -l)
           echo "✅ All $FILE_COUNT files valid"
         working-directory: backend
@@ -231,7 +231,7 @@ jobs:
           echo "║ Frontend: ${{ needs.frontend.result }}"
           echo "║ Backend:  ${{ needs.backend.result }}"
           echo "╚════════════════════════════════════════════╝"
-          
+
           if [ "${{ needs.frontend.result }}" != "success" ]; then
             echo ""
             echo "❌ FRONTEND FAILED - Check:"
@@ -241,7 +241,7 @@ jobs:
             echo "   • Security vulnerabilities"
             exit 1
           fi
-          
+
           if [ "${{ needs.backend.result }}" != "success" ]; then
             echo ""
             echo "❌ BACKEND FAILED - Check:"
@@ -249,7 +249,7 @@ jobs:
             echo "   • Security vulnerabilities"
             exit 1
           fi
-          
+
           echo ""
           echo "✅ ALL CHECKS PASSED"
           echo "🎉 This PR is safe to merge!"
@@ -269,30 +269,30 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             const statusResult = '${{ needs.status.result }}';
-            
+
             console.log('📊 Status:', statusResult);
             console.log('🏷️ Labels:', pr.labels.map(l => l.name).join(', '));
-            
+
             // NEVER merge if checks failed
             if (statusResult !== 'success') {
               console.log('❌ Checks failed - merge blocked');
               return;
             }
-            
+
             const hasAutoMerge = pr.labels.some(l => l.name === 'auto-merge');
             const isDependabot = pr.user.login === 'dependabot[bot]';
-            
+
             if (!hasAutoMerge && !isDependabot) {
               console.log('ℹ️ Auto-merge not enabled');
               return;
             }
-            
+
             // Security: Don't auto-merge fork PRs
             if (pr.head.repo.full_name !== pr.base.repo.full_name) {
               console.log('⚠️ Fork PR - manual review required');
               return;
             }
-            
+
             try {
               await github.rest.pulls.merge({
                 owner: context.repo.owner,

@@ -1,6 +1,6 @@
 /**
  * SendGrid Email Service - Primary email provider for OTP delivery
- * 
+ *
  * Functions: sendOtpMailSendGrid (auth OTP), sendDeliveryOtpMailSendGrid (delivery OTP)
  * Uses SendGrid API with verified sender email
  * HTML email templates with BiteDash branding
@@ -14,10 +14,10 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 export const sendOtpMailSendGrid = async (to, otp) => {
   try {
     console.log(`Sending OTP email via SendGrid to ${to}`);
-    
+
     const msg = {
-      to: to, 
-      from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com', 
+      to: to,
+      from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com',
       subject: 'Reset Your Password - BiteDash',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -44,9 +44,9 @@ export const sendOtpMailSendGrid = async (to, otp) => {
 export const sendDeliveryOtpMailSendGrid = async (user, otp) => {
   try {
     console.log(`Sending delivery OTP email via SendGrid to ${user.email}`);
-    
+
     const msg = {
-      to: user.email, 
+      to: user.email,
       from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com',
       subject: 'Delivery OTP - BiteDash',
       html: `

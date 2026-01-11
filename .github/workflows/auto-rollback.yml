@@ -1,7 +1,7 @@
 # =============================================================================
 # Auto Rollback - Automatic Rollback on Failed Deployments
 # =============================================================================
-# 
+#
 # Triggers: After CI Pipeline or Release workflow completes on main
 # Action: Creates rollback PR if deployment fails
 # Safety: Reverts to last known good commit automatically
@@ -11,7 +11,7 @@ name: Auto Rollback
 
 on:
   workflow_run:
-    workflows: ["CI Pipeline", "Release & Deploy"]
+    workflows: ['CI Pipeline', 'Release & Deploy']
     types: [completed]
     branches: [main]
 
@@ -24,7 +24,7 @@ jobs:
   rollback:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch == 'main'
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,21 +42,21 @@ jobs:
           FAILED_SHA="${{ github.event.workflow_run.head_sha }}"
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
           BRANCH="rollback/auto-$TIMESTAMP"
-          
+
           echo "Failed SHA: $FAILED_SHA"
           echo "Creating branch: $BRANCH"
-          
+
           git checkout -b $BRANCH
-          
+
           # Check if merge commit
           PARENT_COUNT=$(git cat-file -p $FAILED_SHA | grep -c "^parent" || echo "1")
-          
+
           if [ "$PARENT_COUNT" -gt 1 ]; then
             git revert -m 1 $FAILED_SHA --no-edit || echo "revert_failed=true" >> $GITHUB_OUTPUT
           else
             git revert $FAILED_SHA --no-edit || echo "revert_failed=true" >> $GITHUB_OUTPUT
           fi
-          
+
           if [ -z "$(git status --porcelain)" ]; then
             git push origin $BRANCH
             echo "branch=$BRANCH" >> $GITHUB_OUTPUT
@@ -74,7 +74,7 @@ jobs:
             const sha = '${{ steps.rollback.outputs.sha }}';
             const workflow = '${{ github.event.workflow_run.name }}';
             const runUrl = '${{ github.event.workflow_run.html_url }}';
-            
+
             const pr = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -83,14 +83,14 @@ jobs:
               base: 'main',
               body: `## Auto Rollback\n\n**${workflow}** failed on main.\n\n- [Failed Run](${runUrl})\n- Reverting: \`${sha}\`\n\n**Merge immediately if rollback is needed.**`
             });
-            
+
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr.data.number,
               labels: ['rollback', 'urgent']
             });
-            
+
             console.log('Created PR #' + pr.data.number);
 
       - name: Create Issue if Failed
@@ -101,7 +101,7 @@ jobs:
             const sha = '${{ github.event.workflow_run.head_sha }}';
             const workflow = '${{ github.event.workflow_run.name }}';
             const runUrl = '${{ github.event.workflow_run.html_url }}';
-            
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,

@@ -1,6 +1,6 @@
 /**
  * In-Memory Cache - TTL-based caching for API responses
- * 
+ *
  * Methods: get, set (with TTL), delete, clear, cleanup
  * Auto-cleanup of expired entries every 60 seconds
  * For production: Replace with Redis for distributed caching

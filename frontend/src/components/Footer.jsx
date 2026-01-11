@@ -1,12 +1,20 @@
 /**
  * Footer Component - Site-wide footer with branding & links
- * 
+ *
  * Sections: About, Quick Links, Contact Info, Social Media
  * Responsive grid layout, dynamic copyright year
  * Links to docs, profile, orders pages
  */
 import React from 'react';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function Footer() {
@@ -16,11 +24,11 @@ function Footer() {
     <footer className="bg-gray-900 text-gray-300 mt-auto">
       <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
           <div>
             <h3 className="text-white text-xl font-bold mb-4">BiteDash</h3>
             <p className="text-sm mb-4">
-              Your favorite food delivered fast and fresh. Order from the best restaurants in your city.
+              Your favorite food delivered fast and fresh. Order from the best restaurants in your
+              city.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-[#ff4d2d] transition">

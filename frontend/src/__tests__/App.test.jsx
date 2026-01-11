@@ -1,6 +1,6 @@
 /**
  * App Component Tests - Root component integration tests
- * 
+ *
  * Tests: Routing, auth state, loading states, role-based rendering
  * Mocks: All custom hooks, Redux store, React Router
  */
@@ -31,12 +31,13 @@ vi.mock('react-redux', async () => {
   return {
     ...actual,
     useDispatch: () => mockDispatch,
-    useSelector: (selector) => selector({ 
-      user: { 
-        userData: null, 
-        authLoading: false 
-      } 
-    }),
+    useSelector: (selector) =>
+      selector({
+        user: {
+          userData: null,
+          authLoading: false,
+        },
+      }),
   };
 });
 
@@ -59,11 +60,25 @@ vi.mock('react-icons/fa', () => {
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, whileHover, whileInView, initial, animate, transition, variants, viewport, ...props }) => <div {...props}>{children}</div>,
+    div: ({
+      children,
+      whileHover,
+      whileInView,
+      initial,
+      animate,
+      transition,
+      variants,
+      viewport,
+      ...props
+    }) => <div {...props}>{children}</div>,
     h1: ({ children, initial, animate, transition, ...props }) => <h1 {...props}>{children}</h1>,
     p: ({ children, initial, animate, transition, ...props }) => <p {...props}>{children}</p>,
-    span: ({ children, initial, animate, transition, whileInView, ...props }) => <span {...props}>{children}</span>,
-    button: ({ children, initial, animate, transition, whileHover, whileTap, ...props }) => <button {...props}>{children}</button>,
+    span: ({ children, initial, animate, transition, whileInView, ...props }) => (
+      <span {...props}>{children}</span>
+    ),
+    button: ({ children, initial, animate, transition, whileHover, whileTap, ...props }) => (
+      <button {...props}>{children}</button>
+    ),
   },
   AnimatePresence: ({ children }) => <>{children}</>,
 }));
