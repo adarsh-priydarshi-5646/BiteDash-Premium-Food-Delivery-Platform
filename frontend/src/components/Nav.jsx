@@ -82,11 +82,11 @@ function Nav() {
       <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
         <img
           src="/branding-logo.png"
-          alt="Vingo Logo"
+          alt="BiteDash Logo"
           className="w-16 h-16 md:w-18 md:h-18 object-contain rounded-full"
         />
         <h1 className="text-3xl font-bold text-[#E23744]">
-          Vingo
+          BiteDash
         </h1>
       </div>
 

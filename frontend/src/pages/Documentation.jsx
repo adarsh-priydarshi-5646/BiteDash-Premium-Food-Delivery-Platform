@@ -126,7 +126,7 @@ const Documentation = () => {
               <div className="w-8 h-8 bg-[#E23744] rounded-lg flex items-center justify-center text-white font-bold text-sm">
                 V
               </div>
-              <span className="font-semibold text-gray-900">Vingo</span>
+              <span className="font-semibold text-gray-900">BiteDash</span>
             </a>
           </div>
           <nav className="hidden md:flex items-center gap-6">

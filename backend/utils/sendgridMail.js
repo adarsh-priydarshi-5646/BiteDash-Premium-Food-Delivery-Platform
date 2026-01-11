@@ -11,7 +11,7 @@ export const sendOtpMailSendGrid = async (to, otp) => {
     const msg = {
       to: to, 
       from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com', 
-      subject: 'Reset Your Password - Vingo',
+      subject: 'Reset Your Password - BiteDash',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #ff4d2d;">Password Reset OTP</h2>
@@ -41,7 +41,7 @@ export const sendDeliveryOtpMailSendGrid = async (user, otp) => {
     const msg = {
       to: user.email, 
       from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com',
-      subject: 'Delivery OTP - Vingo',
+      subject: 'Delivery OTP - BiteDash',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #ff4d2d;">Delivery Verification OTP</h2>
@@ -51,7 +51,7 @@ export const sendDeliveryOtpMailSendGrid = async (user, otp) => {
             ${otp}
           </h1>
           <p style="color: #666;">This OTP will expire in <strong>5 minutes</strong>.</p>
-          <p style="color: #999; font-size: 12px;">Thank you for ordering with Vingo!</p>
+          <p style="color: #999; font-size: 12px;">Thank you for ordering with BiteDash!</p>
         </div>
       `,
     };

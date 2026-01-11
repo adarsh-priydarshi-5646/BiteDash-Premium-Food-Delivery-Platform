@@ -75,7 +75,7 @@ function SignIn() {
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">
        {}
        <div className="absolute top-6 left-6 cursor-pointer" onClick={() => navigate("/")}>
-          <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">Vingo</h1>
+          <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">BiteDash</h1>
        </div>
 
       <div className="w-full max-w-[400px] bg-white p-2">
@@ -145,7 +145,7 @@ function SignIn() {
         </div>
 
         <div className="mt-8 text-center text-gray-600">
-           New to Vingo? <span className="text-[#E23744] cursor-pointer" onClick={() => navigate("/signup")}>Create account</span>
+           New to BiteDash? <span className="text-[#E23744] cursor-pointer" onClick={() => navigate("/signup")}>Create account</span>
         </div>
       </div>
     </div>

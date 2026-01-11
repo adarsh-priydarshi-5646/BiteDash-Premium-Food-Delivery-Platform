@@ -129,7 +129,7 @@ const LandingPage = () => {
               WebkitTextStroke: "1px rgba(255,255,255,0.2)"
             }}
           >
-            Vingo
+            BiteDash
           </motion.h1>
           <motion.p 
             initial={{ y: 20, opacity: 0 }}
@@ -632,7 +632,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Get the Vingo App (Premium Redesign - Compact) */}
+      {/* Get the BiteDash App (Premium Redesign - Compact) */}
       <section className="bg-[#1c1c1c] py-16 px-4 mt-16 relative overflow-hidden">
         <div className="max-w-[1000px] mx-auto flex flex-col lg:flex-row items-center gap-12 relative z-10">
           <div className="lg:w-1/2 flex justify-center">
@@ -645,7 +645,7 @@ const LandingPage = () => {
               <div className="rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
                 <img 
                   src="/assets/app_mockup.png" 
-                  alt="Vingo App Interface" 
+                  alt="BiteDash App Interface" 
                   className="w-full h-auto object-cover" 
                 />
               </div>
@@ -654,7 +654,7 @@ const LandingPage = () => {
 
           <div className="lg:w-1/2 text-center lg:text-left">
             <h2 className="text-[36px] md:text-[44px] font-[800] text-white leading-tight mb-4">
-              Get the <span className="text-[#d9263a]">Vingo</span> Experience
+              Get the <span className="text-[#d9263a]">BiteDash</span> Experience
             </h2>
             <p className="text-white/60 text-[16px] md:text-[18px] mb-8 leading-relaxed max-w-[450px] mx-auto lg:mx-0">
                We’ll send you a link to download. Open it on your phone for exclusive rewards.
@@ -746,7 +746,7 @@ const LandingPage = () => {
       <footer className="bg-[#f8f8f8] pt-12 pb-6 w-full">
         <div className="max-w-[1100px] mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
-            <p className="text-[34px] font-[900] italic tracking-tight text-[#000000]">Vingo</p>
+            <p className="text-[34px] font-[900] italic tracking-tight text-[#000000]">BiteDash</p>
             <div className="flex gap-4">
               <button className="border border-[#cfcfcf] px-4 py-2 rounded-[6px] text-[#1c1c1c] flex items-center gap-2 bg-white text-[15px]">🇮🇳 India <FaChevronDown className="text-[10px]" /></button>
               <button className="border border-[#cfcfcf] px-4 py-2 rounded-[6px] text-[#1c1c1c] flex items-center gap-2 bg-white text-[15px]">🌐 English <FaChevronDown className="text-[10px]" /></button>
@@ -755,10 +755,10 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
             {[
-              { title: "ABOUT VINGO", links: ['Who We Are', 'Blog', 'Work With Us', 'Investor Relations', 'Report Fraud', 'Press Kit', 'Contact Us'] },
-              { title: "VINGOVERSE", links: ['Vingo', 'Blinkit', 'Feeding India', 'Hyperpure', 'Vingoland'] },
+              { title: "ABOUT BITEDASH", links: ['Who We Are', 'Blog', 'Work With Us', 'Investor Relations', 'Report Fraud', 'Press Kit', 'Contact Us'] },
+              { title: "BITEDASH UNIVERSE", links: ['BiteDash', 'Blinkit', 'Feeding India', 'Hyperpure', 'BiteLand'] },
               { title: "FOR RESTAURANTS", links: ['Partner With Us', 'Apps For You'] },
-              { title: "FOR ENTERPRISES", links: ['Vingo For Enterprise'] },
+              { title: "FOR ENTERPRISES", links: ['BiteDash For Enterprise'] },
               { title: "LEARN MORE", links: ['Privacy', 'Security', 'Terms', 'Sitemap'] }
             ].map((section, idx) => (
               <div key={idx}>
@@ -773,7 +773,7 @@ const LandingPage = () => {
           </div>
 
           <div className="border-t border-[#cfcfcf] pt-6 text-[13px] text-[#4f4f4f] font-[300] leading-tight">
-            <p>By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. 2008-2025 © Vingo™ Ltd. All rights reserved.</p>
+            <p>By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. 2008-2025 © BiteDash™ Ltd. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -62,13 +62,13 @@ vi.mock('framer-motion', () => ({
 }));
 
 describe('LandingPage Component', () => {
-  it('renders Vingo title correctly', () => {
+  it('renders BiteDash title correctly', () => {
     render(
       <BrowserRouter>
         <LandingPage />
       </BrowserRouter>
     );
-    expect(screen.getByRole('heading', { name: 'Vingo', level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'BiteDash', level: 1 })).toBeInTheDocument();
   });
 
   it('renders subtitle with city', () => {

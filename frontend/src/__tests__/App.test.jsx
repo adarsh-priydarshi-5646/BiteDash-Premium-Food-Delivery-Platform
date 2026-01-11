@@ -75,7 +75,7 @@ describe('App Component', () => {
       </BrowserRouter>
     );
     // Wait for lazy-loaded component to render
-    const heading = await findByRole('heading', { name: 'Vingo', level: 1 });
+    const heading = await findByRole('heading', { name: 'BiteDash', level: 1 });
     expect(heading).toBeInTheDocument();
   });
 });

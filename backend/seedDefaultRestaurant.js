@@ -20,13 +20,13 @@ const seedDefaultRestaurant = async () => {
     }
 
     
-    let defaultOwner = await User.findOne({ email: "default@vingo.com" });
+    let defaultOwner = await User.findOne({ email: "default@bitedash.com" });
     
     if (!defaultOwner) {
       const hashedPassword = await bcrypt.hash("default123", 10);
       defaultOwner = await User.create({
-        fullName: "Vingo Default Restaurant",
-        email: "default@vingo.com",
+        fullName: "BiteDash Default Restaurant",
+        email: "default@bitedash.com",
         password: hashedPassword,
         mobile: "0000000000",
         role: "owner",
@@ -36,7 +36,7 @@ const seedDefaultRestaurant = async () => {
 
     
     const defaultShop = await Shop.create({
-      name: "Vingo Express",
+      name: "BiteDash Express",
       image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
       owner: defaultOwner._id,
       city: "All Cities",

@@ -11,7 +11,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           <div>
-            <h3 className="text-white text-xl font-bold mb-4">Vingo</h3>
+            <h3 className="text-white text-xl font-bold mb-4">BiteDash</h3>
             <p className="text-sm mb-4">
               Your favorite food delivered fast and fresh. Order from the best restaurants in your city.
             </p>
@@ -96,7 +96,7 @@ function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <FaEnvelope className="text-[#ff4d2d] flex-shrink-0" />
-                <span className="text-sm break-all">support@vingo.com</span>
+                <span className="text-sm break-all">support@bitedash.com</span>
               </li>
             </ul>
           </div>
@@ -107,7 +107,7 @@ function Footer() {
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <p className="text-sm text-center sm:text-left">
-              © {currentYear} Vingo. All rights reserved.
+              © {currentYear} BiteDash. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
               <a href="#" className="hover:text-[#ff4d2d] transition">

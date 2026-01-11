@@ -1,11 +1,11 @@
 
-# 🍔 Vingo - Food Delivery Application
+# 🍔 BiteDash - Food Delivery Application
 
-<img src="https://t4.ftcdn.net/jpg/02/92/20/37/360_F_292203735_CSsyqyS6A4Z9Czd4Msf7qZEhoxjpzZl1.jpg" alt="Vingo Banner" width="1000" height="400" />
+<img src="https://t4.ftcdn.net/jpg/02/92/20/37/360_F_292203735_CSsyqyS6A4Z9Czd4Msf7qZEhoxjpzZl1.jpg" alt="BiteDash Banner" width="1000" height="400" />
 
 
 
-A full-stack, feature-rich food delivery platform built with the MERN stack. Vingo connects users with their favorite local restaurants, offering real-time order tracking, secure payments, and distinct dashboards for users, restaurant owners, and delivery partners.
+A full-stack, feature-rich food delivery platform built with the MERN stack. BiteDash connects users with their favorite local restaurants, offering real-time order tracking, secure payments, and distinct dashboards for users, restaurant owners, and delivery partners.
 
 ---
 
@@ -146,9 +146,9 @@ Use these credentials to test the application logic (Password for all: `password
 
 | Role | Email | Password | Features |
 |------|-------|----------|----------|
-| **User** | `user@vingo.com` | `password123` | Order food, track delivery |
-| **Owner** | `owner@vingo.com` | `password123` | Manage menu, accept orders |
-| **Delivery Boy** | `rider@vingo.com` | `password123` | View assigned orders, deliver |
+| **User** | `user@bitedash.com` | `password123` | Order food, track delivery |
+| **Owner** | `owner@bitedash.com` | `password123` | Manage menu, accept orders |
+| **Delivery Boy** | `rider@bitedash.com` | `password123` | View assigned orders, deliver |
 
 > **Note**: For OTP verification during delivery or password reset, use the Master OTP: **`5646`**.
 

@@ -77,7 +77,7 @@ describe('Nav Component', () => {
             </BrowserRouter>
         );
 
-        expect(screen.getByText('Vingo')).toBeInTheDocument();
+        expect(screen.getByText('BiteDash')).toBeInTheDocument();
         expect(screen.getByText('Mumbai')).toBeInTheDocument();
         expect(screen.getByText('My Orders')).toBeInTheDocument();
         // Cart badge
