@@ -1,6 +1,7 @@
 import Item from "../models/item.model.js";
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import { escapeRegex } from "../utils/sanitize.js";
 
 export const addItem = async (req, res) => {
   try {
@@ -113,16 +114,16 @@ export const getItemByCity = async (req, res) => {
       return res.status(400).json({ message: "city is required" });
     }
     
+    // Escape regex special characters to prevent ReDoS
+    const safeCity = escapeRegex(city);
     
     const cityShops = await Shop.find({
-      city: { $regex: new RegExp(`^${city}$`, "i") },
+      city: { $regex: new RegExp(`^${safeCity}$`, "i") },
       isDefault: false,
     }).populate("items");
 
-    
     const defaultShop = await Shop.findOne({ isDefault: true }).populate("items");
 
-    
     const cityShopIds = cityShops.map((shop) => shop._id);
     const shopIds = defaultShop ? [defaultShop._id, ...cityShopIds] : cityShopIds;
 
@@ -153,33 +154,34 @@ export const searchItems = async (req, res) => {
   try {
     const { query, city } = req.query;
     if (!query || !city) {
-      return null;
+      return res.status(400).json({ message: "query and city required" });
     }
     
+    // Escape regex special characters to prevent ReDoS
+    const safeCity = escapeRegex(city);
+    const safeQuery = escapeRegex(query);
     
     const cityShops = await Shop.find({
-      city: { $regex: new RegExp(`^${city}$`, "i") },
+      city: { $regex: new RegExp(`^${safeCity}$`, "i") },
       isDefault: false,
     }).populate("items");
 
-    
     const defaultShop = await Shop.findOne({ isDefault: true }).populate("items");
 
-    
     const cityShopIds = cityShops.map((s) => s._id);
     const shopIds = defaultShop ? [defaultShop._id, ...cityShopIds] : cityShopIds;
 
     const items = await Item.find({
       shop: { $in: shopIds },
       $or: [
-        { name: { $regex: query, $options: "i" } },
-        { category: { $regex: query, $options: "i" } },
+        { name: { $regex: safeQuery, $options: "i" } },
+        { category: { $regex: safeQuery, $options: "i" } },
       ],
     }).populate("shop", "name image");
 
     return res.status(200).json(items);
   } catch (error) {
-    return res.status(500).json({ message: `search item  error ${error}` });
+    return res.status(500).json({ message: `search item error ${error}` });
   }
 };
 

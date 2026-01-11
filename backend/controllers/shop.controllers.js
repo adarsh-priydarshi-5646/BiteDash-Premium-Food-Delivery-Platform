@@ -1,5 +1,6 @@
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import { escapeRegex } from "../utils/sanitize.js";
 
 export const createEditShop = async (req, res) => {
   try {
@@ -63,21 +64,16 @@ export const getShopByCity = async (req, res) => {
   try {
     const { city } = req.params;
 
+    // Escape regex special characters to prevent ReDoS
+    const safeCity = escapeRegex(city);
     
     const cityShops = await Shop.find({
-      city: { $regex: new RegExp(`^${city}$`, "i") },
+      city: { $regex: new RegExp(`^${safeCity}$`, "i") },
       isDefault: false,
     }).populate("items");
 
-    
     const defaultShop = await Shop.findOne({ isDefault: true }).populate("items");
 
-    console.log(`City: ${city}`);
-    console.log(`Default shop:`, defaultShop ? defaultShop.name : 'Not found');
-    console.log(`City shops count:`, cityShops.length);
-    console.log(`City shops:`, cityShops.map(s => s.name));
-
-    
     const shops = defaultShop ? [defaultShop, ...cityShops] : cityShops;
 
     if (!shops || shops.length === 0) {
