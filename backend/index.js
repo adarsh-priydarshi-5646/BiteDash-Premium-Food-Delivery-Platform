@@ -8,6 +8,7 @@ import cors from "cors";
 import userRouter from "./routes/user.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { rateLimiter } from "./middlewares/rateLimiter.js";
 
 import itemRouter from "./routes/item.routes.js";
 import shopRouter from "./routes/shop.routes.js";
@@ -53,8 +54,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
+app.use(rateLimiter); // Rate limiting for all routes
 app.use(express.static(path.join(__dirname, "public")));
 
 
