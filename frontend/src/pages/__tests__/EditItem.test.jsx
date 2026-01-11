@@ -1,3 +1,9 @@
+/**
+ * EditItem Page Tests - Menu item update form
+ * 
+ * Tests: Pre-fill existing data, form validation, image update, submit
+ * Mocks: Axios for API, Redux store, React Router params
+ */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import EditItem from '../EditItem';

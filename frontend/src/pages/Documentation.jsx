@@ -1,13 +1,18 @@
+/**
+ * Documentation Page - Technical docs with markdown rendering
+ * 
+ * Features: Sidebar navigation, markdown-to-HTML conversion, code highlighting
+ * Sections: Getting Started, API Reference, Architecture, Deployment
+ * Uses marked library with HTML sanitization for XSS prevention
+ */
 import React, { useState, useEffect, useMemo } from "react";
 import { marked } from "marked";
 import { FaChevronRight, FaBars, FaTimes } from "react-icons/fa";
 
-// Simple HTML sanitizer to prevent XSS
 const sanitizeHtml = (html) => {
   const div = document.createElement('div');
   div.innerHTML = html;
   
-  // Remove dangerous elements
   const dangerous = ['script', 'iframe', 'object', 'embed', 'form'];
   dangerous.forEach(tag => {
     const elements = div.getElementsByTagName(tag);
@@ -16,7 +21,6 @@ const sanitizeHtml = (html) => {
     }
   });
   
-  // Remove dangerous attributes
   const allElements = div.getElementsByTagName('*');
   for (let i = 0; i < allElements.length; i++) {
     const el = allElements[i];

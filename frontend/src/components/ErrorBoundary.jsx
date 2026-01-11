@@ -1,3 +1,10 @@
+/**
+ * ErrorBoundary Component - React error boundary for crash handling
+ * 
+ * Catches JavaScript errors in child component tree
+ * Shows fallback UI with error message and home button
+ * Logs error details for debugging
+ */
 import React from 'react';
 import { FaExclamationTriangle, FaHome } from 'react-icons/fa';
 

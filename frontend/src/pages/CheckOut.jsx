@@ -1,3 +1,10 @@
+/**
+ * Checkout Page - Order placement with address & payment
+ * 
+ * Features: Saved addresses, add new address, Leaflet map preview
+ * Payment: COD or Stripe checkout session
+ * Validates delivery address before order placement
+ */
 import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoSearchOutline, IoLocationSharp } from "react-icons/io5";
@@ -59,7 +66,6 @@ function CheckOut() {
   const selectedAddress = userData?.addresses?.find(a => a._id === selectedAddressId);
 
   useEffect(() => {
-    // If user has addresses and none selected, select default or first one
     if (userData?.addresses?.length > 0 && !selectedAddressId) {
       const defaultAddr = userData.addresses.find(a => a.isDefault) || userData.addresses[0];
       dispatch(setSelectedAddressId(defaultAddr._id));

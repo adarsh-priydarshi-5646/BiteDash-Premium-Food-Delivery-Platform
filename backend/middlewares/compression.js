@@ -1,23 +1,23 @@
-// Response compression for faster data transfer
-// Reduces bandwidth by 60-80% for JSON responses
-
+/**
+ * Compression Middleware - Gzip compression for API responses
+ * 
+ * Compresses JSON responses larger than 1KB using zlib
+ * Checks Accept-Encoding header for gzip support
+ * Reduces bandwidth usage, improves response times
+ */
 import zlib from 'zlib';
 
 export const compressionMiddleware = (req, res, next) => {
   const acceptEncoding = req.headers['accept-encoding'] || '';
-  
-  // Skip compression for small responses or non-compressible content
   const originalJson = res.json.bind(res);
   
   res.json = (data) => {
     const jsonString = JSON.stringify(data);
     
-    // Only compress if response is larger than 1KB
     if (jsonString.length < 1024) {
       return originalJson(data);
     }
 
-    // Check if client accepts gzip
     if (acceptEncoding.includes('gzip')) {
       zlib.gzip(jsonString, (err, compressed) => {
         if (err) {

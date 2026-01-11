@@ -1,3 +1,10 @@
+/**
+ * Navigation Component - Main header with search, cart & user menu
+ * 
+ * Features: Location display, real-time search with debounce, cart badge
+ * Responsive: Mobile hamburger menu, desktop full nav
+ * Integrates with Redux for cart count, user data, location
+ */
 import React, { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";

@@ -1,3 +1,10 @@
+/**
+ * RestaurantCard Component - Restaurant display card
+ * 
+ * Features: Shop image, name, rating, delivery time, location
+ * Navigates to /shop/:shopId on click
+ * Responsive card with hover effects
+ */
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaStar, FaClock, FaMapMarkerAlt } from "react-icons/fa";

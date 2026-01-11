@@ -1,3 +1,9 @@
+/**
+ * TrackOrderPage Tests - Real-time delivery tracking
+ * 
+ * Tests: Order status timeline, map display, delivery boy info
+ * Mocks: Axios for order data, Redux store, Socket.IO events
+ */
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import TrackOrderPage from '../TrackOrderPage';
@@ -15,7 +21,6 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock Redux
 const mockSocket = { on: vi.fn(), off: vi.fn() };
 vi.mock('react-redux', async () => {
     return {
@@ -24,7 +29,6 @@ vi.mock('react-redux', async () => {
     };
 });
 
-// Mock Child Components
 vi.mock('../../components/DeliveryBoyTracking', () => ({ default: () => <div data-testid="tracking-map">Tracking Map</div> }));
 
 describe('TrackOrderPage Component', () => {
@@ -66,7 +70,6 @@ describe('TrackOrderPage Component', () => {
 
     it('shows loading state initially', () => {
         useSelector.mockReturnValue({ socket: mockSocket });
-        // Don't resolve axios yet or make it slow
         axios.get.mockImplementation(() => new Promise(() => {}));
 
         render(
@@ -75,9 +78,6 @@ describe('TrackOrderPage Component', () => {
             </BrowserRouter>
         );
 
-        // Loading spinner usually has no text, so we check existence of container or class
-        // The component has a spinner div.
-        // Let's check if "Track Order" header is NOT present yet (it loads after data)
         expect(screen.queryByText('Track Order')).not.toBeInTheDocument();
     });
 });

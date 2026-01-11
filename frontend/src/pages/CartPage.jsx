@@ -1,3 +1,10 @@
+/**
+ * Cart Page - Shopping cart with order summary
+ * 
+ * Features: Cart items list, quantity controls, remove items
+ * Bill breakdown: Subtotal, delivery fee, taxes, total
+ * Empty cart state, proceed to checkout button
+ */
 import React from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { FaShoppingCart, FaReceipt } from "react-icons/fa";

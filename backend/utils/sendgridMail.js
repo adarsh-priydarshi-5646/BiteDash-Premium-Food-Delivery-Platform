@@ -1,3 +1,10 @@
+/**
+ * SendGrid Email Service - Primary email provider for OTP delivery
+ * 
+ * Functions: sendOtpMailSendGrid (auth OTP), sendDeliveryOtpMailSendGrid (delivery OTP)
+ * Uses SendGrid API with verified sender email
+ * HTML email templates with BiteDash branding
+ */
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 dotenv.config();

@@ -1,11 +1,22 @@
-# Default owner
+# =============================================================================
+# CODEOWNERS - Code Ownership & Review Assignment
+# =============================================================================
+# 
+# This file defines who owns which parts of the codebase.
+# Owners are automatically requested for review on PRs.
+# 
+# Format: <pattern> <owner1> <owner2> ...
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# =============================================================================
+
+# Default owner - All files
 * @adarsh-priydarshi-5646
 
-# Frontend
+# Frontend - React/Vite application
 /frontend/ @adarsh-priydarshi-5646
 
-# Backend
+# Backend - Node.js/Express API
 /backend/ @adarsh-priydarshi-5646
 
-# CI/CD
+# CI/CD - GitHub Actions workflows
 /.github/ @adarsh-priydarshi-5646

@@ -1,3 +1,10 @@
+/**
+ * Food Categories - Static category data for homepage carousel
+ * 
+ * Array of category objects with name & image
+ * Categories: All, Biryani, Pizza, Burger, Chinese, South Indian, etc.
+ * Images imported from assets folder
+ */
 import images from "./assets/all.jpg";
 import image1 from "./assets/image1.jpg";
 import image2 from "./assets/image2.webp";

@@ -1,10 +1,15 @@
+/**
+ * Shop Page Tests - Restaurant detail & menu
+ * 
+ * Tests: Shop info display, menu items grid, add to cart
+ * Mocks: Axios for shop data, React Router params
+ */
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import Shop from '../Shop';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 
-// Mock dependencies
 vi.mock('axios');
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
@@ -15,7 +20,6 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock Icons
 vi.mock('react-icons/fa6', () => ({
     FaStore: () => <div data-testid="store-icon" />,
     FaLocationDot: () => <div data-testid="location-icon" />,
@@ -24,7 +28,6 @@ vi.mock('react-icons/fa6', () => ({
     FaArrowLeft: () => <div data-testid="arrow-left-icon" />,
 }));
 
-// Mock FoodCard
 vi.mock('../../components/FoodCard', () => ({ default: ({ data }) => <div data-testid="food-card">{data.name}</div> }));
 
 describe('Shop Component', () => {
@@ -52,8 +55,6 @@ describe('Shop Component', () => {
             </BrowserRouter>
         );
 
-        // Check if loading or initial state is handled gracefully (Shop renders null initially)
-        // Wait for data to load
         await waitFor(() => {
             expect(screen.getByText('Pizza Hut')).toBeInTheDocument();
             expect(screen.getByText('Margherita')).toBeInTheDocument();

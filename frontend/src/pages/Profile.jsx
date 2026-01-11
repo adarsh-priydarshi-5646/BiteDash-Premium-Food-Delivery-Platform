@@ -1,3 +1,10 @@
+/**
+ * Profile Page - User account management
+ * 
+ * Sections: Profile info, saved addresses, order stats, settings
+ * Features: Edit profile, add/edit/delete addresses, set default address
+ * Stats: Total orders, reviews, points, time saved
+ */
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Nav from "../components/Nav";
@@ -20,7 +27,6 @@ function Profile() {
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   
-  // Real stats state
   const [profileStats, setProfileStats] = useState({
     totalOrders: 0,
     totalReviews: 0,
@@ -29,7 +35,6 @@ function Profile() {
   });
   const [loadingStats, setLoadingStats] = useState(true);
 
-  // Profile Edit state
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState({
     fullName: userData?.fullName || "",

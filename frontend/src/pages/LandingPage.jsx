@@ -1,3 +1,10 @@
+/**
+ * Landing Page - Public homepage for unauthenticated users
+ * 
+ * Sections: Hero with city search, food collections, trending items, app features
+ * Features: City autocomplete, category cards, restaurant preview
+ * Responsive design with animations, CTA buttons for signup
+ */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { serverUrl } from "../App";
@@ -30,8 +37,7 @@ const LandingPage = () => {
     const fetchTrendingItems = async () => {
       try {
         const { data } = await axios.get(`${serverUrl}/api/item/all-items`);
-        // Filter for high rated items (simulating trending)
-        const items = data.data || data; // Handle likely response structure
+        const items = data.data || data;
         const highRated = Array.isArray(items) ? items.filter(item => (item.rating?.average || item.rating || 0) >= 4.0) : [];
         setTrendingItems(highRated.length > 0 ? highRated : (Array.isArray(items) ? items : []));
       } catch (error) {
@@ -562,14 +568,12 @@ const LandingPage = () => {
                 orbitGroup.items.map((item, itemIdx) => {
                   const totalInOrbit = orbitGroup.items.length;
                   const angleStep = (Math.PI * 2) / totalInOrbit;
-                  // Stagger start angles slightly for natural look, but keep even spacing
                   const orbitOffset = groupIdx * (Math.PI / 3); 
                   const angle = (itemIdx * angleStep) + orbitOffset;
                   
                   return { ...item, r: orbitGroup.radius, angle, delay: itemIdx * 0.2 };
                 })
               ).map((item, idx) => {
-                // Determine direction: Outer & Inner clockwise, Middle counter-clockwise for contrast
                 const isClockwise = item.r === 190 ? -1 : 1; 
 
                 return (

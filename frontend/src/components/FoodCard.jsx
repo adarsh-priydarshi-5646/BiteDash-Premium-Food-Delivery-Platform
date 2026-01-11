@@ -1,3 +1,10 @@
+/**
+ * FoodCard Component - Food item display with add-to-cart
+ * 
+ * Features: Image, name, price, rating stars, veg/non-veg badge
+ * Cart controls: Add button, quantity +/- buttons when in cart
+ * Memoized for performance, integrates with Redux cart actions
+ */
 import React, { memo } from "react";
 import { FaStar } from "react-icons/fa";
 import { FaMinus, FaPlus } from "react-icons/fa";
@@ -162,7 +169,6 @@ const FoodCard = memo(({ data }) => {
     </div>
   );
 }, (prevProps, nextProps) => {
-  // Custom comparison to prevent unnecessary re-renders
   return (
     prevProps.data._id === nextProps.data._id &&
     prevProps.data.name === nextProps.data.name &&

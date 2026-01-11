@@ -1,3 +1,9 @@
+/**
+ * ownerSlice Tests - Redux owner/shop state management
+ * 
+ * Tests: Initial state, setMyShopData action
+ * Covers: Shop data storage for restaurant owners
+ */
 import { describe, it, expect } from 'vitest';
 import ownerReducer, { setMyShopData } from '../ownerSlice';
 

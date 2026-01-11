@@ -1,6 +1,20 @@
+# =============================================================================
+# Dependabot - Automated Dependency Updates
+# =============================================================================
+# 
+# Automatically creates PRs for outdated dependencies.
+# Schedule: Weekly on Monday at 9:00 AM UTC
+# 
+# Groups: Related packages are grouped into single PRs
+# Labels: Auto-labeled with 'dependencies' + ecosystem label
+# Docs: https://docs.github.com/en/code-security/dependabot
+# =============================================================================
+
 version: 2
 updates:
-  # Frontend dependencies
+  # -------------------------------------------------------------------------
+  # Frontend Dependencies (React, Vite, Testing)
+  # -------------------------------------------------------------------------
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
@@ -10,7 +24,7 @@ updates:
       timezone: "UTC"
     open-pull-requests-limit: 10
     reviewers:
-      - "adarsh-priyadarshi"
+      - "adarsh-priydarshi-5646"
     labels:
       - "dependencies"
       - "frontend"
@@ -36,7 +50,9 @@ updates:
           - "@vitejs/*"
           - "terser"
 
-  # Backend dependencies
+  # -------------------------------------------------------------------------
+  # Backend Dependencies (Express, MongoDB, Auth)
+  # -------------------------------------------------------------------------
   - package-ecosystem: "npm"
     directory: "/backend"
     schedule:
@@ -46,7 +62,7 @@ updates:
       timezone: "UTC"
     open-pull-requests-limit: 10
     reviewers:
-      - "adarsh-priyadarshi"
+      - "adarsh-priydarshi-5646"
     labels:
       - "dependencies"
       - "backend"
@@ -66,7 +82,9 @@ updates:
           - "bcryptjs"
           - "jsonwebtoken"
 
-  # GitHub Actions
+  # -------------------------------------------------------------------------
+  # GitHub Actions Dependencies
+  # -------------------------------------------------------------------------
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -1,3 +1,10 @@
+/**
+ * DeliveryBoyTracking Component - Real-time delivery map with Leaflet
+ * 
+ * Features: Live delivery boy location, customer location, route polyline
+ * Custom markers: Scooter icon for delivery, home icon for customer
+ * Auto-updates position via Socket.IO location events
+ */
 import React from "react";
 import scooter from "../assets/scooter.png";
 import home from "../assets/home.png";

@@ -1,3 +1,10 @@
+/**
+ * Category Page - Food items filtered by category
+ * 
+ * Features: Category header, price/sort filters, food items grid
+ * Filters items from Redux store by category name from URL
+ * Breadcrumb navigation, responsive grid layout
+ */
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";

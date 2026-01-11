@@ -1,10 +1,15 @@
+/**
+ * SignUp Page Tests - User registration
+ * 
+ * Tests: Form validation, role selection, submit, Google OAuth
+ * Mocks: Axios for API, React Router navigation
+ */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import SignUp from '../SignUp';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 
-// Mock dependencies
 vi.mock('axios');
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
@@ -20,7 +25,6 @@ vi.mock('../../hooks/useGetCity', () => ({
     })
 }));
 
-// Mock Redux
 const mockDispatch = vi.fn();
 vi.mock('react-redux', async () => {
     return {
@@ -29,7 +33,6 @@ vi.mock('react-redux', async () => {
     };
 });
 
-// Mock Icons
 vi.mock('react-icons/fa', () => ({
     FaRegEye: () => <div />,
     FaRegEyeSlash: () => <div />,
@@ -38,7 +41,6 @@ vi.mock('react-icons/fc', () => ({
     FcGoogle: () => <div />,
 }));
 
-// Mock Firebase
 vi.mock('../../firebase', () => ({
     auth: {},
 }));
@@ -72,7 +74,6 @@ describe('SignUp Component', () => {
         const googleBtn = screen.getByText('Continue with Google');
         fireEvent.click(googleBtn);
         
-        // Should show error because mobile is empty
         expect(screen.getByText('Please enter your mobile number first')).toBeInTheDocument();
     });
 

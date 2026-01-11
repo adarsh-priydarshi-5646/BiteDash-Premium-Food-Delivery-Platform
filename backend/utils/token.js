@@ -1,3 +1,10 @@
+/**
+ * JWT Token Generator - Creates signed authentication tokens
+ * 
+ * Generates JWT with userId payload, 7-day expiration
+ * Uses JWT_SECRET from environment variables
+ * Token stored in HTTP-only cookie for security
+ */
 import jwt from "jsonwebtoken";
 
 const genToken = async (userId) => {

@@ -1,3 +1,10 @@
+/**
+ * Order Placed Page - Order confirmation screen
+ * 
+ * Features: Success animation, order ID display, track order button
+ * Stripe: Verifies payment session and updates order status
+ * Clears cart after successful order placement
+ */
 import React, { useEffect, useState } from "react";
 import { FaCircleCheck } from "react-icons/fa6";
 import { FaBox } from "react-icons/fa";

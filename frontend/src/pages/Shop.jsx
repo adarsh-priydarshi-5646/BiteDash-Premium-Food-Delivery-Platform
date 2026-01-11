@@ -1,3 +1,10 @@
+/**
+ * Shop Page - Restaurant detail with menu
+ * 
+ * Features: Shop banner, info (rating, delivery time, address), menu items grid
+ * Fetches shop data by shopId from URL params
+ * FoodCard components with add-to-cart functionality
+ */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { serverUrl } from "../App";

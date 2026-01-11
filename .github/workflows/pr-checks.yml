@@ -1,3 +1,13 @@
+# =============================================================================
+# PR Checks - Pull Request Validation & Auto-labeling
+# =============================================================================
+# 
+# Triggers: PR opened, synchronized, reopened, labeled
+# Features: Auto-labels (frontend/backend/docs/ci), lint, test, build
+# Auto-merge: Enabled for PRs with 'auto-merge' label or dependabot
+# Labels: Different colors for each type (React Blue, Node Green, etc.)
+# =============================================================================
+
 name: PR Checks
 
 on:
@@ -27,25 +37,72 @@ jobs:
             ci:
               - '.github/**'
 
-      - name: Add labels
+      - name: Create and Add labels
         uses: actions/github-script@v7
         with:
           script: |
-            const labels = [];
-            if ('${{ steps.changes.outputs.frontend }}' === 'true') labels.push('frontend');
-            if ('${{ steps.changes.outputs.backend }}' === 'true') labels.push('backend');
-            if ('${{ steps.changes.outputs.docs }}' === 'true') labels.push('docs');
-            if ('${{ steps.changes.outputs.ci }}' === 'true') labels.push('ci');
+            // Label definitions with different colors
+            const labelConfig = {
+              'frontend': { color: '61dafb', description: '🎨 Frontend React changes' },      // React Blue
+              'backend': { color: '68a063', description: '⚙️ Backend Node.js changes' },      // Node Green
+              'docs': { color: 'fef2c0', description: '📚 Documentation updates' },           // Yellow
+              'ci': { color: 'e11d48', description: '🔧 CI/CD workflow changes' },            // Red
+              'bug': { color: 'd73a4a', description: '🐛 Bug fix' },                          // Red
+              'feature': { color: 'a2eeef', description: '✨ New feature' },                  // Cyan
+              'enhancement': { color: '84b6eb', description: '💎 Enhancement' },              // Blue
+              'security': { color: 'f9a825', description: '🔒 Security update' },             // Orange
+              'dependencies': { color: '0366d6', description: '📦 Dependency updates' },      // Dark Blue
+              'auto-merge': { color: '2ea44f', description: '🤖 Auto-merge enabled' }         // Green
+            };
             
-            if (labels.length > 0) {
+            // Ensure labels exist with correct colors
+            for (const [name, config] of Object.entries(labelConfig)) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: name
+                });
+                // Update existing label color
+                await github.rest.issues.updateLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: name,
+                  color: config.color,
+                  description: config.description
+                });
+              } catch (e) {
+                if (e.status === 404) {
+                  // Create new label
+                  await github.rest.issues.createLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: name,
+                    color: config.color,
+                    description: config.description
+                  });
+                  console.log(`✅ Created label: ${name}`);
+                }
+              }
+            }
+            
+            // Determine which labels to add based on changes
+            const labelsToAdd = [];
+            if ('${{ steps.changes.outputs.frontend }}' === 'true') labelsToAdd.push('frontend');
+            if ('${{ steps.changes.outputs.backend }}' === 'true') labelsToAdd.push('backend');
+            if ('${{ steps.changes.outputs.docs }}' === 'true') labelsToAdd.push('docs');
+            if ('${{ steps.changes.outputs.ci }}' === 'true') labelsToAdd.push('ci');
+            
+            // Add labels to PR
+            if (labelsToAdd.length > 0) {
               try {
                 await github.rest.issues.addLabels({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: context.issue.number,
-                  labels: labels
+                  labels: labelsToAdd
                 });
-                console.log('✅ Labels added:', labels);
+                console.log('✅ Labels added:', labelsToAdd.join(', '));
               } catch (e) {
                 console.log('Label error:', e.message);
               }

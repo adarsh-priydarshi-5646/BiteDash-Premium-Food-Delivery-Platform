@@ -1,3 +1,10 @@
+/**
+ * Shop Model - Restaurant/Shop schema with owner & menu items
+ * 
+ * Fields: name, image, city, state, address, owner (User ref), items (Item refs)
+ * Features: isDefault flag for demo shop, populated items array for menu
+ * One-to-one relationship with owner, one-to-many with items
+ */
 import mongoose from "mongoose";
 
 const shopSchema = new mongoose.Schema(

@@ -1,3 +1,9 @@
+/**
+ * userSlice Tests - Redux user state management
+ * 
+ * Tests: Initial state, setUserData, cart CRUD, orders, filters
+ * Covers: addToCart, removeCartItem, updateQuantity, clearCart, setMyOrders
+ */
 import { describe, it, expect } from 'vitest';
 import userReducer, { 
     setUserData, 
@@ -16,7 +22,6 @@ describe('userSlice', () => {
         totalAmount: 0,
         myOrders: [],
         currentCity: 'Mumbai',
-        // ... other defaults
     };
 
     it('should handle initial state', () => {
@@ -82,11 +87,7 @@ describe('userSlice', () => {
                 ] 
             }]
         };
-        // Need to match structure expected by reducer. 
-        // Based on `order.shopOrders.find(so => so.shop._id === shopId)` logic in reducer?
-        // Let's verify structure by viewing file or guessing defensively.
         
-        // Actually simpler test: setMyOrders
         const orders = [{ _id: 'o1' }];
         const state = userReducer(initialState, setMyOrders(orders));
         expect(state.myOrders).toEqual(orders);

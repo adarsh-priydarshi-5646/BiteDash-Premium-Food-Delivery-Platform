@@ -1,3 +1,10 @@
+/**
+ * UserOrderCard Component - Customer order card with tracking
+ * 
+ * Features: Order status badge, items list, track order button, rating
+ * Actions: Delete pending orders, rate delivered orders (1-5 stars)
+ * Shows delivery address, payment method, order date
+ */
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";

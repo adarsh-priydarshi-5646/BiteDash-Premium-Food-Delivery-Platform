@@ -1,3 +1,10 @@
+/**
+ * DeliveryHistoryCard Component - Past delivery order card
+ * 
+ * Shows: Shop name, customer name, delivery address, status, earnings
+ * Calculates earnings at ₹50 per delivery
+ * Status badges: delivered (green), cancelled (red)
+ */
 import React from "react";
 import { MdRestaurant, MdPerson, MdAccessTime, MdCheckCircle, MdCancel } from "react-icons/md";
 import { FaRupeeSign, FaMapMarkerAlt } from "react-icons/fa";

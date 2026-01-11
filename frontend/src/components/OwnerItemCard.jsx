@@ -1,3 +1,10 @@
+/**
+ * OwnerItemCard Component - Menu item management for owners
+ * 
+ * Features: Item image, name, price, category, veg/non-veg badge
+ * Actions: Edit (navigates to /edit-item), Delete with confirmation
+ * Updates ownerSlice after delete operation
+ */
 import axios from "axios";
 import React from "react";
 import { FaPen, FaTrashAlt, FaTag } from "react-icons/fa";

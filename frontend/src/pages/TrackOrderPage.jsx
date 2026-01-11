@@ -1,3 +1,10 @@
+/**
+ * Track Order Page - Real-time delivery tracking
+ * 
+ * Features: Live map with delivery boy location, order status timeline
+ * Socket.IO: Receives location updates, status changes in real-time
+ * Shows delivery boy info, ETA, contact options
+ */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

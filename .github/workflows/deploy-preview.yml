@@ -1,3 +1,12 @@
+# =============================================================================
+# Preview Deploy - Vercel Preview Deployments for PRs
+# =============================================================================
+# 
+# Triggers: PR opened/synchronized with frontend changes
+# Deploys: Frontend to Vercel preview environment
+# Comments: Adds preview URL to PR automatically
+# =============================================================================
+
 name: Preview Deploy
 
 on:

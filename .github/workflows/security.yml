@@ -1,3 +1,12 @@
+# =============================================================================
+# Security Scan - Vulnerability Detection & CodeQL Analysis
+# =============================================================================
+# 
+# Triggers: Push to main, PRs to main, Weekly schedule (Sunday midnight)
+# Scans: npm audit, CodeQL for JavaScript security issues
+# Reports: Security alerts in GitHub Security tab
+# =============================================================================
+
 name: Security Scan
 
 on:

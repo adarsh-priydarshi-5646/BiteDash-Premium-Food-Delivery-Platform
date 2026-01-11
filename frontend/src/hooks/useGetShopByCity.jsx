@@ -1,3 +1,10 @@
+/**
+ * useGetShopByCity Hook - Fetches restaurants in user's city
+ * 
+ * Makes GET /shop/city/:city when city is available
+ * Updates userSlice.shopsInMyCity for restaurant listing
+ * Re-fetches when currentCity changes
+ */
 import axios from "axios";
 import React, { useEffect } from "react";
 import { serverUrl } from "../App";

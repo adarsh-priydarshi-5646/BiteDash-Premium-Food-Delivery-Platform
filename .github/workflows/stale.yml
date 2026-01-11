@@ -1,3 +1,12 @@
+# =============================================================================
+# Stale Issues & PRs - Automatic Cleanup of Inactive Items
+# =============================================================================
+# 
+# Triggers: Daily at midnight UTC, Manual dispatch
+# Action: Labels stale issues/PRs after 30 days, closes after 7 more days
+# Excludes: Items with 'pinned' or 'security' labels
+# =============================================================================
+
 name: Stale Issues & PRs
 
 on:

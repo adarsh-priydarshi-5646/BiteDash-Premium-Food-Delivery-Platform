@@ -1,3 +1,10 @@
+/**
+ * AddressModal Component - Add/Edit delivery address popup
+ * 
+ * Features: Address type (Home/Work/Other), geolocation detection, manual entry
+ * Uses Geoapify for address autocomplete, saves to user profile
+ * Framer Motion animations for smooth open/close
+ */
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaMapMarkerAlt, FaHome, FaBriefcase, FaEllipsisH, FaCompass, FaCheckCircle } from "react-icons/fa";

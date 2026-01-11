@@ -1,3 +1,10 @@
+/**
+ * useGetItemsByCity Hook - Fetches food items in user's city
+ * 
+ * Makes GET /item/city/:city when city is available
+ * Updates userSlice.itemsInMyCity for food listing
+ * Re-fetches when currentCity changes
+ */
 import axios from "axios";
 import React, { useEffect } from "react";
 import { serverUrl } from "../App";

@@ -1,3 +1,10 @@
+/**
+ * OwnerOrderCard Component - Restaurant owner order management
+ * 
+ * Features: Order details, customer info, status dropdown, delivery boy info
+ * Status flow: pending → accepted → preparing → ready → out of delivery → delivered
+ * Real-time updates via Socket.IO, shows assigned delivery partner
+ */
 import axios from "axios";
 import React, { useState } from "react";
 import { MdPhone, MdDeliveryDining, MdAccessTime, MdPerson } from "react-icons/md";

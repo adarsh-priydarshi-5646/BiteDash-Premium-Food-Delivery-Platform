@@ -1,3 +1,12 @@
+# =============================================================================
+# Auto Rollback - Automatic Rollback on Failed Deployments
+# =============================================================================
+# 
+# Triggers: After CI Pipeline or Release workflow completes on main
+# Action: Creates rollback PR if deployment fails
+# Safety: Reverts to last known good commit automatically
+# =============================================================================
+
 name: Auto Rollback
 
 on:

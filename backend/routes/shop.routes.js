@@ -1,3 +1,10 @@
+/**
+ * Shop Routes - Restaurant/Shop CRUD with city-based filtering
+ * 
+ * Endpoints: /create-edit, /my-shop, /city/:city
+ * Features: In-memory caching for city shops (5 min TTL), Multer image upload
+ * Protected routes for create/edit, public city endpoint with cache
+ */
 import express from "express";
 import {
   createEditShop,
@@ -10,10 +17,7 @@ import { cacheMiddleware } from "../config/cache.js";
 
 const shopRouter = express.Router();
 
-// Write operations
 shopRouter.post("/create-edit", isAuth, upload.single("image"), createEditShop);
-
-// Read operations (with cache)
 shopRouter.get("/get-my", isAuth, getMyShop);
 shopRouter.get("/get-by-city/:city", isAuth, cacheMiddleware(60), getShopByCity);
 

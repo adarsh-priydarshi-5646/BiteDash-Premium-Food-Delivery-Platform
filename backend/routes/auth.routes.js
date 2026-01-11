@@ -1,3 +1,10 @@
+/**
+ * Auth Routes - User authentication & password recovery endpoints
+ * 
+ * Endpoints: /signup, /signin, /signout, /send-otp, /verify-otp, /reset-password, /google
+ * Features: Rate limiting on auth endpoints (5 req/min), OTP-based password reset
+ * All routes are public except signout which requires authentication
+ */
 import express from "express";
 import { authRateLimiter } from "../middlewares/rateLimiter.js";
 import {
@@ -12,7 +19,6 @@ import {
 
 const authRouter = express.Router();
 
-// All auth routes have stricter rate limiting (20 req/min)
 authRouter.post("/signup", authRateLimiter, signUp);
 authRouter.post("/signin", authRateLimiter, signIn);
 authRouter.get("/signout", signOut);

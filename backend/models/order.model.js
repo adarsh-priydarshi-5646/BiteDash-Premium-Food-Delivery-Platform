@@ -1,3 +1,10 @@
+/**
+ * Order Model - Multi-shop order with delivery tracking & payment
+ * 
+ * Structure: Main order contains shopOrders array (one per restaurant)
+ * Features: COD/Stripe payment, delivery OTP verification, order rating
+ * Tracks status per shop: pending → accepted → preparing → ready → out of delivery → delivered
+ */
 import mongoose from "mongoose";
 
 const shopOrderItemSchema = new mongoose.Schema(

@@ -1,10 +1,15 @@
+/**
+ * FoodCard Component Tests - Food item display & cart functionality
+ * 
+ * Tests: Render item details, add to cart, quantity controls, remove item
+ * Mocks: Redux dispatch, useSelector for cart state
+ */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import FoodCard from '../FoodCard';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, updateQuantity, removeCartItem } from '../../redux/userSlice';
 
-// Mock Redux
 const mockDispatch = vi.fn();
 vi.mock('react-redux', async () => {
     return {
@@ -14,7 +19,6 @@ vi.mock('react-redux', async () => {
     };
 });
 
-// Mock Icons
 vi.mock('react-icons/fa', () => ({
     FaStar: () => <div data-testid="star-icon" />,
     FaMinus: () => <div data-testid="minus-icon" />,
@@ -84,11 +88,9 @@ describe('FoodCard Component', () => {
 
         render(<FoodCard data={mockItem} />);
 
-        // Increment
         fireEvent.click(screen.getByTestId('plus-icon').parentElement);
         expect(updateQuantity).toHaveBeenCalledWith({ id: '1', quantity: 3 });
 
-        // Decrement
         fireEvent.click(screen.getByTestId('minus-icon').parentElement);
         expect(updateQuantity).toHaveBeenCalledWith({ id: '1', quantity: 1 });
     });

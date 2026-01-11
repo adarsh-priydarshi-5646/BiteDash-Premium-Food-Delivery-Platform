@@ -1,10 +1,15 @@
+/**
+ * CartPage Tests - Shopping cart functionality
+ * 
+ * Tests: Cart items display, quantity controls, bill calculation, checkout
+ * Mocks: Redux store with cart items
+ */
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import CartPage from '../CartPage';
 import { BrowserRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-// Mock dependencies
 vi.mock('react-redux', async () => {
     const actual = await vi.importActual('react-redux');
     return {
@@ -21,7 +26,6 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock Icons to prevent finding issues
 vi.mock('react-icons/io', () => ({
     IoIosArrowRoundBack: () => <div data-testid="back-icon" />
 }));
@@ -30,7 +34,6 @@ vi.mock('react-icons/fa', () => ({
     FaReceipt: () => <div data-testid="receipt-icon" />
 }));
 
-// Mock Child Component
 vi.mock('../../components/CartItemCard', () => ({ default: ({ data }) => <div data-testid="cart-item">{data.name}</div> }));
 
 describe('CartPage Component', () => {
@@ -65,11 +68,9 @@ describe('CartPage Component', () => {
             </BrowserRouter>
         );
 
-        // Check Items
         expect(screen.getByText('Pizza')).toBeInTheDocument();
         expect(screen.getByText('Burger')).toBeInTheDocument();
 
-        // Check Bill Details
         expect(screen.getByText('Bill Details')).toBeInTheDocument();
         expect(screen.getByText('₹400')).toBeInTheDocument(); // Item Total
         expect(screen.getByText('Proceed to Checkout')).toBeInTheDocument();

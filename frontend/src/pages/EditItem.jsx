@@ -1,3 +1,10 @@
+/**
+ * Edit Item Page - Update existing menu item
+ * 
+ * Pre-fills form with existing item data from itemId param
+ * Form: Name, category, food type, price, image (optional update)
+ * Submits to /item/edit/:itemId with multipart form data
+ */
 import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundBack, IoMdCloudUpload } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";

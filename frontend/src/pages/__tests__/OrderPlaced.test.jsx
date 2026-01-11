@@ -1,14 +1,18 @@
+/**
+ * OrderPlaced Page Tests - Order confirmation screen
+ * 
+ * Tests: Success message, order ID display, Stripe payment verification
+ * Mocks: Axios for payment verification, React Router navigation
+ */
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import OrderPlaced from '../OrderPlaced';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 
-// Mock dependencies
 vi.mock('axios');
 const mockNavigate = vi.fn();
 
-// Mock search params
 let mockSearchParams = new URLSearchParams();
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
@@ -19,7 +23,6 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock Redux
 const mockDispatch = vi.fn();
 vi.mock('react-redux', async () => {
     return {
@@ -51,9 +54,6 @@ describe('OrderPlaced Component', () => {
                 <OrderPlaced />
             </BrowserRouter>
         );
-
-        // Should initially show verifying
-        // Since verify runs in useEffect with timeout 100ms, immediately we might see verifying state or waiting
         
         await waitFor(() => {
             expect(axios.post).toHaveBeenCalledWith(

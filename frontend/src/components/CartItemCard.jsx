@@ -1,3 +1,10 @@
+/**
+ * CartItemCard Component - Cart item with quantity controls
+ * 
+ * Features: Item image, name, price, quantity +/- buttons, delete
+ * Calculates item subtotal (price × quantity)
+ * Dispatches Redux actions for quantity update & remove
+ */
 import React from "react";
 import { FaMinus } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";

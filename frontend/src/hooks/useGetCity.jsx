@@ -1,3 +1,10 @@
+/**
+ * useGetCity Hook - Smart geolocation with multiple fallbacks
+ * 
+ * Priority: GPS location → User profile address → localStorage cache → Default city
+ * Uses OpenStreetMap Nominatim API for reverse geocoding
+ * Updates mapSlice with city, state, address for filtering
+ */
 import axios from "axios";
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +15,9 @@ import {
 } from "../redux/userSlice";
 import { setAddress, setLocation } from "../redux/mapSlice";
 
+/**
+ * Geolocation with fallback: GPS -> Profile Address -> Cache -> Default
+ */
 function useGetCity(auto = false) {
   const dispatch = useDispatch();
   const { currentCity, userData } = useSelector((state) => state.user);
@@ -25,11 +35,9 @@ function useGetCity(auto = false) {
 
   const getCity = useCallback((isSilent = false) => {
     return new Promise((resolve) => {
-      // Priority 1: Check for cached data (instant)
       const cachedCity = localStorage.getItem("last_known_city");
       const cachedAddress = localStorage.getItem("last_known_address");
 
-      // Priority 2: Use Profile Default Address if exists
       const defaultAddress = userData?.addresses?.find(a => a.isDefault) || userData?.addresses?.[0];
       const profileFallback = defaultAddress ? {
         city: defaultAddress.city,
@@ -48,7 +56,6 @@ function useGetCity(auto = false) {
         return;
       }
 
-      // Check permission for silent mode to avoid violation warning
       const checkPermissionAndProceed = async () => {
         if (isSilent && navigator.permissions && navigator.permissions.query) {
           try {
@@ -58,7 +65,6 @@ function useGetCity(auto = false) {
               return false;
             }
           } catch (_e) {
-            // Permission check failed, continue anyway
           }
         }
         return true;
@@ -120,7 +126,6 @@ function useGetCity(auto = false) {
             resolve(finalFallback);
           }
         }, (_error) => {
-          // Fallback sequentially: Profile -> Cache -> Default
           resolve(applyFallback(getFallbackData()));
         }, { timeout: 8000, enableHighAccuracy: true, maximumAge: 300000 });
       });
@@ -128,7 +133,6 @@ function useGetCity(auto = false) {
   }, [apiKey, dispatch, userData, applyFallback]);
 
   useEffect(() => {
-    // If we have userData, we might want to override a generic fallback with a profile address
     const isGenericFallback = currentCity === "Delhi NCR";
     if (auto && (!currentCity || (userData && isGenericFallback))) {
       getCity(true).catch(() => {});

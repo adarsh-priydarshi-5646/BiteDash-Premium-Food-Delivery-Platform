@@ -1,3 +1,10 @@
+/**
+ * Resend Mail Utils - Alternative email provider via Resend API
+ * 
+ * Functions: sendOtpMailResend for OTP delivery
+ * Uses Resend API key from environment variables
+ * Alternative to SendGrid for email delivery
+ */
 import { Resend } from 'resend';
 import dotenv from 'dotenv';
 dotenv.config();

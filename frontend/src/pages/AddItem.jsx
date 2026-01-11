@@ -1,3 +1,10 @@
+/**
+ * Add Item Page - Create new menu item
+ * 
+ * Form: Name, category dropdown, food type (veg/non-veg), price, image upload
+ * Features: Live preview card, image drag-drop, form validation
+ * Submits to /item/add with multipart form data
+ */
 import React, { useState, useRef } from "react";
 import { IoIosArrowRoundBack, IoMdCloudUpload } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";

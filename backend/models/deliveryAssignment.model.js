@@ -1,3 +1,10 @@
+/**
+ * Delivery Assignment Model - Order broadcast & assignment to delivery partners
+ * 
+ * Flow: Order broadcasted to nearby delivery boys → one accepts → assigned
+ * Fields: order, shop, shopOrderId, brodcastedTo (array), assignedTo, status
+ * Status: brodcasted → assigned → completed (deleted after delivery)
+ */
 import mongoose from "mongoose";
 
 const deliveryAssignmentSchema = new mongoose.Schema(

@@ -1,3 +1,10 @@
+/**
+ * useGetMyOrders Hook - Fetches orders based on user role
+ * 
+ * Makes GET /order/my-orders for all authenticated users
+ * Returns different data based on role: user orders, owner orders, delivery assignments
+ * Updates userSlice.myOrders with order history
+ */
 import axios from "axios";
 import React, { useEffect } from "react";
 import { serverUrl } from "../App";

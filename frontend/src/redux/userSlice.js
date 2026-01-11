@@ -1,5 +1,11 @@
+/**
+ * User Redux Slice - Central state management for user data
+ * 
+ * State: userData, cart (persisted to localStorage), orders, filters
+ * Actions: Auth state, cart CRUD, order updates, category/price filters
+ * Real-time updates via Socket.IO for order status changes
+ */
 import { createSlice } from "@reduxjs/toolkit";
-
 
 const saveCartToLocalStorage = (cartItems, totalAmount) => {
   try {
@@ -156,7 +162,6 @@ const userSlice = createSlice({
       saveCartToLocalStorage([], 0);
     },
 
-    
     setSelectedCategories: (state, action) => {
       state.selectedCategories = action.payload;
     },

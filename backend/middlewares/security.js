@@ -1,28 +1,23 @@
-// Security middleware for production
-
-// Helmet-like security headers
+/**
+ * Security Middleware - HTTP headers & request sanitization
+ * 
+ * Headers: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy
+ * Features: Removes X-Powered-By, limits request body size, sanitizes input
+ * Protects against clickjacking, MIME sniffing, XSS attacks
+ */
 export const securityHeaders = (req, res, next) => {
-  // Prevent clickjacking
   res.setHeader('X-Frame-Options', 'DENY');
-  
-  // Prevent MIME type sniffing
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  
-  // XSS Protection
   res.setHeader('X-XSS-Protection', '1; mode=block');
-  
-  // Referrer Policy
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
-  // Remove X-Powered-By header
   res.removeHeader('X-Powered-By');
-  
   next();
 };
 
-// Request sanitization
+/**
+ * Sanitizes input to prevent NoSQL injection
+ */
 export const sanitizeRequest = (req, res, next) => {
-  // Prevent NoSQL injection by removing $ and . from keys
   const sanitize = (obj) => {
     if (typeof obj !== 'object' || obj === null) return obj;
     
@@ -43,7 +38,6 @@ export const sanitizeRequest = (req, res, next) => {
   next();
 };
 
-// Request size limiter
 export const requestSizeLimiter = (maxSizeKB = 100) => {
   return (req, res, next) => {
     let size = 0;

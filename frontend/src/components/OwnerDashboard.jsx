@@ -1,3 +1,10 @@
+/**
+ * OwnerDashboard Component - Restaurant owner control panel
+ * 
+ * Tabs: Menu Items, Orders, Bank Details, Earnings
+ * Features: Add/edit items, manage orders, view earnings stats
+ * Real-time order notifications via Socket.IO
+ */
 import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,7 +38,6 @@ function OwnerDashboard() {
       if (data.shopOrders && data.shopOrders.owner && data.shopOrders.owner._id === userData._id) {
           const exists = myOrders.some(o => o._id === data._id);
           if (!exists) {
-             // Logic for new order notification could go here
           }
       }
     });
@@ -54,9 +60,7 @@ function OwnerDashboard() {
   
   const totalOrders = myOrders?.length || 0;
   const totalRevenue = myOrders?.reduce((sum, order) => {
-    // Check if shopOrders is an object (single shop order structure)
     if (order.shopOrders && typeof order.shopOrders === 'object' && !Array.isArray(order.shopOrders)) {
-       // Correctly match the shop ID (handling populated object vs string ID)
        const orderShopId = order.shopOrders.shop?._id || order.shopOrders.shop;
        if (orderShopId === myShopData?._id && order.shopOrders.status !== 'cancelled') {
            return sum + (order.shopOrders.subtotal || 0);
@@ -64,7 +68,6 @@ function OwnerDashboard() {
        return sum;
     }
     
-    // Fallback: Check if shopOrders is an array (multi-shop order structure)
     if (order.shopOrders && Array.isArray(order.shopOrders)) {
         const shopOrder = order.shopOrders.find(so => {
             const soShopId = so.shop?._id || so.shop;
@@ -79,9 +82,7 @@ function OwnerDashboard() {
   }, 0) || 0;
   const totalItems = myShopData?.items?.length || 0;
 
-  // Filter live orders
   const activeOrders = myOrders?.filter(o => {
-    // Handle single object structure
     if (o.shopOrders && typeof o.shopOrders === 'object' && !Array.isArray(o.shopOrders)) {
         const orderShopId = o.shopOrders.shop?._id || o.shopOrders.shop;
         return orderShopId === myShopData?._id && 
@@ -89,7 +90,6 @@ function OwnerDashboard() {
                o.shopOrders.status !== 'cancelled';
     }
     
-    // Handle array structure
     if (o.shopOrders && Array.isArray(o.shopOrders)) {
         return o.shopOrders.some(so => {
              const soShopId = so.shop?._id || so.shop;
@@ -296,12 +296,10 @@ function OwnerDashboard() {
                         {[...myOrders]
                           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                           .filter(order => {
-                              // Ensure object structure handling for shopOrders
                               if (order.shopOrders && typeof order.shopOrders === 'object' && !Array.isArray(order.shopOrders)) {
                                   const orderShopId = order.shopOrders.shop?._id || order.shopOrders.shop;
                                   return orderShopId === myShopData?._id;
                               }
-                              // Ensure array structure handling
                               if (order.shopOrders && Array.isArray(order.shopOrders)) {
                                   return order.shopOrders.some(so => (so.shop?._id || so.shop) === myShopData?._id);
                               }

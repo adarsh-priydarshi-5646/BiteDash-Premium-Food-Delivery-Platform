@@ -1,3 +1,10 @@
+/**
+ * useGetCurrentUser Hook - Fetches authenticated user on app load
+ * 
+ * Makes GET /user/me request with credentials
+ * Updates Redux userSlice with user data or null
+ * Sets authLoading state for loading UI
+ */
 import axios from "axios";
 import React, { useEffect } from "react";
 import { serverUrl } from "../App";
@@ -23,7 +30,6 @@ function useGetCurrentUser() {
         if (error.name === 'CanceledError' || error.code === 'ECONNABORTED') {
           console.warn('Authentication request timed out - backend may be unavailable');
         } else if (error.response?.status === 401) {
-          // User not authenticated
 
         } else {
           console.error('Error fetching current user:', error.message);

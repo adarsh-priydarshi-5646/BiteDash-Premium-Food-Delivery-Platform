@@ -1,3 +1,10 @@
+/**
+ * My Orders Page - Order history with real-time updates
+ * 
+ * Role-based: UserOrderCard (customers), OwnerOrderCard (restaurants)
+ * Features: Order status, items list, track/rate/delete actions
+ * Socket.IO integration for live status updates
+ */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosArrowRoundBack } from "react-icons/io";
