@@ -30,23 +30,19 @@ function UserDashboard() {
   const [showLeftCateButton, setShowLeftCateButton] = useState(false);
   const [showRightCateButton, setShowRightCateButton] = useState(false);
 
-  // Optimize filtering with useMemo to prevent recalculations
   const filteredItems = useMemo(() => {
     if (!itemsInMyCity) return [];
 
     let result = [...itemsInMyCity];
 
-    // Category filter
     if (selectedCategories.length > 0) {
       result = result.filter(item => selectedCategories.includes(item.category));
     }
 
-    // Price range filter
     result = result.filter(item => 
       item.price >= priceRange.min && item.price <= priceRange.max
     );
 
-    // Quick filters
     if (quickFilters.veg) {
       result = result.filter(item => item.isVeg === true);
     }
@@ -57,7 +53,6 @@ function UserDashboard() {
       result = result.filter(item => item.rating >= 4.0);
     }
 
-    // Sorting
     switch (sortBy) {
       case 'popularity':
         return result.sort((a, b) => (b.orders || 0) - (a.orders || 0));

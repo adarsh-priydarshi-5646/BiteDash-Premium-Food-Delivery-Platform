@@ -59,7 +59,6 @@ function CheckOut() {
   const selectedAddress = userData?.addresses?.find(a => a._id === selectedAddressId);
 
   useEffect(() => {
-    // If user has addresses and none selected, select default or first one
     if (userData?.addresses?.length > 0 && !selectedAddressId) {
       const defaultAddr = userData.addresses.find(a => a.isDefault) || userData.addresses[0];
       dispatch(setSelectedAddressId(defaultAddr._id));

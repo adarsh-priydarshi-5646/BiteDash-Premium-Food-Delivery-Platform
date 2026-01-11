@@ -4,7 +4,6 @@ import MyOrders from '../MyOrders';
 import { BrowserRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-// Mock Redux
 const mockDispatch = vi.fn();
 vi.mock('react-redux', async () => {
     return {
@@ -14,7 +13,6 @@ vi.mock('react-redux', async () => {
     };
 });
 
-// Mock Icons
 vi.mock('react-icons/io', () => ({
     IoIosArrowRoundBack: () => <div data-testid="back-icon" />
 }));
@@ -22,7 +20,6 @@ vi.mock('react-icons/fa', () => ({
     FaClipboardList: () => <div data-testid="clipboard-icon" />
 }));
 
-// Mock Child Components
 vi.mock('../../components/UserOrderCard', () => ({ default: () => <div data-testid="user-order-card">User Order Card</div> }));
 vi.mock('../../components/OwnerOrderCard', () => ({ default: () => <div data-testid="owner-order-card">Owner Order Card</div> }));
 vi.mock('../../components/DeliveryHistoryCard', () => ({ default: () => <div data-testid="delivery-card">Delivery Card</div> }));

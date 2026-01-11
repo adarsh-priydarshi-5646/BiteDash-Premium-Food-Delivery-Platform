@@ -18,7 +18,6 @@ vi.mock('react-icons/io', () => ({
 
 describe('ForgotPassword Component', () => {
     it('flow: sends otp -> verifies otp -> resets password', async () => {
-        // Step 1: Send OTP
         axios.post.mockResolvedValueOnce({ data: { success: true } });
         render(
             <BrowserRouter>
@@ -38,16 +37,12 @@ describe('ForgotPassword Component', () => {
             );
         });
 
-        // Step 2: Verify OTP
-        // Assuming component state updates and renders Step 2
-        // We need to wait for Step 2 UI to appear
         await waitFor(() => expect(screen.getByPlaceholderText('Enter OTP')).toBeInTheDocument());
         
         axios.post.mockResolvedValueOnce({ data: { success: true } });
         fireEvent.change(screen.getByPlaceholderText('Enter OTP'), { target: { value: '123456' } });
         fireEvent.click(screen.getByText('Verify'));
 
-        // Step 3: Reset Password
         await waitFor(() => expect(screen.getByPlaceholderText('Enter New Password')).toBeInTheDocument());
         
         axios.post.mockResolvedValueOnce({ data: { success: true } });

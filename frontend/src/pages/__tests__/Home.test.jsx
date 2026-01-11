@@ -3,7 +3,6 @@ import { describe, it, expect, vi } from 'vitest';
 import Home from '../Home';
 import { useSelector } from 'react-redux';
 
-// Mock Redux
 vi.mock('react-redux', async () => {
     const actual = await vi.importActual('react-redux');
     return {
@@ -12,7 +11,6 @@ vi.mock('react-redux', async () => {
     };
 });
 
-// Mock child components
 vi.mock('../../components/UserDashboard', () => ({ default: () => <div data-testid="user-dashboard">User Dashboard</div> }));
 vi.mock('../../components/OwnerDashboard', () => ({ default: () => <div data-testid="owner-dashboard">Owner Dashboard</div> }));
 vi.mock('../../components/DeliveryBoy', () => ({ default: () => <div data-testid="delivery-boy">Delivery Boy</div> }));

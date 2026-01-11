@@ -20,7 +20,6 @@ function Profile() {
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   
-  // Real stats state
   const [profileStats, setProfileStats] = useState({
     totalOrders: 0,
     totalReviews: 0,
@@ -29,7 +28,6 @@ function Profile() {
   });
   const [loadingStats, setLoadingStats] = useState(true);
 
-  // Profile Edit state
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState({
     fullName: userData?.fullName || "",

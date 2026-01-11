@@ -170,7 +170,6 @@ function DeliveryBoy() {
       );
       
       
-      // OTP is sent to user mobile/email
 
     } catch (error) {
       console.error("Background OTP send failed:", error);

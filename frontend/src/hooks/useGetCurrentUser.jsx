@@ -23,7 +23,6 @@ function useGetCurrentUser() {
         if (error.name === 'CanceledError' || error.code === 'ECONNABORTED') {
           console.warn('Authentication request timed out - backend may be unavailable');
         } else if (error.response?.status === 401) {
-          // User not authenticated
 
         } else {
           console.error('Error fetching current user:', error.message);

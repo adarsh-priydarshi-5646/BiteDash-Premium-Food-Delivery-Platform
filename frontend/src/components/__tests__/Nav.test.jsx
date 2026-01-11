@@ -15,7 +15,6 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock Redux
 const mockDispatch = vi.fn();
 vi.mock('react-redux', async () => {
     return {
@@ -25,7 +24,6 @@ vi.mock('react-redux', async () => {
     };
 });
 
-// Mock Icons to allow text queries or existence checks without fails
 vi.mock('react-icons/fa6', () => ({
     FaLocationDot: () => <div data-testid="location-icon" />,
     FaPlus: () => <div data-testid="plus-icon" />
@@ -60,9 +58,8 @@ describe('Nav Component', () => {
             currentCity: 'Mumbai',
             cartItems: [],
             myShopData: null,
-            user: { userData: mockUser } // State shape
+            user: { userData: mockUser }
         });
-        // Fixing selector return value: Nav uses state.user and state.owner
         useSelector.mockImplementation((selector) => {
             const state = {
                 user: { userData: mockUser, currentCity: 'Mumbai', cartItems: [{ id: 1 }] },
@@ -80,7 +77,6 @@ describe('Nav Component', () => {
         expect(screen.getByText('BiteDash')).toBeInTheDocument();
         expect(screen.getByText('Mumbai')).toBeInTheDocument();
         expect(screen.getByText('My Orders')).toBeInTheDocument();
-        // Cart badge
         expect(screen.getByText('1')).toBeInTheDocument();
     });
 
@@ -118,10 +114,8 @@ describe('Nav Component', () => {
             </BrowserRouter>
         );
 
-        // Click Avatar to show menu
         fireEvent.click(screen.getByText('J'));
         
-        // Click Log Out
         fireEvent.click(screen.getByText('Log Out'));
 
         await waitFor(() => {
@@ -146,9 +140,7 @@ describe('Nav Component', () => {
             </BrowserRouter>
         );
 
-        // Input is visible for desktop 'user' role
         const inputs = screen.getAllByPlaceholderText('Search delicious food...');
-        // Desktop input
         fireEvent.change(inputs[0], { target: { value: 'Pizza' } });
 
         await waitFor(() => {

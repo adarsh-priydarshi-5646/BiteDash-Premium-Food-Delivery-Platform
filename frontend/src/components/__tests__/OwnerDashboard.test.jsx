@@ -4,7 +4,6 @@ import OwnerDashboard from '../OwnerDashboard';
 import { BrowserRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-// Mock Redux
 const mockDispatch = vi.fn();
 vi.mock('react-redux', async () => {
     return {
@@ -14,7 +13,6 @@ vi.mock('react-redux', async () => {
     };
 });
 
-// Mock Icons
 vi.mock('react-icons/fa', () => ({
     FaStore: () => <div data-testid="store-icon" />,
     FaUtensils: () => <div />,
@@ -84,15 +82,12 @@ describe('OwnerDashboard Component', () => {
         expect(screen.getByText('My Shop')).toBeInTheDocument();
         expect(screen.getByText('Delhi, DL')).toBeInTheDocument();
         
-        // Stats
         expect(screen.getByText('Total Revenue')).toBeInTheDocument();
         expect(screen.getByText('₹500')).toBeInTheDocument();
         expect(screen.getByText('Total Orders')).toBeInTheDocument();
-        // '1' appears twice (Orders and Menu Items count)
         const counts = screen.getAllByText('1');
         expect(counts.length).toBeGreaterThanOrEqual(2);
 
-        // Menu Items
         expect(screen.getByText('Burger')).toBeInTheDocument();
     });
 });

@@ -39,7 +39,6 @@ function SignIn() {
       dispatch(setUserData(result.data));
       setErr("");
       setLoading(false);
-      // Trigger location fetch on successful login
       getCity().catch(e => console.error("Initial city fetch failed:", e));
       navigate("/");
     } catch (error) {
@@ -63,7 +62,6 @@ function SignIn() {
         { withCredentials: true }
       );
       dispatch(setUserData(data));
-      // Trigger location fetch on successful login
       getCity().catch(e => console.error("Initial city fetch failed:", e));
       navigate("/");
     } catch (error) {

@@ -4,7 +4,6 @@ import CategoryPage from '../CategoryPage';
 import { BrowserRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-// Mock dependencies
 vi.mock('react-redux', async () => {
     const actual = await vi.importActual('react-redux');
     return {
@@ -22,7 +21,6 @@ vi.mock('react-router-dom', async () => {
     };
 });
 
-// Mock Child Components
 vi.mock('../../components/Nav', () => ({ default: () => <div data-testid="nav">Nav</div> }));
 vi.mock('../../components/FilterSidebar', () => ({ default: () => <div data-testid="filter-sidebar">Filter Sidebar</div> }));
 vi.mock('../../components/FoodCard', () => ({ default: ({ data }) => <div data-testid="food-card">{data.name}</div> }));
@@ -51,7 +49,6 @@ describe('CategoryPage Component', () => {
             </BrowserRouter>
         );
 
-        // Should show only Pizza items
         expect(screen.getByText('Veg Pizza')).toBeInTheDocument();
         expect(screen.getByText('Chicken Pizza')).toBeInTheDocument();
         expect(screen.queryByText('Burger')).not.toBeInTheDocument();

@@ -12,7 +12,6 @@ import { setSocket, hydrateCart } from "./redux/userSlice";
 import useGetCity from "./hooks/useGetCity";
 import ErrorBoundary from "./components/ErrorBoundary";
 
-// Lazy load all page components for code splitting
 const SignUp = React.lazy(() => import("./pages/SignUp"));
 const SignIn = React.lazy(() => import("./pages/SignIn"));
 const ForgotPassword = React.lazy(() => import("./pages/ForgotPassword"));
@@ -49,16 +48,13 @@ function App() {
   const { userData, authLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   
-  // Authentication & Initial Data
   useGetCurrentUser();
   useGetMyshop();
   useGetShopByCity();
   useGetItemsByCity();
   useGetMyOrders();
 
-  // Re-enabled auto-geolocation for production correctness
   useUpdateLocation();
-  // Location fetch is better handled selectively to avoid browser "User Gesture" violations
   
   useEffect(() => {
     dispatch(hydrateCart());

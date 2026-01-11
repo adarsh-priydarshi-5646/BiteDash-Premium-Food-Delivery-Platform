@@ -162,7 +162,6 @@ const FoodCard = memo(({ data }) => {
     </div>
   );
 }, (prevProps, nextProps) => {
-  // Custom comparison to prevent unnecessary re-renders
   return (
     prevProps.data._id === nextProps.data._id &&
     prevProps.data.name === nextProps.data.name &&
