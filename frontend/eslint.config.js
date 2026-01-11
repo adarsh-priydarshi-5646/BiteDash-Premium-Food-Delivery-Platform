@@ -1,3 +1,9 @@
+/**
+ * ESLint Configuration - BiteDash Code Quality Rules
+ * 
+ * Enforces code quality standards with strict error checking
+ * Critical issues = error (blocks PR), Minor issues = warn
+ */
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -28,13 +34,25 @@ export default defineConfig([
       },
     },
     rules: {
+      // ============ ERRORS - Will FAIL the build ============
+      'no-undef': 'error',                    // Undefined variables
+      'no-const-assign': 'error',             // Reassigning const
+      'no-dupe-keys': 'error',                // Duplicate keys in objects
+      'no-duplicate-case': 'error',           // Duplicate case in switch
+      'no-func-assign': 'error',              // Reassigning functions
+      'no-import-assign': 'error',            // Reassigning imports
+      'no-unreachable': 'error',              // Unreachable code
+      'no-unsafe-negation': 'error',          // Unsafe negation
+      'valid-typeof': 'error',                // Invalid typeof comparisons
+      'react-hooks/rules-of-hooks': 'error',  // React hooks rules
+      
+      // ============ WARNINGS - Won't fail build ============
       'no-unused-vars': ['warn', { 
         varsIgnorePattern: '^[A-Z_]|^_',
         argsIgnorePattern: '^_',
         destructuredArrayIgnorePattern: '^_',
       }],
       'react-hooks/exhaustive-deps': 'warn',
-      'react-hooks/rules-of-hooks': 'error',
       'react-refresh/only-export-components': 'warn',
       'no-empty': 'warn',
       'no-async-promise-executor': 'warn',
