@@ -39,8 +39,8 @@ jobs:
         run: npm run build
         working-directory: frontend
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
+          VITE_API_URL: https://api.example.com
+          VITE_STRIPE_PUBLIC_KEY: pk_test_placeholder
 
       - name: Install Vercel CLI
         run: npm install -g vercel@latest

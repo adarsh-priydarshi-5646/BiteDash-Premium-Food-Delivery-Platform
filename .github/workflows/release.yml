@@ -70,8 +70,8 @@ jobs:
         run: npm run build
         working-directory: frontend
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
+          VITE_API_URL: https://api.example.com
+          VITE_STRIPE_PUBLIC_KEY: pk_test_placeholder
 
       - name: Verify
         run: test -f frontend/dist/index.html && echo "✅ Build OK"
