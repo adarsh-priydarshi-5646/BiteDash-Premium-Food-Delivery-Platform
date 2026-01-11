@@ -76,7 +76,6 @@ function SignUp() {
   };
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">
-        {}
        <div className="absolute top-6 left-6 cursor-pointer" onClick={() => navigate("/")}>
           <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">BiteDash</h1>
        </div>
@@ -88,7 +87,6 @@ function SignUp() {
         </div>
 
         <div className="space-y-4">
-           {}
            <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all">
              <input
               type="text"
@@ -100,7 +98,6 @@ function SignUp() {
             />
           </div>
 
-          {}
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all">
              <input
               type="email"
@@ -112,7 +109,6 @@ function SignUp() {
             />
           </div>
 
-           {}
            <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all">
              <input
               type="tel"
@@ -126,7 +122,6 @@ function SignUp() {
             />
           </div>
 
-          {}
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all relative">
              <input
                 type={showPassword ? "text" : "password"}
@@ -144,7 +139,6 @@ function SignUp() {
               </button>
           </div>
 
-           {}
            <div className="pt-2">
              <p className="text-gray-500 text-xs mb-2 uppercase tracking-wider font-semibold">Join as</p>
              <div className="flex gap-3">
