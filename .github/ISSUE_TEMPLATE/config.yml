@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://food-delivery-full-stack-app-me1o.vercel.app/docs
+    about: Check the documentation before opening an issue
+  - name: 💬 Discussions
+    url: https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/discussions
+    about: Ask questions and discuss ideas
