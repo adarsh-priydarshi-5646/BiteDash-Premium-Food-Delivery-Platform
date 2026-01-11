@@ -73,22 +73,114 @@ vi.mock('react-icons/md', () => ({
   MdDeliveryDining: () => <div>Icon</div>,
   MdOutlineAddLocationAlt: () => <div>Icon</div>,
 }));
-vi.mock('react-icons/fa', () => ({
-  FaCreditCard: () => <div>Icon</div>,
-  FaReceipt: () => <div>Icon</div>,
-  FaCheckCircle: () => <div>Icon</div>,
-  FaPlus: () => <div>Icon</div>,
-  FaFacebook: () => <div>Icon</div>,
-  FaTwitter: () => <div>Icon</div>,
-  FaInstagram: () => <div>Icon</div>,
-  FaLinkedin: () => <div>Icon</div>,
-  FaEnvelope: () => <div>Icon</div>,
-  FaPhone: () => <div>Icon</div>,
-  FaMapMarkerAlt: () => <div>Icon</div>,
-}));
-vi.mock('react-icons/fa6', () => ({
-  FaMobileScreenButton: () => <div>Icon</div>,
-}));
+vi.mock('react-icons/fa', () => {
+  const Icon = (props) => <span {...props} data-testid="icon" />;
+  return {
+    FaCreditCard: Icon,
+    FaReceipt: Icon,
+    FaCheckCircle: Icon,
+    FaPlus: Icon,
+    FaFacebook: Icon,
+    FaTwitter: Icon,
+    FaInstagram: Icon,
+    FaLinkedin: Icon,
+    FaEnvelope: Icon,
+    FaPhone: Icon,
+    FaMapMarkerAlt: Icon,
+    FaBars: Icon,
+    FaTimes: Icon,
+    FaGithub: Icon,
+    FaCode: Icon,
+    FaCloud: Icon,
+    FaTools: Icon,
+    FaRocket: Icon,
+    FaShieldAlt: Icon,
+    FaCogs: Icon,
+    FaChartLine: Icon,
+    FaUsers: Icon,
+    FaGlobe: Icon,
+    FaMobile: Icon,
+    FaDatabase: Icon,
+    FaServer: Icon,
+    FaPlug: Icon,
+    FaBolt: Icon,
+    FaClipboardList: Icon,
+    FaLock: Icon,
+    FaSave: Icon,
+    FaBuilding: Icon,
+    FaCube: Icon,
+    FaBan: Icon,
+    FaLayerGroup: Icon,
+    FaNetworkWired: Icon,
+    FaMemory: Icon,
+    FaPaintBrush: Icon,
+    FaExchangeAlt: Icon,
+    FaFileCode: Icon,
+    FaBook: Icon,
+    FaLightbulb: Icon,
+    FaWrench: Icon,
+    FaBoxOpen: Icon,
+    FaTachometerAlt: Icon,
+    FaUserShield: Icon,
+    FaBell: Icon,
+    FaSearch: Icon,
+    FaFilter: Icon,
+    FaStar: Icon,
+    FaHeart: Icon,
+    FaExternalLinkAlt: Icon,
+    FaAws: Icon,
+    FaChevronRight: Icon,
+  };
+});
+vi.mock('react-icons/fa6', () => {
+  const Icon = (props) => <span {...props} data-testid="icon" />;
+  return { FaMobileScreenButton: Icon };
+});
+vi.mock('react-icons/si', () => {
+  const Icon = (props) => <span {...props} data-testid="si-icon" />;
+  return {
+    SiReact: Icon,
+    SiNodedotjs: Icon,
+    SiMongodb: Icon,
+    SiExpress: Icon,
+    SiRedux: Icon,
+    SiSocketdotio: Icon,
+    SiTailwindcss: Icon,
+    SiFirebase: Icon,
+    SiStripe: Icon,
+    SiGit: Icon,
+    SiVercel: Icon,
+    SiRender: Icon,
+    SiVite: Icon,
+    SiJsonwebtokens: Icon,
+    SiPython: Icon,
+    SiJavascript: Icon,
+    SiTypescript: Icon,
+    SiDocker: Icon,
+    SiKubernetes: Icon,
+    SiGooglecloud: Icon,
+    SiTensorflow: Icon,
+    SiPytorch: Icon,
+    SiNumpy: Icon,
+    SiPandas: Icon,
+    SiJenkins: Icon,
+    SiGithubactions: Icon,
+    SiLinux: Icon,
+    SiNginx: Icon,
+    SiRedis: Icon,
+    SiPostgresql: Icon,
+    SiMysql: Icon,
+    SiGraphql: Icon,
+    SiNextdotjs: Icon,
+    SiJest: Icon,
+    SiFigma: Icon,
+    SiPostman: Icon,
+  };
+});
+vi.mock('react-icons/vsc', () => {
+  const Icon = (props) => <span {...props} data-testid="vsc-icon" />;
+  return { VscCode: Icon };
+});
 
 describe('CheckOut Component', () => {
   const defaultState = {
