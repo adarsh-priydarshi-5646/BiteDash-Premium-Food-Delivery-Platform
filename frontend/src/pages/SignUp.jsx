@@ -108,6 +108,7 @@ function SignUp() {
               placeholder="Full Name"
               onChange={(e) => setFullName(e.target.value)}
               value={fullName}
+              autoComplete="name"
               required
             />
           </div>
@@ -119,6 +120,7 @@ function SignUp() {
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              autoComplete="email"
               required
             />
           </div>
@@ -130,9 +132,10 @@ function SignUp() {
               placeholder="Mobile Number"
               onChange={(e) => setMobile(e.target.value)}
               value={mobile}
-              required
+              autoComplete="tel"
               inputMode="numeric"
               pattern="[0-9]*"
+              required
             />
           </div>
 
@@ -143,6 +146,7 @@ function SignUp() {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              autoComplete="new-password"
               required
             />
             <button
