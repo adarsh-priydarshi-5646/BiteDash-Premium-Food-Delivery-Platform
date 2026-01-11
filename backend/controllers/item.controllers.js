@@ -1,6 +1,7 @@
 import Item from "../models/item.model.js";
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import { escapeRegex } from "../utils/sanitize.js";
 
 export const addItem = async (req, res) => {
   try {
@@ -35,7 +36,8 @@ export const addItem = async (req, res) => {
     return res.status(201).json(shop);
 
   } catch (error) {
-    return res.status(500).json({ message: `add item error ${error}` });
+    console.error("Add item error:", error);
+    return res.status(500).json({ message: "Failed to add item. Please try again." });
   }
 };
 
@@ -69,7 +71,8 @@ export const editItem = async (req, res) => {
     });
     return res.status(200).json(shop);
   } catch (error) {
-    return res.status(500).json({ message: `edit item error ${error}` });
+    console.error("Edit item error:", error);
+    return res.status(500).json({ message: "Failed to edit item. Please try again." });
   }
 };
 
@@ -82,7 +85,8 @@ export const getItemById = async (req, res) => {
     }
     return res.status(200).json(item);
   } catch (error) {
-    return res.status(500).json({ message: `get item error ${error}` });
+    console.error("Get item error:", error);
+    return res.status(500).json({ message: "Failed to get item. Please try again." });
   }
 };
 
@@ -102,7 +106,8 @@ export const deleteItem = async (req, res) => {
     });
     return res.status(200).json(shop);
   } catch (error) {
-    return res.status(500).json({ message: `delete item error ${error}` });
+    console.error("Delete item error:", error);
+    return res.status(500).json({ message: "Failed to delete item. Please try again." });
   }
 };
 
@@ -113,23 +118,24 @@ export const getItemByCity = async (req, res) => {
       return res.status(400).json({ message: "city is required" });
     }
     
+    // Escape regex special characters to prevent ReDoS
+    const safeCity = escapeRegex(city);
     
     const cityShops = await Shop.find({
-      city: { $regex: new RegExp(`^${city}$`, "i") },
+      city: { $regex: new RegExp(`^${safeCity}$`, "i") },
       isDefault: false,
     }).populate("items");
 
-    
     const defaultShop = await Shop.findOne({ isDefault: true }).populate("items");
 
-    
     const cityShopIds = cityShops.map((shop) => shop._id);
     const shopIds = defaultShop ? [defaultShop._id, ...cityShopIds] : cityShopIds;
 
     const items = await Item.find({ shop: { $in: shopIds } });
     return res.status(200).json(items);
   } catch (error) {
-    return res.status(500).json({ message: `get item by city error ${error}` });
+    console.error("Get item by city error:", error);
+    return res.status(500).json({ message: "Failed to get items. Please try again." });
   }
 };
 
@@ -145,7 +151,8 @@ export const getItemsByShop = async (req, res) => {
       items: shop.items,
     });
   } catch (error) {
-    return res.status(500).json({ message: `get item by shop error ${error}` });
+    console.error("Get item by shop error:", error);
+    return res.status(500).json({ message: "Failed to get items. Please try again." });
   }
 };
 
@@ -153,33 +160,35 @@ export const searchItems = async (req, res) => {
   try {
     const { query, city } = req.query;
     if (!query || !city) {
-      return null;
+      return res.status(400).json({ message: "query and city required" });
     }
     
+    // Escape regex special characters to prevent ReDoS
+    const safeCity = escapeRegex(city);
+    const safeQuery = escapeRegex(query);
     
     const cityShops = await Shop.find({
-      city: { $regex: new RegExp(`^${city}$`, "i") },
+      city: { $regex: new RegExp(`^${safeCity}$`, "i") },
       isDefault: false,
     }).populate("items");
 
-    
     const defaultShop = await Shop.findOne({ isDefault: true }).populate("items");
 
-    
     const cityShopIds = cityShops.map((s) => s._id);
     const shopIds = defaultShop ? [defaultShop._id, ...cityShopIds] : cityShopIds;
 
     const items = await Item.find({
       shop: { $in: shopIds },
       $or: [
-        { name: { $regex: query, $options: "i" } },
-        { category: { $regex: query, $options: "i" } },
+        { name: { $regex: safeQuery, $options: "i" } },
+        { category: { $regex: safeQuery, $options: "i" } },
       ],
     }).populate("shop", "name image");
 
     return res.status(200).json(items);
   } catch (error) {
-    return res.status(500).json({ message: `search item  error ${error}` });
+    console.error("Search item error:", error);
+    return res.status(500).json({ message: "Search failed. Please try again." });
   }
 };
 
@@ -209,6 +218,7 @@ export const rating = async (req, res) => {
     await item.save();
     return res.status(200).json({ rating: item.rating });
   } catch (error) {
-    return res.status(500).json({ message: `rating error ${error}` });
+    console.error("Rating error:", error);
+    return res.status(500).json({ message: "Failed to submit rating. Please try again." });
   }
 };

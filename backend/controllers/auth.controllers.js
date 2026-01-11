@@ -45,7 +45,8 @@ export const signUp = async (req, res) => {
     return res.status(201).json(user);
 
   } catch (error) {
-    return res.status(500).json(`sign up error ${error}`);
+    console.error("Sign up error:", error);
+    return res.status(500).json({ message: "Sign up failed. Please try again." });
   }
 };
 
@@ -77,7 +78,8 @@ export const signIn = async (req, res) => {
     return res.status(200).json(user);
 
   } catch (error) {
-    return res.status(500).json(`sign In error ${error}`);
+    console.error("Sign in error:", error);
+    return res.status(500).json({ message: "Sign in failed. Please try again." });
   }
 };
 
@@ -87,7 +89,8 @@ export const signOut = async (req, res) => {
     return res.status(200).json({ message: "log out successfully" });
 
   } catch (error) {
-    return res.status(500).json(`sign out error ${error}`);
+    console.error("Sign out error:", error);
+    return res.status(500).json({ message: "Sign out failed. Please try again." });
   }
 };
 
@@ -120,7 +123,7 @@ export const sendOtp = async (req, res) => {
 
   } catch (error) {
     console.error("Send OTP error:", error);
-    return res.status(500).json({ message: `send otp error: ${error.message}` });
+    return res.status(500).json({ message: "Failed to send OTP. Please try again." });
   }
 };
 
@@ -141,7 +144,8 @@ export const verifyOtp = async (req, res) => {
     return res.status(200).json({ message: "otp verify successfully" });
 
   } catch (error) {
-    return res.status(500).json(`verify otp error ${error}`);
+    console.error("Verify OTP error:", error);
+    return res.status(500).json({ message: "OTP verification failed. Please try again." });
   }
 };
 
@@ -164,7 +168,8 @@ export const resetPassword = async (req, res) => {
     return res.status(200).json({ message: "password reset successfully" });
 
   } catch (error) {
-    return res.status(500).json(`reset password error ${error}`);
+    console.error("Reset password error:", error);
+    return res.status(500).json({ message: "Password reset failed. Please try again." });
   }
 };
 
@@ -195,6 +200,7 @@ export const googleAuth = async (req, res) => {
     return res.status(200).json(user);
     
   } catch (error) {
-    return res.status(500).json(`googleAuth error ${error}`);
+    console.error("Google auth error:", error);
+    return res.status(500).json({ message: "Google authentication failed. Please try again." });
   }
 };

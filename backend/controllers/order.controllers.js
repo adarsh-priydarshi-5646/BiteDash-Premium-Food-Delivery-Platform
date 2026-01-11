@@ -186,7 +186,8 @@ export const placeOrder = async (req, res) => {
 
     return res.status(201).json(newOrder);
   } catch (error) {
-    return res.status(500).json({ message: `place order error ${error}` });
+    console.error("Place order error:", error);
+    return res.status(500).json({ message: "Failed to place order. Please try again." });
   }
 };
 
@@ -243,7 +244,8 @@ export const getMyOrders = async (req, res) => {
       return res.status(200).json(formatedOrders);
     }
   } catch (error) {
-    return res.status(500).json({ message: `get User order error ${error}` });
+    console.error("Get user orders error:", error);
+    return res.status(500).json({ message: "Failed to get orders. Please try again." });
   }
 };
 
@@ -385,7 +387,8 @@ export const updateOrderStatus = async (req, res) => {
       assignment: updatedShopOrder?.assignment?._id,
     });
   } catch (error) {
-    return res.status(500).json({ message: `order status error ${error}` });
+    console.error("Order status error:", error);
+    return res.status(500).json({ message: "Failed to update order status. Please try again." });
   }
 };
 
@@ -431,8 +434,8 @@ export const getDeliveryBoyAssignment = async (req, res) => {
 
     return res.status(200).json(formated);
   } catch (error) {
-    console.error("Get Assignment error:", error);
-    return res.status(500).json({ message: `get Assignment error ${error}` });
+    console.error("Get assignment error:", error);
+    return res.status(500).json({ message: "Failed to get assignments. Please try again." });
   }
 };
 
@@ -486,8 +489,8 @@ export const acceptOrder = async (req, res) => {
       message: "order accepted",
     });
   } catch (error) {
-    console.error(`Accept order error:`, error);
-    return res.status(500).json({ message: `accept order error ${error.message}` });
+    console.error("Accept order error:", error);
+    return res.status(500).json({ message: "Failed to accept order. Please try again." });
   }
 };
 
@@ -566,7 +569,8 @@ export const getOrderById = async (req, res) => {
     }
     return res.status(200).json(order);
   } catch (error) {
-    return res.status(500).json({ message: `get by id order error ${error}` });
+    console.error("Get order by id error:", error);
+    return res.status(500).json({ message: "Failed to get order. Please try again." });
   }
 };
 
@@ -601,7 +605,8 @@ export const sendDeliveryOtp = async (req, res) => {
         message: `OTP sent successfully to ${order?.user?.email}`
       });
   } catch (error) {
-    return res.status(500).json({ message: `delivery otp error ${error}` });
+    console.error("Delivery OTP error:", error);
+    return res.status(500).json({ message: "Failed to send delivery OTP. Please try again." });
   }
 };
 
@@ -672,9 +677,7 @@ export const verifyDeliveryOtp = async (req, res) => {
     });
   } catch (error) {
     console.error("Verify delivery OTP error:", error);
-    return res
-      .status(500)
-      .json({ message: `verify delivery otp error ${error}` });
+    return res.status(500).json({ message: "Failed to verify OTP. Please try again." });
   }
 };
 
@@ -721,7 +724,8 @@ export const getTodayDeliveries = async (req, res) => {
 
     return res.status(200).json(formattedStats);
   } catch (error) {
-    return res.status(500).json({ message: `today deliveries error ${error}` });
+    console.error("Today deliveries error:", error);
+    return res.status(500).json({ message: "Failed to get deliveries. Please try again." });
   }
 };
 
@@ -753,7 +757,8 @@ export const deleteOrder = async (req, res) => {
     await Order.findByIdAndDelete(orderId);
     return res.status(200).json({ message: "Order deleted successfully" });
   } catch (error) {
-    return res.status(500).json({ message: `delete order error ${error}` });
+    console.error("Delete order error:", error);
+    return res.status(500).json({ message: "Failed to delete order. Please try again." });
   }
 };
 
@@ -820,7 +825,7 @@ export const cancelOrder = async (req, res) => {
 
   } catch (error) {
     console.error("Cancel order error:", error);
-    return res.status(500).json({ message: `cancel order error ${error.message}` });
+    return res.status(500).json({ message: "Failed to cancel order. Please try again." });
   }
 };
 
@@ -869,7 +874,8 @@ export const rateOrder = async (req, res) => {
       orderRating: order.orderRating 
     });
   } catch (error) {
-    return res.status(500).json({ message: `rate order error ${error}` });
+    console.error("Rate order error:", error);
+    return res.status(500).json({ message: "Failed to rate order. Please try again." });
   }
 };
 
@@ -920,7 +926,7 @@ export const createStripePaymentIntent = async (req, res) => {
     });
   } catch (error) {
     console.error("Stripe payment error:", error);
-    return res.status(500).json({ message: `stripe payment error ${error.message}` });
+    return res.status(500).json({ message: "Payment failed. Please try again." });
   }
 };
 
@@ -1001,6 +1007,6 @@ export const verifyStripePayment = async (req, res) => {
     return res.status(200).json(order);
   } catch (error) {
     console.error("Verify stripe payment error:", error);
-    return res.status(500).json({ message: `verify stripe payment error ${error.message}` });
+    return res.status(500).json({ message: "Payment verification failed. Please try again." });
   }
 };

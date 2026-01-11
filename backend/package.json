@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
+    "start:cluster": "node cluster.js",
     "seed:default": "node seedDefaultRestaurant.js",
     "seed:users": "node seedDefaults.js"
   },

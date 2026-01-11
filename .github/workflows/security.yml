@@ -45,21 +45,6 @@ jobs:
         run: npm audit --audit-level=high || echo "::warning::Vulnerabilities in ${{ matrix.dir }}"
         working-directory: ${{ matrix.dir }}
 
-  codeql:
-    name: CodeQL
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-    steps:
-      - uses: actions/checkout@v6
-      - uses: github/codeql-action/init@v3
-        with:
-          languages: javascript
-      - uses: github/codeql-action/autobuild@v3
-      - uses: github/codeql-action/analyze@v3
-
   secrets:
     name: Secret Scan
     runs-on: ubuntu-latest
@@ -73,17 +58,12 @@ jobs:
 
   status:
     name: Status
-    needs: [npm-audit, codeql, secrets]
+    needs: [npm-audit, secrets]
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Results
         run: |
           echo "NPM: ${{ needs.npm-audit.result }}"
-          echo "CodeQL: ${{ needs.codeql.result }}"
           echo "Secrets: ${{ needs.secrets.result }}"
-          
-          if [ "${{ needs.codeql.result }}" == "failure" ]; then
-            exit 1
-          fi
-          echo "✅ Security scan done"
+          echo "✅ Security scan done (CodeQL handled by GitHub default)"

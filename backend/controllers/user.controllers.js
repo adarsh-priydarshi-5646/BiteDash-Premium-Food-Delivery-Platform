@@ -13,7 +13,8 @@ export const getCurrentUser = async (req, res) => {
     }
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json({ message: `get current user error ${error}` });
+    console.error("Get current user error:", error);
+    return res.status(500).json({ message: "Failed to get user. Please try again." });
   }
 };
 
@@ -36,9 +37,8 @@ export const updateUserLocation = async (req, res) => {
 
     return res.status(200).json({ message: "location updated" });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: `update location user error ${error}` });
+    console.error("Update location error:", error);
+    return res.status(500).json({ message: "Failed to update location. Please try again." });
   }
 };
 
@@ -70,7 +70,8 @@ export const updateBankDetails = async (req, res) => {
       bankDetails: user.bankDetails 
     });
   } catch (error) {
-    return res.status(500).json({ message: `update bank details error ${error}` });
+    console.error("Update bank details error:", error);
+    return res.status(500).json({ message: "Failed to update bank details. Please try again." });
   }
 };
 
@@ -86,7 +87,8 @@ export const getBankDetails = async (req, res) => {
       totalEarnings: user.totalEarnings 
     });
   } catch (error) {
-    return res.status(500).json({ message: `get bank details error ${error}` });
+    console.error("Get bank details error:", error);
+    return res.status(500).json({ message: "Failed to get bank details. Please try again." });
   }
 };
 
@@ -107,7 +109,8 @@ export const addAddress = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "Address added successfully", user });
   } catch (error) {
-    return res.status(500).json({ message: `add address error ${error}` });
+    console.error("Add address error:", error);
+    return res.status(500).json({ message: "Failed to add address. Please try again." });
   }
 };
 
@@ -128,7 +131,8 @@ export const updateAddress = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "Address updated successfully", user });
   } catch (error) {
-    return res.status(500).json({ message: `update address error ${error}` });
+    console.error("Update address error:", error);
+    return res.status(500).json({ message: "Failed to update address. Please try again." });
   }
 };
 
@@ -151,7 +155,8 @@ export const removeAddress = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "Address removed successfully", user });
   } catch (error) {
-    return res.status(500).json({ message: `remove address error ${error}` });
+    console.error("Remove address error:", error);
+    return res.status(500).json({ message: "Failed to remove address. Please try again." });
   }
 };
 
@@ -168,7 +173,8 @@ export const updateProfile = async (req, res) => {
     await user.save();
     return res.status(200).json({ message: "Profile updated successfully", user });
   } catch (error) {
-    return res.status(500).json({ message: `update profile error ${error}` });
+    console.error("Update profile error:", error);
+    return res.status(500).json({ message: "Failed to update profile. Please try again." });
   }
 };
 
@@ -201,6 +207,7 @@ export const getProfileStats = async (req, res) => {
       savedTime: `${savedTimeHours} hrs`
     });
   } catch (error) {
-    return res.status(500).json({ message: `get profile stats error ${error}` });
+    console.error("Get profile stats error:", error);
+    return res.status(500).json({ message: "Failed to get profile stats. Please try again." });
   }
 };

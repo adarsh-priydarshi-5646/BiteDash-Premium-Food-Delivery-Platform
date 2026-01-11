@@ -1,5 +1,6 @@
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import { escapeRegex } from "../utils/sanitize.js";
 
 export const createEditShop = async (req, res) => {
   try {
@@ -38,7 +39,8 @@ export const createEditShop = async (req, res) => {
     await shop.populate("owner items");
     return res.status(201).json(shop);
   } catch (error) {
-    return res.status(500).json({ message: `create shop error ${error}` });
+    console.error("Create shop error:", error);
+    return res.status(500).json({ message: "Failed to create shop. Please try again." });
   }
 };
 
@@ -55,7 +57,8 @@ export const getMyShop = async (req, res) => {
     }
     return res.status(200).json(shop);
   } catch (error) {
-    return res.status(500).json({ message: `get my shop error ${error}` });
+    console.error("Get my shop error:", error);
+    return res.status(500).json({ message: "Failed to get shop. Please try again." });
   }
 };
 
@@ -63,21 +66,16 @@ export const getShopByCity = async (req, res) => {
   try {
     const { city } = req.params;
 
+    // Escape regex special characters to prevent ReDoS
+    const safeCity = escapeRegex(city);
     
     const cityShops = await Shop.find({
-      city: { $regex: new RegExp(`^${city}$`, "i") },
+      city: { $regex: new RegExp(`^${safeCity}$`, "i") },
       isDefault: false,
     }).populate("items");
 
-    
     const defaultShop = await Shop.findOne({ isDefault: true }).populate("items");
 
-    console.log(`City: ${city}`);
-    console.log(`Default shop:`, defaultShop ? defaultShop.name : 'Not found');
-    console.log(`City shops count:`, cityShops.length);
-    console.log(`City shops:`, cityShops.map(s => s.name));
-
-    
     const shops = defaultShop ? [defaultShop, ...cityShops] : cityShops;
 
     if (!shops || shops.length === 0) {
@@ -85,6 +83,7 @@ export const getShopByCity = async (req, res) => {
     }
     return res.status(200).json(shops);
   } catch (error) {
-    return res.status(500).json({ message: `get shop by city error ${error}` });
+    console.error("Get shop by city error:", error);
+    return res.status(500).json({ message: "Failed to get shops. Please try again." });
   }
 };

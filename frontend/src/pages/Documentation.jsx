@@ -1,6 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { marked } from "marked";
 import { FaChevronRight, FaBars, FaTimes } from "react-icons/fa";
+
+// Simple HTML sanitizer to prevent XSS
+const sanitizeHtml = (html) => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  
+  // Remove dangerous elements
+  const dangerous = ['script', 'iframe', 'object', 'embed', 'form'];
+  dangerous.forEach(tag => {
+    const elements = div.getElementsByTagName(tag);
+    while (elements.length > 0) {
+      elements[0].parentNode.removeChild(elements[0]);
+    }
+  });
+  
+  // Remove dangerous attributes
+  const allElements = div.getElementsByTagName('*');
+  for (let i = 0; i < allElements.length; i++) {
+    const el = allElements[i];
+    const attrs = [...el.attributes];
+    attrs.forEach(attr => {
+      if (attr.name.startsWith('on') || attr.value.includes('javascript:')) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  }
+  
+  return div.innerHTML;
+};
 
 const Documentation = () => {
   const [sections, setSections] = useState({});
@@ -46,7 +75,7 @@ const Documentation = () => {
           const id = rawTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
           sectionMap[id] = {
             title: rawTitle,
-            html: marked.parse(content)
+            html: sanitizeHtml(marked.parse(content))
           };
         });
 
