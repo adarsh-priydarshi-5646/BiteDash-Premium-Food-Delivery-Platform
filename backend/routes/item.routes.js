@@ -1,5 +1,9 @@
 /**
- * Item Routes - Food item CRUD with caching & search
+ * Item Routes - Food menu item CRUD, search & rating endpoints
+ * 
+ * Endpoints: /add, /edit/:itemId, /delete/:itemId, /:itemId, /city/:city, /search, /rating
+ * Features: In-memory caching for city items, rate-limited search, Multer file upload
+ * Protected routes require JWT auth, search supports query + city filtering
  */
 import express from "express";
 import isAuth from "../middlewares/isAuth.js";

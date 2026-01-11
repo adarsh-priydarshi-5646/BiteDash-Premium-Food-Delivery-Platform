@@ -1,5 +1,9 @@
 /**
- * Home Page - Role-based dashboard routing (User/Owner/DeliveryBoy)
+ * Home Page - Role-based dashboard routing
+ * 
+ * Routes: UserDashboard (customers), OwnerDashboard (restaurants), DeliveryBoy (partners)
+ * Renders appropriate dashboard based on userData.role
+ * Includes Footer component for all roles
  */
 import React from "react";
 import { useSelector } from "react-redux";

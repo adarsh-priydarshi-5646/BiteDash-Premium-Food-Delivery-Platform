@@ -1,5 +1,9 @@
 /**
- * Shop Validators - Input validation for shop/restaurant endpoints
+ * Shop Validators - Input validation for shop endpoints
+ * 
+ * Functions: validateCreateShop, validateUpdateShop
+ * Validates: shop name, city, state, address fields
+ * Returns array of error messages, empty if valid
  */
 
 export const validateCreateShop = (data) => {

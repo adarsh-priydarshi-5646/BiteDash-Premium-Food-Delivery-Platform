@@ -1,5 +1,9 @@
 /**
- * Firebase Configuration - Google authentication setup
+ * Firebase Configuration - Google OAuth setup
+ * 
+ * Initializes Firebase app with environment variables
+ * Exports auth instance for Google sign-in
+ * Note: Firebase project still uses "vingo" (requires new project to change)
  */
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";

@@ -1,16 +1,11 @@
-import DeliveryAssignment from "../models/deliveryAssignment.model.js";
-import Order from "../models/order.model.js";
-import Shop from "../models/shop.model.js";
-import User from "../models/user.model.js";
-import { sendDeliveryOtpMailSendGrid } from "../utils/sendgridMail.js";
-import stripe from "../config/stripe.js";
-import dotenv from "dotenv";
-
-dotenv.config();
-
 /**
- * Order Controller - Handles order lifecycle, delivery assignment & payments
+ * Order Controller - Complete order lifecycle management
+ * 
+ * Features: Place orders (COD/Stripe), assign delivery boys via geolocation,
+ * real-time status updates via Socket.IO, OTP verification for delivery
+ * Supports multi-shop orders, delivery tracking & order ratings
  */
+import DeliveryAssignment from "../models/deliveryAssignment.model.js";
 
 /**
  * Assigns nearby available delivery boys to order via geospatial query

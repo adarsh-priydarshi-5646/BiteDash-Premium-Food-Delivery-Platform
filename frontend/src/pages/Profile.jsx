@@ -1,5 +1,9 @@
 /**
- * Profile Page - User profile, addresses, stats & settings management
+ * Profile Page - User account management
+ * 
+ * Sections: Profile info, saved addresses, order stats, settings
+ * Features: Edit profile, add/edit/delete addresses, set default address
+ * Stats: Total orders, reviews, points, time saved
  */
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";

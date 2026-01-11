@@ -1,5 +1,9 @@
 /**
- * Main Entry Point - React app initialization with Redux & Router
+ * Main Entry Point - React app bootstrap
+ * 
+ * Wraps App with: StrictMode, BrowserRouter, Redux Provider
+ * Renders to #root element in index.html
+ * Imports global CSS styles
  */
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";

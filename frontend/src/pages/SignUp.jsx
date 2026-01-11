@@ -1,5 +1,9 @@
 /**
- * Sign Up Page - User registration with role selection
+ * Sign Up Page - New user registration
+ * 
+ * Fields: Name, email, password, mobile, role (user/owner/deliveryBoy)
+ * Methods: Form submission, Google OAuth via Firebase
+ * Validates password length (6+), mobile digits (10+)
  */
 import React from "react";
 import { useState } from "react";

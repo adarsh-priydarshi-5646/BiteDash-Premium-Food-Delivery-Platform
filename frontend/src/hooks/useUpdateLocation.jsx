@@ -1,5 +1,9 @@
 /**
- * Hook: Watch & update delivery boy location for real-time tracking
+ * useUpdateLocation Hook - Real-time location tracking for delivery
+ * 
+ * Uses browser Geolocation API with watchPosition for continuous updates
+ * Sends location to server via PUT /user/update-location
+ * Emits Socket.IO 'updateLocation' event for real-time tracking
  */
 import axios from "axios";
 import React, { useEffect } from "react";

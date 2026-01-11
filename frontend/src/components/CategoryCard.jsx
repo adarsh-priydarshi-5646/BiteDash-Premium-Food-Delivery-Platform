@@ -1,5 +1,9 @@
 /**
- * CategoryCard Component - Food category display card with image
+ * CategoryCard Component - Food category card with image
+ * 
+ * Props: name, image, onClick handler
+ * Displays category image with name overlay
+ * Used in home page category carousel
  */
 import React from "react";
 

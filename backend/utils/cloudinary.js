@@ -1,5 +1,9 @@
 /**
- * Cloudinary Upload - Image upload with auto-cleanup
+ * Cloudinary Upload - Image hosting service integration
+ * 
+ * Uploads images to Cloudinary cloud storage, returns secure URL
+ * Auto-deletes local file after successful upload
+ * Used for shop images, food item images, user avatars
  */
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";

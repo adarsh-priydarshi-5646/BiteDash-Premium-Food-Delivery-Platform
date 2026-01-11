@@ -1,5 +1,9 @@
 /**
- * Documentation Page - Technical docs viewer with markdown rendering
+ * Documentation Page - Technical docs with markdown rendering
+ * 
+ * Features: Sidebar navigation, markdown-to-HTML conversion, code highlighting
+ * Sections: Getting Started, API Reference, Architecture, Deployment
+ * Uses marked library with HTML sanitization for XSS prevention
  */
 import React, { useState, useEffect, useMemo } from "react";
 import { marked } from "marked";

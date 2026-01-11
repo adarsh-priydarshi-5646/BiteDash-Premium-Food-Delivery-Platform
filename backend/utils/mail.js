@@ -1,5 +1,9 @@
 /**
- * Nodemailer Utils - Email sending via Gmail SMTP
+ * Nodemailer Utils - Gmail SMTP email service (fallback)
+ * 
+ * Uses Gmail SMTP with app password authentication
+ * Functions: sendOtpMail for password reset OTP
+ * Fallback option if SendGrid unavailable
  */
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";

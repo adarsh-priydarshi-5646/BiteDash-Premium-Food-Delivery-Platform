@@ -1,5 +1,9 @@
 /**
- * App Component - Main application entry with routing & socket initialization
+ * App Component - Root component with routing & global state initialization
+ * 
+ * Features: Protected routes based on auth, lazy loading for code splitting,
+ * Socket.IO connection for real-time updates, cart hydration from localStorage
+ * Role-based dashboards: User, Owner, DeliveryBoy
  */
 import React, { useEffect, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";

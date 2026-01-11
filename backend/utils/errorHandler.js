@@ -1,5 +1,9 @@
 /**
  * Error Handler Utils - Standardized error response helpers
+ * 
+ * handleError: Logs error and returns generic 500 response
+ * Prevents stack trace exposure in production
+ * Provides consistent error format across all endpoints
  */
 export const handleError = (res, error, context = 'operation') => {
   console.error(`${context} error:`, error);

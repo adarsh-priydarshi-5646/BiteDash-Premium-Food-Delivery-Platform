@@ -1,6 +1,9 @@
 /**
- * Redux User Slice - Global state for user, cart, orders & filters
- * Cart persists to localStorage for session recovery
+ * User Redux Slice - Central state management for user data
+ * 
+ * State: userData, cart (persisted to localStorage), orders, filters
+ * Actions: Auth state, cart CRUD, order updates, category/price filters
+ * Real-time updates via Socket.IO for order status changes
  */
 import { createSlice } from "@reduxjs/toolkit";
 

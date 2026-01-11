@@ -1,5 +1,9 @@
 /**
- * Frontend Constants - Centralized configuration values
+ * Frontend Constants - Centralized config & magic values
+ * 
+ * Categories: API endpoints, app config, regex patterns, storage keys
+ * Order statuses, payment methods, user roles
+ * Prevents hardcoded values scattered across components
  */
 
 // API Endpoints

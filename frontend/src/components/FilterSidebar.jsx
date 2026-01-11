@@ -1,5 +1,9 @@
 /**
- * FilterSidebar Component - Category, price & sort filters for food listing
+ * FilterSidebar Component - Food listing filters
+ * 
+ * Filters: Category checkboxes, price range slider, sort options
+ * Quick filters: Veg only, Fast delivery, Top rated
+ * Dispatches Redux actions, clear all filters button
  */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";

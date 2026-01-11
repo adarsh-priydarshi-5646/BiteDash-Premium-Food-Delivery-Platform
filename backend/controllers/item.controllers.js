@@ -1,5 +1,9 @@
 /**
- * Item Controller - CRUD operations for food items with search & rating
+ * Item Controller - Food menu items CRUD with search & rating system
+ * 
+ * Endpoints: addItem, editItem, deleteItem, getItemById, getItemByCity, searchItems, rating
+ * Features: Cloudinary image upload, city-based filtering, text search, 5-star rating system
+ * Items linked to shops, supports veg/non-veg foodType & category classification
  */
 import Item from "../models/item.model.js";
 import Shop from "../models/shop.model.js";

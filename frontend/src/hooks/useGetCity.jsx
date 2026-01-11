@@ -1,5 +1,9 @@
 /**
- * useGetCity Hook - Geolocation with fallback: GPS -> Profile -> Cache -> Default
+ * useGetCity Hook - Smart geolocation with multiple fallbacks
+ * 
+ * Priority: GPS location → User profile address → localStorage cache → Default city
+ * Uses OpenStreetMap Nominatim API for reverse geocoding
+ * Updates mapSlice with city, state, address for filtering
  */
 import axios from "axios";
 import { useEffect, useCallback } from "react";

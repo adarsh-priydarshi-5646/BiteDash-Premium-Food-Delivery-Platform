@@ -1,5 +1,9 @@
 /**
- * Forgot Password - 3-step OTP-based password reset flow
+ * Forgot Password Page - OTP-based password reset
+ * 
+ * Steps: 1) Enter email → 2) Verify OTP → 3) Set new password
+ * OTP sent via SendGrid, expires in 5 minutes
+ * Loading spinner during API calls, error handling
  */
 import axios from "axios";
 import React, { useState } from "react";

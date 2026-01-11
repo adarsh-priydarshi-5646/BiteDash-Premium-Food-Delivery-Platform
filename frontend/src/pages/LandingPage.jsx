@@ -1,5 +1,9 @@
 /**
- * Landing Page - Public homepage with hero, collections & trending items
+ * Landing Page - Public homepage for unauthenticated users
+ * 
+ * Sections: Hero with city search, food collections, trending items, app features
+ * Features: City autocomplete, category cards, restaurant preview
+ * Responsive design with animations, CTA buttons for signup
  */
 import React, { useState, useEffect } from "react";
 import axios from "axios";

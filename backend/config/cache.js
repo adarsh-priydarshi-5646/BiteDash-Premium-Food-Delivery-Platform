@@ -1,6 +1,9 @@
 /**
- * In-Memory Cache with TTL
- * For distributed systems, replace with Redis
+ * In-Memory Cache - TTL-based caching for API responses
+ * 
+ * Methods: get, set (with TTL), delete, clear, cleanup
+ * Auto-cleanup of expired entries every 60 seconds
+ * For production: Replace with Redis for distributed caching
  */
 class Cache {
   constructor() {

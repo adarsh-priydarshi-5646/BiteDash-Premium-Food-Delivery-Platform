@@ -1,5 +1,9 @@
 /**
- * Auth Validators - Input validation for authentication endpoints
+ * Auth Validators - Input validation for auth endpoints
+ * 
+ * Functions: validateSignUp, validateSignIn, validateResetPassword
+ * Validates: email format, password length (6+), mobile digits (10+)
+ * Returns array of error messages, empty if valid
  */
 
 export const validateSignUp = (data) => {

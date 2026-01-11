@@ -1,5 +1,9 @@
 /**
- * Frontend Utilities - Helper functions for common operations
+ * Frontend Utilities - Reusable helper functions
+ * 
+ * Functions: formatCurrency, formatDate, validateEmail, validateMobile
+ * Storage helpers: getFromStorage, setToStorage, removeFromStorage
+ * Used across components for consistent formatting & validation
  */
 
 import { APP_CONFIG, REGEX, STORAGE_KEYS } from '../constants';

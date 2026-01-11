@@ -1,5 +1,9 @@
 /**
- * Map Redux Slice - Location & address state management
+ * Map Redux Slice - Geolocation & delivery address state
+ * 
+ * State: location (lat/lon), currentCity, currentState, currentAddress
+ * Actions: setLocation, setCurrentCity, setCurrentAddress, setCurrentState
+ * Used for city-based filtering and delivery tracking
  */
 import { createSlice } from "@reduxjs/toolkit";
 

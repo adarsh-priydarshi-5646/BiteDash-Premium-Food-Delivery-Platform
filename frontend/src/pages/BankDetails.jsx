@@ -1,5 +1,9 @@
 /**
- * Bank Details Page - Owner payout settings & earnings dashboard
+ * Bank Details Page - Restaurant owner payout settings
+ * 
+ * Features: Bank account form, UPI ID, total earnings display
+ * Fields: Account holder, account number, IFSC, bank name, UPI
+ * Secure form with validation, earnings dashboard
  */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";

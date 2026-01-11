@@ -1,5 +1,9 @@
 /**
- * Shop Routes - Restaurant CRUD with city-based caching
+ * Shop Routes - Restaurant/Shop CRUD with city-based filtering
+ * 
+ * Endpoints: /create-edit, /my-shop, /city/:city
+ * Features: In-memory caching for city shops (5 min TTL), Multer image upload
+ * Protected routes for create/edit, public city endpoint with cache
  */
 import express from "express";
 import {

@@ -1,5 +1,9 @@
 /**
- * Gzip Compression - Compresses responses > 1KB
+ * Compression Middleware - Gzip compression for API responses
+ * 
+ * Compresses JSON responses larger than 1KB using zlib
+ * Checks Accept-Encoding header for gzip support
+ * Reduces bandwidth usage, improves response times
  */
 import zlib from 'zlib';
 

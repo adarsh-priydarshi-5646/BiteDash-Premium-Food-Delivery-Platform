@@ -1,5 +1,9 @@
 /**
- * Security Middleware - Headers, sanitization & request size limiting
+ * Security Middleware - HTTP headers & request sanitization
+ * 
+ * Headers: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy
+ * Features: Removes X-Powered-By, limits request body size, sanitizes input
+ * Protects against clickjacking, MIME sniffing, XSS attacks
  */
 export const securityHeaders = (req, res, next) => {
   res.setHeader('X-Frame-Options', 'DENY');

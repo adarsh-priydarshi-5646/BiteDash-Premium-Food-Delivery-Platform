@@ -1,5 +1,9 @@
 /**
- * Delivery Service - Business logic for delivery operations
+ * Delivery Service - Delivery assignment business logic
+ * 
+ * Functions: findNearbyDeliveryBoys, assignDeliveryBoy, getAvailableDeliveryBoys
+ * Uses MongoDB geospatial queries ($near) for location-based search
+ * Filters out busy delivery boys with active assignments
  */
 import User from '../models/user.model.js';
 import DeliveryAssignment from '../models/deliveryAssignment.model.js';

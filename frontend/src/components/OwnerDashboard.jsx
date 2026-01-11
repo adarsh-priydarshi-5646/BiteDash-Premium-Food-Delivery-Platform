@@ -1,5 +1,9 @@
 /**
- * OwnerDashboard Component - Restaurant owner's control panel for menu & orders
+ * OwnerDashboard Component - Restaurant owner control panel
+ * 
+ * Tabs: Menu Items, Orders, Bank Details, Earnings
+ * Features: Add/edit items, manage orders, view earnings stats
+ * Real-time order notifications via Socket.IO
  */
 import React, { useState, useEffect } from "react";
 import Nav from "./Nav";

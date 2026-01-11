@@ -1,5 +1,9 @@
 /**
- * User Model - Supports user/owner/deliveryBoy roles with geospatial indexing
+ * User Model - Multi-role user schema with geospatial location support
+ * 
+ * Roles: user (customer), owner (restaurant), deliveryBoy (delivery partner)
+ * Features: Multiple addresses, bank details for owners, OTP for password reset
+ * Geospatial 2dsphere index on location for nearby delivery boy queries
  */
 import mongoose from "mongoose";
 import { type } from "os";

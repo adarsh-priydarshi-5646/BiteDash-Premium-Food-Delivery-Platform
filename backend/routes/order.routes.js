@@ -1,5 +1,9 @@
 /**
- * Order Routes - Order lifecycle, delivery & payment endpoints
+ * Order Routes - Complete order lifecycle, delivery & payment endpoints
+ * 
+ * Endpoints: /place, /my-orders, /update-status, /accept, /current, /stripe-payment, etc.
+ * Features: COD & Stripe payments, delivery boy assignment, OTP verification, order rating
+ * All routes protected, supports user/owner/deliveryBoy role-based access
  */
 import express from "express";
 import isAuth from "../middlewares/isAuth.js";

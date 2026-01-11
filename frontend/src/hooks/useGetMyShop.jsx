@@ -1,5 +1,9 @@
 /**
- * Hook: Fetch owner's restaurant data
+ * useGetMyShop Hook - Fetches owner's restaurant data
+ * 
+ * Makes GET /shop/my-shop for authenticated owners
+ * Updates ownerSlice with shop details and menu items
+ * Runs when userData changes (login/logout)
  */
 import axios from "axios";
 import React, { useEffect } from "react";

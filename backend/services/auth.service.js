@@ -1,5 +1,9 @@
 /**
- * Auth Service - Business logic for authentication operations
+ * Auth Service - Authentication business logic layer
+ * 
+ * Functions: createUser, validateCredentials, generateOtp, verifyOtp, resetPassword
+ * Separates business logic from controllers for testability
+ * Uses bcrypt for hashing, JWT for tokens, SendGrid for OTP emails
  */
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';

@@ -1,5 +1,9 @@
 /**
  * Order Validators - Input validation for order endpoints
+ * 
+ * Functions: validatePlaceOrder, validateUpdateStatus, validateDeliveryOtp
+ * Validates: cart items, delivery address, payment method, status values
+ * Returns array of error messages, empty if valid
  */
 
 export const validatePlaceOrder = (data) => {

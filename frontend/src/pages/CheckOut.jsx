@@ -1,5 +1,9 @@
 /**
- * Checkout Page - Address selection, map preview, payment & order placement
+ * Checkout Page - Order placement with address & payment
+ * 
+ * Features: Saved addresses, add new address, Leaflet map preview
+ * Payment: COD or Stripe checkout session
+ * Validates delivery address before order placement
  */
 import React, { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";

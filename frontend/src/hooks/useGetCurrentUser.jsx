@@ -1,5 +1,9 @@
 /**
- * Hook: Fetch current authenticated user on app load
+ * useGetCurrentUser Hook - Fetches authenticated user on app load
+ * 
+ * Makes GET /user/me request with credentials
+ * Updates Redux userSlice with user data or null
+ * Sets authLoading state for loading UI
  */
 import axios from "axios";
 import React, { useEffect } from "react";

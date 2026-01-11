@@ -1,5 +1,9 @@
 /**
- * User Dashboard - Main home page with categories, restaurants & filtered food items
+ * UserDashboard Component - Customer home page with food discovery
+ * 
+ * Sections: Category carousel, restaurant list, filtered food items
+ * Features: Category/price/sort filters, search, infinite scroll
+ * Responsive grid layout with memoized filtering for performance
  */
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import Nav from "./Nav";

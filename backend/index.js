@@ -1,6 +1,9 @@
 /**
- * Express Server Entry Point
- * Includes Socket.IO for real-time updates, security middlewares & graceful shutdown
+ * Express Server - Main application entry point
+ * 
+ * Features: REST API routes, Socket.IO for real-time updates,
+ * Security middlewares (rate limiting, CORS, sanitization),
+ * Graceful shutdown handling, health check endpoint
  */
 import express from "express";
 import dotenv from "dotenv";

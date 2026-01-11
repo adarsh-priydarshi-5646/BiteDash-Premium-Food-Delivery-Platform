@@ -1,5 +1,9 @@
 /**
- * Sign In Page - Email/password & Google OAuth login
+ * Sign In Page - User authentication
+ * 
+ * Methods: Email/password login, Google OAuth via Firebase
+ * Features: Password visibility toggle, remember me, forgot password link
+ * Redirects to home on success, shows error toast on failure
  */
 import React from "react";
 import { useState } from "react";

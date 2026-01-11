@@ -1,5 +1,9 @@
 /**
- * Owner Redux Slice - Restaurant owner's shop data state management
+ * Owner Redux Slice - Restaurant owner's shop & menu state
+ * 
+ * State: myShopData (shop details, items, orders)
+ * Actions: setMyShopData for shop CRUD operations
+ * Used by owner dashboard to manage restaurant
  */
 import { createSlice } from "@reduxjs/toolkit";
 

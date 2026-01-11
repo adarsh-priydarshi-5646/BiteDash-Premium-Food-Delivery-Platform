@@ -1,6 +1,9 @@
 /**
- * Sliding Window Rate Limiter
- * Uses in-memory storage - replace with Redis for distributed deployments
+ * Rate Limiter - Sliding window algorithm for API protection
+ * 
+ * In-memory storage with auto-cleanup every 30 seconds
+ * Configurable limits: auth (5/min), search (30/min), orders (10/min), general (100/min)
+ * Replace with Redis for distributed/multi-instance deployments
  */
 class RateLimiter {
   constructor() {

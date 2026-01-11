@@ -1,5 +1,9 @@
 /**
- * AddressAutocomplete Component - Location search with Geoapify autocomplete
+ * AddressAutocomplete Component - Location search with suggestions
+ * 
+ * Uses Geoapify Autocomplete API for address suggestions
+ * Features: Debounced search, dropdown suggestions, select handler
+ * Returns full address with lat/lon coordinates
  */
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";

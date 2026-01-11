@@ -1,7 +1,11 @@
 import User from "./models/user.model.js";
 
 /**
- * Socket.IO Handler - Real-time order tracking & delivery location updates
+ * Socket.IO Handler - Real-time bidirectional communication
+ * 
+ * Events: identity (user connection), updateLocation (delivery tracking)
+ * Features: User socket ID storage, delivery boy location broadcasts
+ * Used for order status updates, delivery tracking, new order notifications
  */
 export const socketHandler = (io) => {
   io.on("connection", (socket) => {

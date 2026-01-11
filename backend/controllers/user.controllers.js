@@ -1,5 +1,9 @@
 /**
- * User Controller - Profile, addresses, bank details & stats management
+ * User Controller - User profile, addresses, bank details & statistics
+ * 
+ * Endpoints: getCurrentUser, updateProfile, updateUserLocation, addAddress, updateAddress, removeAddress
+ * Features: Multiple saved addresses with default selection, bank details for owners, profile stats
+ * Supports geolocation updates for delivery tracking, earnings calculation for restaurant owners
  */
 import User from "../models/user.model.js";
 import Order from "../models/order.model.js";
