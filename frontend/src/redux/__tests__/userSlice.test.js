@@ -29,7 +29,7 @@ describe('userSlice', () => {
       expect.objectContaining({
         cartItems: [],
         totalAmount: 0,
-      })
+      }),
     );
   });
 

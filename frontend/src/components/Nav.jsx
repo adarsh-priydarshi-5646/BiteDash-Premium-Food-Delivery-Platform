@@ -20,7 +20,9 @@ import { useNavigate } from 'react-router-dom';
 import useGetCity from '../hooks/useGetCity';
 
 function Nav() {
-  const { userData, currentCity, cartItems } = useSelector((state) => state.user);
+  const { userData, currentCity, cartItems } = useSelector(
+    (state) => state.user,
+  );
   useGetCity(true); // Auto-fetch location on mount
   const { myShopData } = useSelector((state) => state.owner);
   const [showInfo, setShowInfo] = useState(false);
@@ -44,7 +46,7 @@ function Nav() {
     try {
       const result = await axios.get(
         `${serverUrl}/api/item/search-items?query=${query}&city=${currentCity}`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(setSearchItems(result.data));
     } catch (error) {
@@ -68,7 +70,9 @@ function Nav() {
           <div className="flex items-center w-[30%] gap-2 border-r-2 border-gray-200 pr-3">
             <FaLocationDot size={20} className="text-[#E23744]" />
             <div className="w-full truncate text-gray-700 text-sm font-medium">
-              {currentCity || <span className="text-gray-400 italic">Detecting...</span>}
+              {currentCity || (
+                <span className="text-gray-400 italic">Detecting...</span>
+              )}
             </div>
           </div>
           <div className="w-[70%] flex items-center gap-2">
@@ -86,7 +90,10 @@ function Nav() {
       )}
 
       {}
-      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => navigate('/')}
+      >
         <img
           src="/branding-logo.png"
           alt="BiteDash Logo"
@@ -102,7 +109,9 @@ function Nav() {
             <FaLocationDot size={20} className="text-[#E23744]" />
             <div className="w-full truncate text-gray-700 font-medium">
               {currentCity || (
-                <span className="text-gray-400 italic text-sm">Detecting location...</span>
+                <span className="text-gray-400 italic text-sm">
+                  Detecting location...
+                </span>
               )}
             </div>
           </div>
@@ -177,7 +186,10 @@ function Nav() {
           <>
             {}
             {userData.role == 'user' && (
-              <div className="relative cursor-pointer" onClick={() => navigate('/cart')}>
+              <div
+                className="relative cursor-pointer"
+                onClick={() => navigate('/cart')}
+              >
                 <FiShoppingCart size={24} className="text-[#E23744]" />
                 {cartItems.length > 0 && (
                   <span className="absolute -right-2 -top-2 w-5 h-5 bg-[#E23744] text-white text-xs font-bold rounded-full flex items-center justify-center">

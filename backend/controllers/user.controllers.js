@@ -21,7 +21,9 @@ export const getCurrentUser = async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.error('Get current user error:', error);
-    return res.status(500).json({ message: 'Failed to get user. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to get user. Please try again.' });
   }
 };
 
@@ -36,7 +38,7 @@ export const updateUserLocation = async (req, res) => {
           coordinates: [lon, lat],
         },
       },
-      { new: true }
+      { new: true },
     );
     if (!user) {
       return res.status(400).json({ message: 'user is not found' });
@@ -45,13 +47,16 @@ export const updateUserLocation = async (req, res) => {
     return res.status(200).json({ message: 'location updated' });
   } catch (error) {
     console.error('Update location error:', error);
-    return res.status(500).json({ message: 'Failed to update location. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to update location. Please try again.' });
   }
 };
 
 export const updateBankDetails = async (req, res) => {
   try {
-    const { accountHolderName, accountNumber, ifscCode, bankName, upiId } = req.body;
+    const { accountHolderName, accountNumber, ifscCode, bankName, upiId } =
+      req.body;
 
     const user = await User.findById(req.userId);
     if (!user) {
@@ -59,11 +64,14 @@ export const updateBankDetails = async (req, res) => {
     }
 
     if (user.role !== 'owner') {
-      return res.status(403).json({ message: 'Only restaurant owners can add bank details' });
+      return res
+        .status(403)
+        .json({ message: 'Only restaurant owners can add bank details' });
     }
 
     user.bankDetails = {
-      accountHolderName: accountHolderName || user.bankDetails.accountHolderName,
+      accountHolderName:
+        accountHolderName || user.bankDetails.accountHolderName,
       accountNumber: accountNumber || user.bankDetails.accountNumber,
       ifscCode: ifscCode || user.bankDetails.ifscCode,
       bankName: bankName || user.bankDetails.bankName,
@@ -78,7 +86,9 @@ export const updateBankDetails = async (req, res) => {
     });
   } catch (error) {
     console.error('Update bank details error:', error);
-    return res.status(500).json({ message: 'Failed to update bank details. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to update bank details. Please try again.' });
   }
 };
 
@@ -95,7 +105,9 @@ export const getBankDetails = async (req, res) => {
     });
   } catch (error) {
     console.error('Get bank details error:', error);
-    return res.status(500).json({ message: 'Failed to get bank details. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to get bank details. Please try again.' });
   }
 };
 
@@ -113,10 +125,14 @@ export const addAddress = async (req, res) => {
 
     user.addresses.push(address);
     await user.save();
-    return res.status(200).json({ message: 'Address added successfully', user });
+    return res
+      .status(200)
+      .json({ message: 'Address added successfully', user });
   } catch (error) {
     console.error('Add address error:', error);
-    return res.status(500).json({ message: 'Failed to add address. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to add address. Please try again.' });
   }
 };
 
@@ -126,8 +142,11 @@ export const updateAddress = async (req, res) => {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const addressIndex = user.addresses.findIndex((addr) => addr._id.toString() === addressId);
-    if (addressIndex === -1) return res.status(404).json({ message: 'Address not found' });
+    const addressIndex = user.addresses.findIndex(
+      (addr) => addr._id.toString() === addressId,
+    );
+    if (addressIndex === -1)
+      return res.status(404).json({ message: 'Address not found' });
 
     if (updatedAddress.isDefault) {
       user.addresses.forEach((addr) => (addr.isDefault = false));
@@ -138,10 +157,14 @@ export const updateAddress = async (req, res) => {
       ...updatedAddress,
     };
     await user.save();
-    return res.status(200).json({ message: 'Address updated successfully', user });
+    return res
+      .status(200)
+      .json({ message: 'Address updated successfully', user });
   } catch (error) {
     console.error('Update address error:', error);
-    return res.status(500).json({ message: 'Failed to update address. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to update address. Please try again.' });
   }
 };
 
@@ -152,7 +175,8 @@ export const removeAddress = async (req, res) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const addressToRemove = user.addresses.id(addressId);
-    if (!addressToRemove) return res.status(404).json({ message: 'Address not found' });
+    if (!addressToRemove)
+      return res.status(404).json({ message: 'Address not found' });
 
     const wasDefault = addressToRemove.isDefault;
     user.addresses.pull(addressId);
@@ -162,10 +186,14 @@ export const removeAddress = async (req, res) => {
     }
 
     await user.save();
-    return res.status(200).json({ message: 'Address removed successfully', user });
+    return res
+      .status(200)
+      .json({ message: 'Address removed successfully', user });
   } catch (error) {
     console.error('Remove address error:', error);
-    return res.status(500).json({ message: 'Failed to remove address. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to remove address. Please try again.' });
   }
 };
 
@@ -180,10 +208,14 @@ export const updateProfile = async (req, res) => {
     if (mobile) user.mobile = mobile;
 
     await user.save();
-    return res.status(200).json({ message: 'Profile updated successfully', user });
+    return res
+      .status(200)
+      .json({ message: 'Profile updated successfully', user });
   } catch (error) {
     console.error('Update profile error:', error);
-    return res.status(500).json({ message: 'Failed to update profile. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to update profile. Please try again.' });
   }
 };
 
@@ -199,7 +231,10 @@ export const getProfileStats = async (req, res) => {
     });
 
     const orders = await Order.find({ user: userId, payment: true });
-    const totalSpent = orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
+    const totalSpent = orders.reduce(
+      (sum, order) => sum + (order.totalAmount || 0),
+      0,
+    );
     const points = Math.floor(totalSpent / 10);
 
     const savedTimeMinutes = totalOrders * 20;
@@ -213,6 +248,8 @@ export const getProfileStats = async (req, res) => {
     });
   } catch (error) {
     console.error('Get profile stats error:', error);
-    return res.status(500).json({ message: 'Failed to get profile stats. Please try again.' });
+    return res
+      .status(500)
+      .json({ message: 'Failed to get profile stats. Please try again.' });
   }
 };

@@ -15,7 +15,8 @@ export const sendOtpMailResend = async (to, otp) => {
   try {
     console.log(`Sending OTP email via Resend to ${to}`);
 
-    const recipientEmail = process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
+    const recipientEmail =
+      process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
 
     const { data, error } = await resend.emails.send({
       from: 'BiteDash Food Delivery <onboarding@resend.dev>',
@@ -51,7 +52,8 @@ export const sendDeliveryOtpMailResend = async (user, otp) => {
   try {
     console.log(`Sending delivery OTP email via Resend to ${user.email}`);
 
-    const recipientEmail = process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
+    const recipientEmail =
+      process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
 
     const { data, error } = await resend.emails.send({
       from: 'BiteDash Food Delivery <onboarding@resend.dev>',

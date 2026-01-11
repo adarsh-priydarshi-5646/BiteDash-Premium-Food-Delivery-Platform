@@ -30,7 +30,9 @@ vi.mock('react-redux', async () => {
 });
 
 vi.mock('react-leaflet', () => ({
-  MapContainer: ({ children }) => <div data-testid="map-container">{children}</div>,
+  MapContainer: ({ children }) => (
+    <div data-testid="map-container">{children}</div>
+  ),
   TileLayer: () => <div data-testid="tile-layer" />,
   Marker: () => <div data-testid="marker" />,
   useMap: () => ({ setView: vi.fn() }),
@@ -42,7 +44,9 @@ vi.mock('@stripe/stripe-js', () => ({
 
 vi.mock('../../hooks/useGetCity', () => ({
   default: () => ({
-    getCity: vi.fn().mockResolvedValue({ city: 'Test City', address: 'Test Address' }),
+    getCity: vi
+      .fn()
+      .mockResolvedValue({ city: 'Test City', address: 'Test Address' }),
   }),
 }));
 
@@ -57,7 +61,9 @@ vi.mock('../../components/AddressAutocomplete', () => ({
   ),
 }));
 
-vi.mock('react-icons/io', () => ({ IoIosArrowRoundBack: () => <div>Icon</div> }));
+vi.mock('react-icons/io', () => ({
+  IoIosArrowRoundBack: () => <div>Icon</div>,
+}));
 vi.mock('react-icons/io5', () => ({
   IoSearchOutline: () => <div>Icon</div>,
   IoLocationSharp: () => <div>Icon</div>,
@@ -80,7 +86,9 @@ vi.mock('react-icons/fa', () => ({
   FaPhone: () => <div>Icon</div>,
   FaMapMarkerAlt: () => <div>Icon</div>,
 }));
-vi.mock('react-icons/fa6', () => ({ FaMobileScreenButton: () => <div>Icon</div> }));
+vi.mock('react-icons/fa6', () => ({
+  FaMobileScreenButton: () => <div>Icon</div>,
+}));
 
 describe('CheckOut Component', () => {
   const defaultState = {
@@ -103,12 +111,12 @@ describe('CheckOut Component', () => {
     render(
       <BrowserRouter>
         <CheckOut />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Checkout')).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText('Search for a building, street or area...')
+      screen.getByPlaceholderText('Search for a building, street or area...'),
     ).toBeInTheDocument();
     expect(screen.getByTestId('map-container')).toBeInTheDocument();
     expect(screen.getByText('Pizza')).toBeInTheDocument();
@@ -121,7 +129,7 @@ describe('CheckOut Component', () => {
     render(
       <BrowserRouter>
         <CheckOut />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const cardBtn = screen.getByText('Cards / Wallet / UPI');
@@ -135,7 +143,7 @@ describe('CheckOut Component', () => {
       selector({
         ...defaultState,
         map: { location: { lat: 12, lon: 77 }, address: 'Test Address' },
-      })
+      }),
     );
 
     axios.post.mockResolvedValueOnce({ data: { _id: 'order-123' } });
@@ -143,12 +151,15 @@ describe('CheckOut Component', () => {
     render(
       <BrowserRouter>
         <CheckOut />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
-    fireEvent.change(screen.getByPlaceholderText('Search for a building, street or area...'), {
-      target: { value: 'Test Address' },
-    });
+    fireEvent.change(
+      screen.getByPlaceholderText('Search for a building, street or area...'),
+      {
+        target: { value: 'Test Address' },
+      },
+    );
 
     const placeOrderBtn = screen.getByText('Place Order');
     fireEvent.click(placeOrderBtn);
@@ -157,7 +168,7 @@ describe('CheckOut Component', () => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.stringContaining('/place-order'),
         expect.objectContaining({ paymentMethod: 'cod' }),
-        expect.anything()
+        expect.anything(),
       );
       expect(mockDispatch).toHaveBeenCalled();
     });

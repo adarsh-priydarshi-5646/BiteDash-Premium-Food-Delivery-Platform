@@ -53,7 +53,7 @@ const itemSchema = new mongoose.Schema(
       count: { type: Number, default: 0 },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Item = mongoose.model('Item', itemSchema);

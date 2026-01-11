@@ -14,8 +14,23 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import DeliveryBoyTracking from './DeliveryBoyTracking';
 import { ClipLoader } from 'react-spinners';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { FaMotorcycle, FaMapMarkerAlt, FaRupeeSign, FaBox, FaStar, FaClock } from 'react-icons/fa';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import {
+  FaMotorcycle,
+  FaMapMarkerAlt,
+  FaRupeeSign,
+  FaBox,
+  FaStar,
+  FaClock,
+} from 'react-icons/fa';
 import { MdDeliveryDining } from 'react-icons/md';
 import { IoMdClose, IoMdWarning } from 'react-icons/io';
 
@@ -44,7 +59,10 @@ function DeliveryBoy() {
   ];
 
   useEffect(() => {
-    if (userData?.role === 'deliveryBoy' && Notification.permission === 'default') {
+    if (
+      userData?.role === 'deliveryBoy' &&
+      Notification.permission === 'default'
+    ) {
       Notification.requestPermission();
     }
   }, [userData]);
@@ -84,7 +102,10 @@ function DeliveryBoy() {
   }, [socket, userData]);
 
   const ratePerDelivery = 50;
-  const totalEarning = todayDeliveries.reduce((sum, d) => sum + d.count * ratePerDelivery, 0);
+  const totalEarning = todayDeliveries.reduce(
+    (sum, d) => sum + d.count * ratePerDelivery,
+    0,
+  );
 
   const getAssignments = async () => {
     try {
@@ -100,9 +121,12 @@ function DeliveryBoy() {
 
   const getCurrentOrder = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/order/get-current-order`, {
-        withCredentials: true,
-      });
+      const result = await axios.get(
+        `${serverUrl}/api/order/get-current-order`,
+        {
+          withCredentials: true,
+        },
+      );
       setCurrentOrder(result.data);
     } catch (error) {
       console.error(error);
@@ -111,9 +135,12 @@ function DeliveryBoy() {
 
   const acceptOrder = async (assignmentId) => {
     try {
-      const result = await axios.get(`${serverUrl}/api/order/accept-order/${assignmentId}`, {
-        withCredentials: true,
-      });
+      const result = await axios.get(
+        `${serverUrl}/api/order/accept-order/${assignmentId}`,
+        {
+          withCredentials: true,
+        },
+      );
       await getCurrentOrder();
     } catch (error) {
       console.error(error);
@@ -155,7 +182,7 @@ function DeliveryBoy() {
           orderId: currentOrder._id,
           shopOrderId: currentOrder.shopOrder._id,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
     } catch (error) {
       console.error('Background OTP send failed:', error);
@@ -178,7 +205,7 @@ function DeliveryBoy() {
           shopOrderId: currentOrder.shopOrder._id,
           otp,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       setMessage(result.data.message);
@@ -188,7 +215,8 @@ function DeliveryBoy() {
       }, 100);
     } catch (error) {
       console.error('OTP Verification Error:', error);
-      const errorMessage = error.response?.data?.message || 'Wrong OTP. Please try again.';
+      const errorMessage =
+        error.response?.data?.message || 'Wrong OTP. Please try again.';
 
       setMessage('Wrong OTP ❌');
       alert(errorMessage);
@@ -208,7 +236,9 @@ function DeliveryBoy() {
     }
 
     if (
-      !window.confirm('Are you sure you want to cancel this order? This action cannot be undone.')
+      !window.confirm(
+        'Are you sure you want to cancel this order? This action cannot be undone.',
+      )
     ) {
       return;
     }
@@ -222,7 +252,7 @@ function DeliveryBoy() {
           shopOrderId: currentOrder.shopOrder._id,
           reason: finalReason,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       alert('Order cancelled successfully');
@@ -236,9 +266,12 @@ function DeliveryBoy() {
 
   const handleTodayDeliveries = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/order/get-today-deliveries`, {
-        withCredentials: true,
-      });
+      const result = await axios.get(
+        `${serverUrl}/api/order/get-today-deliveries`,
+        {
+          withCredentials: true,
+        },
+      );
       setTodayDeliveries(result.data);
     } catch (error) {
       console.error(error);
@@ -269,21 +302,29 @@ function DeliveryBoy() {
               {userData.fullName?.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-800">{userData.fullName}</h1>
+              <h1 className="text-xl font-bold text-gray-800">
+                {userData.fullName}
+              </h1>
               <div className="flex items-center gap-2 mt-1">
                 <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Online
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>{' '}
+                  Online
                 </span>
                 <p className="text-xs text-gray-500 flex items-center gap-1">
-                  <FaMapMarkerAlt /> {deliveryBoyLocation ? 'Location Active' : 'Locating...'}
+                  <FaMapMarkerAlt />{' '}
+                  {deliveryBoyLocation ? 'Location Active' : 'Locating...'}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="text-right">
-            <p className="text-xs text-gray-500 uppercase font-semibold">Today's Earnings</p>
-            <p className="text-2xl font-extrabold text-[#E23744]">₹{totalEarning}</p>
+            <p className="text-xs text-gray-500 uppercase font-semibold">
+              Today's Earnings
+            </p>
+            <p className="text-2xl font-extrabold text-[#E23744]">
+              ₹{totalEarning}
+            </p>
           </div>
         </div>
 
@@ -331,7 +372,11 @@ function DeliveryBoy() {
           <div className="h-[180px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={todayDeliveries}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  vertical={false}
+                  stroke="#eee"
+                />
                 <XAxis
                   dataKey="hour"
                   tickFormatter={(h) => `${h}:00`}
@@ -347,7 +392,12 @@ function DeliveryBoy() {
                     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                   }}
                 />
-                <Bar dataKey="count" fill="#E23744" radius={[4, 4, 0, 0]} barSize={20} />
+                <Bar
+                  dataKey="count"
+                  fill="#E23744"
+                  radius={[4, 4, 0, 0]}
+                  barSize={20}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -375,10 +425,14 @@ function DeliveryBoy() {
                         <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#E23744] transition">
                           {a?.shopName}
                         </h3>
-                        <p className="text-xs text-gray-500">Order #{a?.assignmentId?.slice(-6)}</p>
+                        <p className="text-xs text-gray-500">
+                          Order #{a?.assignmentId?.slice(-6)}
+                        </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-bold text-gray-900">₹{ratePerDelivery}</p>
+                        <p className="text-lg font-bold text-gray-900">
+                          ₹{ratePerDelivery}
+                        </p>
                         <p className="text-xs text-gray-500">Earnings</p>
                       </div>
                     </div>
@@ -415,7 +469,9 @@ function DeliveryBoy() {
                   <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300 transform rotate-12">
                     <MdDeliveryDining className="text-3xl" />
                   </div>
-                  <h3 className="text-gray-800 font-medium mb-1">No orders available</h3>
+                  <h3 className="text-gray-800 font-medium mb-1">
+                    No orders available
+                  </h3>
                   <p className="text-gray-400 text-sm">
                     We're looking for new delivery requests near you.
                   </p>
@@ -429,7 +485,8 @@ function DeliveryBoy() {
         {currentOrder && (
           <div className="w-full">
             <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500"></span> Active Delivery
+              <span className="w-2 h-2 rounded-full bg-green-500"></span> Active
+              Delivery
             </h2>
 
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col">
@@ -455,7 +512,8 @@ function DeliveryBoy() {
                 <div className="flex flex-col md:flex-row gap-6 justify-between items-start border-b border-gray-100 pb-6">
                   <div className="flex-1">
                     <p className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-2 flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-blue-500"></span> Pickup From
+                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>{' '}
+                      Pickup From
                     </p>
                     <h3 className="text-xl font-bold text-gray-900 leading-tight">
                       {currentOrder?.shopOrder.shop.name}
@@ -469,7 +527,8 @@ function DeliveryBoy() {
                   </div>
                   <div className="flex-1 md:text-right">
                     <p className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-2 flex items-center gap-1 md:justify-end">
-                      <span className="w-2 h-2 rounded-full bg-green-500"></span> Deliver To
+                      <span className="w-2 h-2 rounded-full bg-green-500"></span>{' '}
+                      Deliver To
                     </p>
                     <h3 className="text-xl font-bold text-gray-900 leading-tight">
                       {currentOrder.user.fullName}
@@ -533,7 +592,11 @@ function DeliveryBoy() {
                           onClick={verifyOtp}
                           disabled={loading}
                         >
-                          {loading ? <ClipLoader size={20} color="white" /> : 'Complete Delivery'}
+                          {loading ? (
+                            <ClipLoader size={20} color="white" />
+                          ) : (
+                            'Complete Delivery'
+                          )}
                         </button>
 
                         <button
@@ -549,7 +612,9 @@ function DeliveryBoy() {
                           onClick={() => sendOtp(true)}
                           disabled={resendTimer > 0 || loading}
                         >
-                          {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
+                          {resendTimer > 0
+                            ? `Resend OTP in ${resendTimer}s`
+                            : 'Resend OTP'}
                         </button>
                       </div>
                     </div>
@@ -624,9 +689,17 @@ function DeliveryBoy() {
               <button
                 className="w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-red-100 hover:bg-red-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleCancelOrder}
-                disabled={loading || !cancelReason || (cancelReason === 'Other' && !customReason)}
+                disabled={
+                  loading ||
+                  !cancelReason ||
+                  (cancelReason === 'Other' && !customReason)
+                }
               >
-                {loading ? <ClipLoader size={20} color="white" /> : 'Confirm Cancellation'}
+                {loading ? (
+                  <ClipLoader size={20} color="white" />
+                ) : (
+                  'Confirm Cancellation'
+                )}
               </button>
             </div>
           </div>

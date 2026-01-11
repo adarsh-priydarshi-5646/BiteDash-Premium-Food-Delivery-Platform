@@ -66,14 +66,29 @@ vi.mock('framer-motion', () => ({
       viewport,
       ...props
     }) => <div {...props}>{children}</div>,
-    h1: ({ children, initial, animate, transition, ...props }) => <h1 {...props}>{children}</h1>,
-    p: ({ children, initial, animate, transition, ...props }) => <p {...props}>{children}</p>,
-    span: ({ children, initial, animate, transition, whileInView, ...props }) => (
-      <span {...props}>{children}</span>
+    h1: ({ children, initial, animate, transition, ...props }) => (
+      <h1 {...props}>{children}</h1>
     ),
-    button: ({ children, initial, animate, transition, whileHover, whileTap, ...props }) => (
-      <button {...props}>{children}</button>
+    p: ({ children, initial, animate, transition, ...props }) => (
+      <p {...props}>{children}</p>
     ),
+    span: ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileInView,
+      ...props
+    }) => <span {...props}>{children}</span>,
+    button: ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileHover,
+      whileTap,
+      ...props
+    }) => <button {...props}>{children}</button>,
   },
   AnimatePresence: ({ children }) => <>{children}</>,
 }));
@@ -83,25 +98,30 @@ describe('LandingPage Component', () => {
     render(
       <BrowserRouter>
         <LandingPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
-    expect(screen.getByRole('heading', { name: 'BiteDash', level: 1 })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'BiteDash', level: 1 }),
+    ).toBeInTheDocument();
   });
 
   it('renders subtitle with city', () => {
     render(
       <BrowserRouter>
         <LandingPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(
       screen.getByText((content, node) => {
         const hasText = (node) =>
-          node.textContent === 'Find the best restaurants, cafés and bars in Delhi NCR';
+          node.textContent ===
+          'Find the best restaurants, cafés and bars in Delhi NCR';
         const nodeHasText = hasText(node);
-        const childrenDontHaveText = Array.from(node.children).every((child) => !hasText(child));
+        const childrenDontHaveText = Array.from(node.children).every(
+          (child) => !hasText(child),
+        );
         return nodeHasText && childrenDontHaveText;
-      })
+      }),
     ).toBeInTheDocument();
   });
 
@@ -109,7 +129,7 @@ describe('LandingPage Component', () => {
     render(
       <BrowserRouter>
         <LandingPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(screen.getByText('Get the App')).toBeInTheDocument();
   });

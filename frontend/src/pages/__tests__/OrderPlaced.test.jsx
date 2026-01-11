@@ -38,7 +38,7 @@ describe('OrderPlaced Component', () => {
     render(
       <BrowserRouter>
         <OrderPlaced />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Order Placed Successfully!')).toBeInTheDocument();
@@ -52,14 +52,14 @@ describe('OrderPlaced Component', () => {
     render(
       <BrowserRouter>
         <OrderPlaced />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith(
         expect.stringContaining('/verify-stripe-payment'),
         { orderId: '123', sessionId: 'abc' },
-        expect.anything()
+        expect.anything(),
       );
       expect(mockDispatch).toHaveBeenCalledTimes(2); // addMyOrder + clearCart
     });
@@ -71,7 +71,7 @@ describe('OrderPlaced Component', () => {
     render(
       <BrowserRouter>
         <OrderPlaced />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const btn = screen.getByText('View My Orders');

@@ -91,7 +91,10 @@ const userSlice = createSlice({
         state.cartItems.push(cartItem);
       }
 
-      state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      state.totalAmount = state.cartItems.reduce(
+        (sum, i) => sum + i.price * i.quantity,
+        0,
+      );
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
 
@@ -105,13 +108,19 @@ const userSlice = createSlice({
       if (item) {
         item.quantity = quantity;
       }
-      state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      state.totalAmount = state.cartItems.reduce(
+        (sum, i) => sum + i.price * i.quantity,
+        0,
+      );
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
 
     removeCartItem: (state, action) => {
       state.cartItems = state.cartItems.filter((i) => i.id !== action.payload);
-      state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      state.totalAmount = state.cartItems.reduce(
+        (sum, i) => sum + i.price * i.quantity,
+        0,
+      );
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
 
@@ -159,7 +168,9 @@ const userSlice = createSlice({
     toggleCategory: (state, action) => {
       const category = action.payload;
       if (state.selectedCategories.includes(category)) {
-        state.selectedCategories = state.selectedCategories.filter((c) => c !== category);
+        state.selectedCategories = state.selectedCategories.filter(
+          (c) => c !== category,
+        );
       } else {
         state.selectedCategories.push(category);
       }

@@ -26,7 +26,9 @@ class RateLimiter {
 
     if (validTimestamps.length >= maxRequests) {
       const oldestInWindow = Math.min(...validTimestamps);
-      const retryAfter = Math.ceil((oldestInWindow + this.WINDOW_MS - now) / 1000);
+      const retryAfter = Math.ceil(
+        (oldestInWindow + this.WINDOW_MS - now) / 1000,
+      );
       return { allowed: false, remaining: 0, retryAfter };
     }
 
@@ -52,7 +54,8 @@ class RateLimiter {
 const limiter = new RateLimiter();
 
 export const rateLimiter = (req, res, next) => {
-  const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ip =
+    req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const result = limiter.isAllowed(`api:${ip}`, 200);
 
   res.setHeader('X-RateLimit-Remaining', result.remaining);
@@ -69,7 +72,8 @@ export const rateLimiter = (req, res, next) => {
 };
 
 export const authRateLimiter = (req, res, next) => {
-  const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ip =
+    req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const result = limiter.isAllowed(`auth:${ip}`, 20);
 
   if (!result.allowed) {
@@ -97,7 +101,8 @@ export const orderRateLimiter = (req, res, next) => {
 };
 
 export const searchRateLimiter = (req, res, next) => {
-  const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ip =
+    req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const result = limiter.isAllowed(`search:${ip}`, 60);
 
   if (!result.allowed) {

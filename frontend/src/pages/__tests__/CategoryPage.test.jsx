@@ -27,7 +27,9 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-vi.mock('../../components/Nav', () => ({ default: () => <div data-testid="nav">Nav</div> }));
+vi.mock('../../components/Nav', () => ({
+  default: () => <div data-testid="nav">Nav</div>,
+}));
 vi.mock('../../components/FilterSidebar', () => ({
   default: () => <div data-testid="filter-sidebar">Filter Sidebar</div>,
 }));
@@ -53,7 +55,14 @@ describe('CategoryPage Component', () => {
       rating: 4.0,
       deliveryTime: 35,
     },
-    { name: 'Burger', category: 'Burger', price: 100, isVeg: false, rating: 3.5, deliveryTime: 20 },
+    {
+      name: 'Burger',
+      category: 'Burger',
+      price: 100,
+      isVeg: false,
+      rating: 3.5,
+      deliveryTime: 20,
+    },
   ];
 
   const defaultState = {
@@ -70,7 +79,7 @@ describe('CategoryPage Component', () => {
     render(
       <BrowserRouter>
         <CategoryPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Veg Pizza')).toBeInTheDocument();
@@ -88,7 +97,7 @@ describe('CategoryPage Component', () => {
     render(
       <BrowserRouter>
         <CategoryPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Veg Pizza')).toBeInTheDocument();
@@ -104,7 +113,7 @@ describe('CategoryPage Component', () => {
     render(
       <BrowserRouter>
         <CategoryPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Veg Pizza')).toBeInTheDocument(); // 200

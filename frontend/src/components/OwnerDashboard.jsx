@@ -20,7 +20,11 @@ import {
   FaUniversity,
   FaPlus,
 } from 'react-icons/fa';
-import { MdRestaurantMenu, MdDeliveryDining, MdTrendingUp } from 'react-icons/md';
+import {
+  MdRestaurantMenu,
+  MdDeliveryDining,
+  MdTrendingUp,
+} from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import OwnerItemCard from './OwnerItemCard';
 import OwnerOrderCard from './OwnerOrderCard';
@@ -35,7 +39,11 @@ function OwnerDashboard() {
     if (!socket) return;
 
     socket.on('newOrder', (data) => {
-      if (data.shopOrders && data.shopOrders.owner && data.shopOrders.owner._id === userData._id) {
+      if (
+        data.shopOrders &&
+        data.shopOrders.owner &&
+        data.shopOrders.owner._id === userData._id
+      ) {
         const exists = myOrders.some((o) => o._id === data._id);
         if (!exists) {
         }
@@ -48,7 +56,11 @@ function OwnerDashboard() {
         const shopOrder = order.shopOrders.find((so) => so._id === shopOrderId);
         if (shopOrder) {
           dispatch(
-            updateRealtimeOrderStatus({ orderId, shopId: shopOrder.shop._id, status: 'delivered' })
+            updateRealtimeOrderStatus({
+              orderId,
+              shopId: shopOrder.shop._id,
+              status: 'delivered',
+            }),
           );
         }
       }
@@ -69,7 +81,10 @@ function OwnerDashboard() {
         !Array.isArray(order.shopOrders)
       ) {
         const orderShopId = order.shopOrders.shop?._id || order.shopOrders.shop;
-        if (orderShopId === myShopData?._id && order.shopOrders.status !== 'cancelled') {
+        if (
+          orderShopId === myShopData?._id &&
+          order.shopOrders.status !== 'cancelled'
+        ) {
           return sum + (order.shopOrders.subtotal || 0);
         }
         return sum;
@@ -91,7 +106,11 @@ function OwnerDashboard() {
 
   const activeOrders =
     myOrders?.filter((o) => {
-      if (o.shopOrders && typeof o.shopOrders === 'object' && !Array.isArray(o.shopOrders)) {
+      if (
+        o.shopOrders &&
+        typeof o.shopOrders === 'object' &&
+        !Array.isArray(o.shopOrders)
+      ) {
         const orderShopId = o.shopOrders.shop?._id || o.shopOrders.shop;
         return (
           orderShopId === myShopData?._id &&
@@ -104,7 +123,9 @@ function OwnerDashboard() {
         return o.shopOrders.some((so) => {
           const soShopId = so.shop?._id || so.shop;
           return (
-            soShopId === myShopData?._id && so.status !== 'delivered' && so.status !== 'cancelled'
+            soShopId === myShopData?._id &&
+            so.status !== 'delivered' &&
+            so.status !== 'cancelled'
           );
         });
       }
@@ -127,8 +148,8 @@ function OwnerDashboard() {
                 Launch Your Restaurant
               </h2>
               <p className="text-gray-500 mb-8 text-lg leading-relaxed">
-                Partner with us to reach more customers, streamline your operations, and grow your
-                business effortlessly.
+                Partner with us to reach more customers, streamline your
+                operations, and grow your business effortlessly.
               </p>
               <button
                 className="w-full sm:w-auto bg-[#ff4d2d] text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-orange-500/30 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2"
@@ -156,11 +177,12 @@ function OwnerDashboard() {
                   </h1>
                   <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-gray-500">
                     <span className="flex items-center gap-1.5 bg-gray-100 px-3 py-1 rounded-full">
-                      <FaStore className="text-gray-400" /> {myShopData.city}, {myShopData.state}
+                      <FaStore className="text-gray-400" /> {myShopData.city},{' '}
+                      {myShopData.state}
                     </span>
                     <span className="flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1 rounded-full border border-green-100">
-                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Open
-                      for Orders
+                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>{' '}
+                      Open for Orders
                     </span>
                   </div>
                 </div>
@@ -219,7 +241,9 @@ function OwnerDashboard() {
               <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wider">
                 Total Orders
               </h3>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{totalOrders}</p>
+              <p className="text-3xl font-bold text-gray-900 mt-1">
+                {totalOrders}
+              </p>
             </div>
 
             {/* Items Card */}
@@ -235,7 +259,9 @@ function OwnerDashboard() {
               <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wider">
                 Menu Items
               </h3>
-              <p className="text-3xl font-bold text-gray-900 mt-1">{totalItems}</p>
+              <p className="text-3xl font-bold text-gray-900 mt-1">
+                {totalItems}
+              </p>
             </div>
           </div>
 
@@ -264,7 +290,9 @@ function OwnerDashboard() {
                     <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                       <FaUtensils size={20} />
                     </div>
-                    <p className="font-medium text-gray-600 mb-1 text-sm">Your menu is empty</p>
+                    <p className="font-medium text-gray-600 mb-1 text-sm">
+                      Your menu is empty
+                    </p>
                   </div>
                 ) : (
                   myShopData.items.map((item, index) => (
@@ -333,19 +361,26 @@ function OwnerDashboard() {
                 {myOrders && myOrders.length > 0 ? (
                   <div className="space-y-4">
                     {[...myOrders]
-                      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                      .sort(
+                        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+                      )
                       .filter((order) => {
                         if (
                           order.shopOrders &&
                           typeof order.shopOrders === 'object' &&
                           !Array.isArray(order.shopOrders)
                         ) {
-                          const orderShopId = order.shopOrders.shop?._id || order.shopOrders.shop;
+                          const orderShopId =
+                            order.shopOrders.shop?._id || order.shopOrders.shop;
                           return orderShopId === myShopData?._id;
                         }
-                        if (order.shopOrders && Array.isArray(order.shopOrders)) {
+                        if (
+                          order.shopOrders &&
+                          Array.isArray(order.shopOrders)
+                        ) {
                           return order.shopOrders.some(
-                            (so) => (so.shop?._id || so.shop) === myShopData?._id
+                            (so) =>
+                              (so.shop?._id || so.shop) === myShopData?._id,
                           );
                         }
                         return false;
@@ -359,7 +394,9 @@ function OwnerDashboard() {
                     <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4 text-blue-200">
                       <FaBoxOpen size={30} />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-800 mb-1">No Active Orders</h3>
+                    <h3 className="text-lg font-bold text-gray-800 mb-1">
+                      No Active Orders
+                    </h3>
                     <p className="text-gray-400 text-sm max-w-xs mx-auto">
                       Waiting for customers to place new orders.
                     </p>

@@ -10,13 +10,22 @@ import scooter from '../assets/scooter.png';
 import home from '../assets/home.png';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet';
+import {
+  MapContainer,
+  Marker,
+  Polyline,
+  Popup,
+  TileLayer,
+} from 'react-leaflet';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconRetinaUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
 const deliveryBoyIcon = new L.Icon({
@@ -51,7 +60,10 @@ function DeliveryBoyTracking({ data }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[deliveryBoyLat, deliveryBoylon]} icon={deliveryBoyIcon}>
+        <Marker
+          position={[deliveryBoyLat, deliveryBoylon]}
+          icon={deliveryBoyIcon}
+        >
           <Popup>Delivery Boy</Popup>
         </Marker>
         <Marker position={[customerLat, customerlon]} icon={customerIcon}>

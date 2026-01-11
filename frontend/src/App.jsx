@@ -88,8 +88,14 @@ function App() {
     <ErrorBoundary>
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
-          <Route path="/signup" element={!userData ? <SignUp /> : <Navigate to={'/'} />} />
-          <Route path="/signin" element={!userData ? <SignIn /> : <Navigate to={'/'} />} />
+          <Route
+            path="/signup"
+            element={!userData ? <SignUp /> : <Navigate to={'/'} />}
+          />
+          <Route
+            path="/signin"
+            element={!userData ? <SignIn /> : <Navigate to={'/'} />}
+          />
           <Route
             path="/forgot-password"
             element={!userData ? <ForgotPassword /> : <Navigate to={'/'} />}
@@ -97,15 +103,26 @@ function App() {
           <Route path="/" element={userData ? <Home /> : <LandingPage />} />
           <Route
             path="/create-edit-shop"
-            element={userData ? <CreateEditShop /> : <Navigate to={'/signin'} />}
+            element={
+              userData ? <CreateEditShop /> : <Navigate to={'/signin'} />
+            }
           />
-          <Route path="/add-item" element={userData ? <AddItem /> : <Navigate to={'/signin'} />} />
+          <Route
+            path="/add-item"
+            element={userData ? <AddItem /> : <Navigate to={'/signin'} />}
+          />
           <Route
             path="/edit-item/:itemId"
             element={userData ? <EditItem /> : <Navigate to={'/signin'} />}
           />
-          <Route path="/cart" element={userData ? <CartPage /> : <Navigate to={'/signin'} />} />
-          <Route path="/checkout" element={userData ? <CheckOut /> : <Navigate to={'/signin'} />} />
+          <Route
+            path="/cart"
+            element={userData ? <CartPage /> : <Navigate to={'/signin'} />}
+          />
+          <Route
+            path="/checkout"
+            element={userData ? <CheckOut /> : <Navigate to={'/signin'} />}
+          />
           <Route
             path="/order-placed"
             element={userData ? <OrderPlaced /> : <Navigate to={'/signin'} />}
@@ -116,9 +133,14 @@ function App() {
           />
           <Route
             path="/track-order/:orderId"
-            element={userData ? <TrackOrderPage /> : <Navigate to={'/signin'} />}
+            element={
+              userData ? <TrackOrderPage /> : <Navigate to={'/signin'} />
+            }
           />
-          <Route path="/shop/:shopId" element={userData ? <Shop /> : <Navigate to={'/signin'} />} />
+          <Route
+            path="/shop/:shopId"
+            element={userData ? <Shop /> : <Navigate to={'/signin'} />}
+          />
           <Route
             path="/category/:categoryName"
             element={userData ? <CategoryPage /> : <Navigate to={'/signin'} />}
@@ -127,7 +149,10 @@ function App() {
             path="/bank-details"
             element={userData ? <BankDetails /> : <Navigate to={'/signin'} />}
           />
-          <Route path="/profile" element={userData ? <Profile /> : <Navigate to={'/signin'} />} />
+          <Route
+            path="/profile"
+            element={userData ? <Profile /> : <Navigate to={'/signin'} />}
+          />
           <Route path="/docs" element={<Documentation />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

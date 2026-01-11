@@ -39,10 +39,13 @@ class ErrorBoundary extends React.Component {
               <FaExclamationTriangle className="text-red-500 text-4xl" />
             </div>
 
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">Oops! Something went wrong</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-3">
+              Oops! Something went wrong
+            </h1>
 
             <p className="text-gray-600 mb-6">
-              We're sorry for the inconvenience. The page encountered an unexpected error.
+              We're sorry for the inconvenience. The page encountered an
+              unexpected error.
             </p>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (

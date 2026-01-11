@@ -29,8 +29,24 @@ itemRouter.get('/delete/:itemId', isAuth, deleteItem);
 itemRouter.post('/rating', isAuth, rating);
 
 itemRouter.get('/get-by-id/:itemId', isAuth, cacheMiddleware(120), getItemById);
-itemRouter.get('/get-by-city/:city', isAuth, cacheMiddleware(60), getItemByCity);
-itemRouter.get('/get-by-shop/:shopId', isAuth, cacheMiddleware(60), getItemsByShop);
-itemRouter.get('/search-items', isAuth, searchRateLimiter, cacheMiddleware(30), searchItems);
+itemRouter.get(
+  '/get-by-city/:city',
+  isAuth,
+  cacheMiddleware(60),
+  getItemByCity,
+);
+itemRouter.get(
+  '/get-by-shop/:shopId',
+  isAuth,
+  cacheMiddleware(60),
+  getItemsByShop,
+);
+itemRouter.get(
+  '/search-items',
+  isAuth,
+  searchRateLimiter,
+  cacheMiddleware(30),
+  searchItems,
+);
 
 export default itemRouter;

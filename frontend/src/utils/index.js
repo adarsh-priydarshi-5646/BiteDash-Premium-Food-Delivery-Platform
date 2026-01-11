@@ -124,7 +124,10 @@ export const getInitials = (name) => {
  * Calculate cart total
  */
 export const calculateCartTotal = (cartItems) => {
-  return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  return cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
 };
 
 /**

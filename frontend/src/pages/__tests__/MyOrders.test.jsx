@@ -54,7 +54,7 @@ describe('MyOrders Component', () => {
     render(
       <BrowserRouter>
         <MyOrders />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('No orders yet')).toBeInTheDocument();
@@ -71,7 +71,7 @@ describe('MyOrders Component', () => {
     render(
       <BrowserRouter>
         <MyOrders />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByTestId('user-order-card')).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('MyOrders Component', () => {
     render(
       <BrowserRouter>
         <MyOrders />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByTestId('owner-order-card')).toBeInTheDocument();

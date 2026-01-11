@@ -16,9 +16,13 @@ import { FaHome, FaChevronRight } from 'react-icons/fa';
 function CategoryPage() {
   const { categoryName } = useParams();
   const navigate = useNavigate();
-  const { itemsInMyCity, selectedCategories, priceRange, sortBy, quickFilters } = useSelector(
-    (state) => state.user
-  );
+  const {
+    itemsInMyCity,
+    selectedCategories,
+    priceRange,
+    sortBy,
+    quickFilters,
+  } = useSelector((state) => state.user);
 
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -33,10 +37,14 @@ function CategoryPage() {
     result = result.filter((item) => item.category === categoryName);
 
     if (selectedCategories.length > 0) {
-      result = result.filter((item) => selectedCategories.includes(item.category));
+      result = result.filter((item) =>
+        selectedCategories.includes(item.category),
+      );
     }
 
-    result = result.filter((item) => item.price >= priceRange.min && item.price <= priceRange.max);
+    result = result.filter(
+      (item) => item.price >= priceRange.min && item.price <= priceRange.max,
+    );
 
     if (quickFilters.veg) {
       result = result.filter((item) => item.isVeg === true);
@@ -69,7 +77,14 @@ function CategoryPage() {
     }
 
     setFilteredItems(result);
-  }, [itemsInMyCity, categoryName, selectedCategories, priceRange, sortBy, quickFilters]);
+  }, [
+    itemsInMyCity,
+    categoryName,
+    selectedCategories,
+    priceRange,
+    sortBy,
+    quickFilters,
+  ]);
 
   return (
     <div className="w-full flex flex-col items-center bg-[#F8F8F8] min-h-screen pt-[84px]">
@@ -91,9 +106,12 @@ function CategoryPage() {
 
         {}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">{categoryName}</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            {categoryName}
+          </h1>
           <p className="text-gray-600">
-            Explore delicious {categoryName.toLowerCase()} available in your area
+            Explore delicious {categoryName.toLowerCase()} available in your
+            area
           </p>
         </div>
 
@@ -107,13 +125,19 @@ function CategoryPage() {
           {}
           <div className="flex-1">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-gray-800 text-xl font-semibold">All {categoryName} Items</h2>
-              <span className="text-gray-600 text-sm">{filteredItems.length} items found</span>
+              <h2 className="text-gray-800 text-xl font-semibold">
+                All {categoryName} Items
+              </h2>
+              <span className="text-gray-600 text-sm">
+                {filteredItems.length} items found
+              </span>
             </div>
 
             {filteredItems.length === 0 ? (
               <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100">
-                <p className="text-gray-500 text-lg">No {categoryName.toLowerCase()} items found</p>
+                <p className="text-gray-500 text-lg">
+                  No {categoryName.toLowerCase()} items found
+                </p>
                 <p className="text-gray-400 text-sm mt-2">
                   Try adjusting your filters or explore other categories
                 </p>

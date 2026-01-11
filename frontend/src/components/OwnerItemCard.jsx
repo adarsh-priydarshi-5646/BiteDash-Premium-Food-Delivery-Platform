@@ -20,9 +20,12 @@ function OwnerItemCard({ data }) {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this item?')) {
       try {
-        const result = await axios.get(`${serverUrl}/api/item/delete/${data._id}`, {
-          withCredentials: true,
-        });
+        const result = await axios.get(
+          `${serverUrl}/api/item/delete/${data._id}`,
+          {
+            withCredentials: true,
+          },
+        );
         dispatch(setMyShopData(result.data));
       } catch (error) {
         console.error(error);
@@ -45,7 +48,9 @@ function OwnerItemCard({ data }) {
 
       <div className="p-5">
         <div className="flex justify-between items-start mb-2">
-          <h2 className="text-lg font-bold text-gray-800 line-clamp-1 flex-1 pr-2">{data.name}</h2>
+          <h2 className="text-lg font-bold text-gray-800 line-clamp-1 flex-1 pr-2">
+            {data.name}
+          </h2>
           <div
             className={`w-3 h-3 rounded-full mt-1.5 ${data.foodType === 'veg' ? 'bg-green-500' : 'bg-red-500'} ring-2 ring-offset-1 ${data.foodType === 'veg' ? 'ring-green-100' : 'ring-red-100'}`}
           ></div>
@@ -54,7 +59,9 @@ function OwnerItemCard({ data }) {
         <p className="text-sm text-gray-500 mb-4 capitalize">{data.foodType}</p>
 
         <div className="flex items-center justify-between pt-4 border-t border-gray-50">
-          <div className="text-xl font-extrabold text-[#ff4d2d]">₹{data.price}</div>
+          <div className="text-xl font-extrabold text-[#ff4d2d]">
+            ₹{data.price}
+          </div>
 
           <div className="flex items-center gap-2">
             <button

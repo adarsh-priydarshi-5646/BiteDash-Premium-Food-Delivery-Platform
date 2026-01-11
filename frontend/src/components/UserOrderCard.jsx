@@ -27,7 +27,9 @@ function UserOrderCard({ data, allOrders }) {
   const [deleting, setDeleting] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [orderRating, setOrderRating] = useState(data.orderRating?.rating || 0);
-  const [orderReview, setOrderReview] = useState(data.orderRating?.review || '');
+  const [orderReview, setOrderReview] = useState(
+    data.orderRating?.review || '',
+  );
   const [submittingRating, setSubmittingRating] = useState(false);
 
   const formatDate = (dateString) => {
@@ -63,7 +65,7 @@ function UserOrderCard({ data, allOrders }) {
       const result = await axios.post(
         `${serverUrl}/api/item/rating`,
         { itemId, rating },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setSelectedRating((prev) => ({ ...prev, [itemId]: rating }));
       alert(`Thanks for rating! You gave ${rating} stars ⭐`);
@@ -77,9 +79,12 @@ function UserOrderCard({ data, allOrders }) {
     if (!window.confirm('Are you sure you want to delete this order?')) return;
     setDeleting(true);
     try {
-      const result = await axios.delete(`${serverUrl}/api/order/delete-order/${data._id}`, {
-        withCredentials: true,
-      });
+      const result = await axios.delete(
+        `${serverUrl}/api/order/delete-order/${data._id}`,
+        {
+          withCredentials: true,
+        },
+      );
       const updatedOrders = allOrders.filter((order) => order._id !== data._id);
       dispatch(setMyOrders(updatedOrders));
       alert(result.data.message);
@@ -101,10 +106,11 @@ function UserOrderCard({ data, allOrders }) {
       const result = await axios.post(
         `${serverUrl}/api/order/rate-order/${data._id}`,
         { rating: orderRating, review: orderReview },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       const updatedOrders = allOrders.map((order) => {
-        if (order._id === data._id) return { ...order, orderRating: result.data.orderRating };
+        if (order._id === data._id)
+          return { ...order, orderRating: result.data.orderRating };
         return order;
       });
       dispatch(setMyOrders(updatedOrders));
@@ -130,7 +136,8 @@ function UserOrderCard({ data, allOrders }) {
             #{data._id.slice(-6).toUpperCase()}
           </span>
           <span className="text-sm text-gray-500 flex items-center gap-2">
-            <FaCalendar className="text-gray-400" /> {formatDate(data.createdAt)}
+            <FaCalendar className="text-gray-400" />{' '}
+            {formatDate(data.createdAt)}
           </span>
         </div>
         <span
@@ -145,9 +152,12 @@ function UserOrderCard({ data, allOrders }) {
         {data.shopOrders.map((shopOrder, index) => (
           <div key={index} className="space-y-4">
             <div>
-              <p className="font-bold text-gray-900 text-lg mb-1">{shopOrder.shop.name}</p>
+              <p className="font-bold text-gray-900 text-lg mb-1">
+                {shopOrder.shop.name}
+              </p>
               <p className="text-sm text-gray-500 flex items-center gap-1">
-                <FaMapMarkerAlt className="text-[#E23744]" /> {shopOrder.shop.address}
+                <FaMapMarkerAlt className="text-[#E23744]" />{' '}
+                {shopOrder.shop.address}
               </p>
             </div>
 
@@ -158,7 +168,9 @@ function UserOrderCard({ data, allOrders }) {
                   className="flex gap-4 p-3 border border-gray-200 rounded-xl bg-white hover:border-[#E23744]/30 transition-colors"
                 >
                   <img
-                    src={orderItem.item?.image || 'https://via.placeholder.com/150'}
+                    src={
+                      orderItem.item?.image || 'https://via.placeholder.com/150'
+                    }
                     alt={orderItem.name}
                     className="w-20 h-20 object-cover rounded-lg shadow-sm"
                   />
@@ -186,7 +198,9 @@ function UserOrderCard({ data, allOrders }) {
       <div className="px-6 py-4 border-t border-gray-200 flex flex-wrap justify-between items-center gap-4 bg-gray-50/50">
         <div>
           <p className="text-sm text-gray-500 mb-1">Total Amount</p>
-          <p className="text-xl font-bold text-[#E23744]">₹{data.totalAmount}</p>
+          <p className="text-xl font-bold text-[#E23744]">
+            ₹{data.totalAmount}
+          </p>
         </div>
 
         <div className="flex gap-3">
@@ -211,7 +225,8 @@ function UserOrderCard({ data, allOrders }) {
 
           {data.orderRating?.rating && (
             <div className="flex items-center gap-2 px-5 py-2.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded-lg text-sm font-bold">
-              <span>{data.orderRating.rating}</span> <FaStar className="text-yellow-500" />
+              <span>{data.orderRating.rating}</span>{' '}
+              <FaStar className="text-yellow-500" />
             </div>
           )}
 

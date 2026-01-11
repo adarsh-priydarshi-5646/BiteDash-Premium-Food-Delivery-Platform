@@ -43,11 +43,13 @@ describe('AddItem Component', () => {
     render(
       <BrowserRouter>
         <AddItem />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.getByText('Add New Item')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('e.g. Butter Chicken, Paneer Tikka...')).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('e.g. Butter Chicken, Paneer Tikka...'),
+    ).toBeInTheDocument();
     expect(screen.getByText('Veg')).toBeInTheDocument();
     expect(screen.getByText('Non-Veg')).toBeInTheDocument();
     expect(screen.getByText('Add Item to Menu')).toBeInTheDocument();
@@ -60,13 +62,18 @@ describe('AddItem Component', () => {
     render(
       <BrowserRouter>
         <AddItem />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
-    fireEvent.change(screen.getByPlaceholderText('e.g. Butter Chicken, Paneer Tikka...'), {
-      target: { value: 'New Dish' },
+    fireEvent.change(
+      screen.getByPlaceholderText('e.g. Butter Chicken, Paneer Tikka...'),
+      {
+        target: { value: 'New Dish' },
+      },
+    );
+    fireEvent.change(screen.getByPlaceholderText('0.00'), {
+      target: { value: '200' },
     });
-    fireEvent.change(screen.getByPlaceholderText('0.00'), { target: { value: '200' } });
 
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: 'Pizza' } });

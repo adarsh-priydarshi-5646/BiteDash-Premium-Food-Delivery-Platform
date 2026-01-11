@@ -35,7 +35,7 @@ function useUpdateLocation() {
         await axios.post(
           `${serverUrl}/api/user/update-location`,
           { lat, lon },
-          { withCredentials: true }
+          { withCredentials: true },
         );
         lastUpdate = now;
       } catch (err) {}
@@ -49,7 +49,7 @@ function useUpdateLocation() {
             updateLocation(pos.coords.latitude, pos.coords.longitude);
           },
           (err) => {},
-          { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 }
+          { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 },
         );
       }
     };
