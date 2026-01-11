@@ -11,8 +11,8 @@ import {
   getMyShop,
   getShopByCity,
 } from "../controllers/shop.controllers.js";
-import isAuth from "../middlewares/isAuth.js";
-import { upload } from "../middlewares/multer.js";
+import isAuth from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/upload.middleware.js";
 import { cacheMiddleware } from "../config/cache.js";
 
 const shopRouter = express.Router();

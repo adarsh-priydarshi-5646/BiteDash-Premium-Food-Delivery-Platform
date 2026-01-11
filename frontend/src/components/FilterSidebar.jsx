@@ -8,7 +8,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCategory, setPriceRange, setSortBy, toggleQuickFilter, clearFilters } from "../redux/userSlice";
-import { categories } from "../category";
+import { categories } from "../constants/categories";
 import { FaFilter, FaTimes, FaLeaf, FaBolt, FaStar } from "react-icons/fa";
 
 function FilterSidebar({ hideCategoryFilter = false }) {

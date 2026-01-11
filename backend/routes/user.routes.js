@@ -17,7 +17,7 @@ import {
   updateProfile,
   getProfileStats,
 } from "../controllers/user.controllers.js";
-import isAuth from "../middlewares/isAuth.js";
+import isAuth from "../middlewares/auth.middleware.js";
 
 const userRouter = express.Router();
 

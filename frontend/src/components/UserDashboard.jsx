@@ -7,7 +7,7 @@
  */
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import Nav from "./Nav";
-import { categories } from "../category";
+import { categories } from "../constants/categories";
 import CategoryCard from "./CategoryCard";
 import { FaCircleChevronLeft, FaCircleChevronRight, FaUtensils } from "react-icons/fa6";
 import { FaSearch, FaStore } from "react-icons/fa";

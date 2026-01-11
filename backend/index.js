@@ -22,8 +22,8 @@ import itemRouter from "./routes/item.routes.js";
 import shopRouter from "./routes/shop.routes.js";
 import orderRouter from "./routes/order.routes.js";
 
-import { rateLimiter } from "./middlewares/rateLimiter.js";
-import { securityHeaders, sanitizeRequest } from "./middlewares/security.js";
+import { rateLimiter } from "./middlewares/rateLimit.middleware.js";
+import { securityHeaders, sanitizeRequest } from "./middlewares/security.middleware.js";
 import { socketHandler } from "./socket.js";
 
 const __filename = fileURLToPath(import.meta.url);

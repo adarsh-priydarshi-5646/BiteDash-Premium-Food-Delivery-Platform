@@ -6,7 +6,7 @@
  * All routes are public except signout which requires authentication
  */
 import express from "express";
-import { authRateLimiter } from "../middlewares/rateLimiter.js";
+import { authRateLimiter } from "../middlewares/rateLimit.middleware.js";
 import {
   googleAuth,
   resetPassword,

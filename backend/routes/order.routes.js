@@ -6,8 +6,8 @@
  * All routes protected, supports user/owner/deliveryBoy role-based access
  */
 import express from "express";
-import isAuth from "../middlewares/isAuth.js";
-import { orderRateLimiter } from "../middlewares/rateLimiter.js";
+import isAuth from "../middlewares/auth.middleware.js";
+import { orderRateLimiter } from "../middlewares/rateLimit.middleware.js";
 import {
   acceptOrder,
   getCurrentOrder,
