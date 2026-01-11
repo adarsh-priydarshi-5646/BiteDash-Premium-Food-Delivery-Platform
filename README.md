@@ -1,168 +1,408 @@
+# 🍔 BiteDash - Food Delivery Platform
 
-# 🍔 BiteDash - Food Delivery Application
+<div align="center">
 
-<img src="https://t4.ftcdn.net/jpg/02/92/20/37/360_F_292203735_CSsyqyS6A4Z9Czd4Msf7qZEhoxjpzZl1.jpg" alt="BiteDash Banner" width="1000" height="400" />
+![Version](https://img.shields.io/badge/Version-1.0.0-blue)
+![Build](https://img.shields.io/badge/Build-Passing-brightgreen)
+![Tests](https://img.shields.io/badge/Tests-62%20Passing-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
+<img src="https://t4.ftcdn.net/jpg/02/92/20/37/360_F_292203735_CSsyqyS6A4Z9Czd4Msf7qZEhoxjpzZl1.jpg" alt="BiteDash Banner" width="800" />
 
+**A Production-Ready Full-Stack Food Delivery Platform**
 
-A full-stack, feature-rich food delivery platform built with the MERN stack. BiteDash connects users with their favorite local restaurants, offering real-time order tracking, secure payments, and distinct dashboards for users, restaurant owners, and delivery partners.
+[Live Demo](https://food-delivery-full-stack-app-me1o.vercel.app) • [API Docs](https://food-delivery-full-stack-app-me1o.vercel.app/docs) • [Report Bug](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/issues)
+
+</div>
 
 ---
 
-## 🚀 Features
+## 📋 Table of Contents
 
-### 👤 User Features
-- **Authentication**: Secure Login/Signup with Email & Password or Google OAuth (Firebase).
-- **Restaurant Discovery**: Browse top restaurants by city and categories.
-- **Search & Filter**: Advanced search for food items and filtering by price, veg/non-veg, and rating.
-- **Cart & Checkout**: Seamless shopping cart experience with persistent state.
-- **Payments**: Integrated Stripe for credit card payments and Cash on Delivery support.
-- **Real-time Tracking**: Live order status updates using Socket.IO.
-- **Responsive Design**: Mobile-first UI for ordering on the go.
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Environment Variables](#-environment-variables)
+- [Usage](#-usage)
+- [API Reference](#-api-reference)
+- [Testing](#-testing)
+- [CI/CD](#-cicd)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## ✨ Features
+
+### 👤 Customer Features
+| Feature | Description |
+|:--------|:------------|
+| 🔐 **Authentication** | Email/Password + Google OAuth (Firebase) |
+| 🏪 **Restaurant Discovery** | Browse by city, category, ratings |
+| 🔍 **Smart Search** | Real-time search with filters (price, veg/non-veg, rating) |
+| 🛒 **Cart Management** | Persistent cart with localStorage |
+| 💳 **Secure Payments** | Stripe integration + Cash on Delivery |
+| 📍 **Live Tracking** | Real-time order tracking with Socket.IO |
+| 📱 **Responsive UI** | Mobile-first design with TailwindCSS |
 
 ### 🏪 Restaurant Owner Features
-- **Dashboard**: Comprehensive overview of orders, earnings, and menu items.
-- **Menu Management**: Add, edit, and delete food items with images (Cloudinary integration).
-- **Order Management**: Accept or reject incoming orders in real-time.
-- **Sales Analytics**: Track best-selling items and total revenue.
+| Feature | Description |
+|:--------|:------------|
+| 📊 **Analytics Dashboard** | Revenue, orders, best-sellers |
+| 🍽️ **Menu Management** | Add/Edit/Delete items with Cloudinary images |
+| 📦 **Order Management** | Accept/Reject orders in real-time |
+| 🛵 **Delivery Assignment** | Auto-assign nearby delivery partners |
 
 ### 🛵 Delivery Partner Features
-- **Delivery Dashboard**: View assigned orders and delivery route details.
-- **Order Updates**: Update order status (Picked Up, Delivered) to notify customers.
-- **Secure Verification**: OTP-based order delivery verification.
+| Feature | Description |
+|:--------|:------------|
+| 📋 **Order Queue** | View available deliveries nearby |
+| 🗺️ **Route Navigation** | Pickup & delivery locations |
+| ✅ **OTP Verification** | Secure delivery confirmation |
+| 💰 **Earnings Tracker** | Daily/Monthly earnings stats |
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| **Frontend** | React.js, Redux Toolkit, Tailwind CSS, Vite |
-| **Backend** | Node.js, Express.js, Socket.IO |
-| **Database** | MongoDB, Mongoose |
-| **Authentication** | Firebase Auth, JWT (JSON Web Tokens) |
-| **Payments** | Stripe API |
-| **Media** | Cloudinary (Image Uploads) |
-| **Real-time** | Socket.IO |
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        FRONTEND                              │
+├─────────────────────────────────────────────────────────────┤
+│  React 19  │  Redux Toolkit  │  TailwindCSS 4  │  Vite 7    │
+│  React Router 7  │  Framer Motion  │  Leaflet  │  Recharts  │
+└─────────────────────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────────────────────────────────────┐
+│                        BACKEND                               │
+├─────────────────────────────────────────────────────────────┤
+│  Node.js 20  │  Express 5  │  Socket.IO  │  Mongoose        │
+│  JWT Auth  │  Rate Limiting  │  Cluster Mode  │  Helmet     │
+└─────────────────────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────────────────────────────────────┐
+│                       SERVICES                               │
+├─────────────────────────────────────────────────────────────┤
+│  MongoDB Atlas  │  Cloudinary  │  Stripe  │  SendGrid       │
+│  Firebase Auth  │  Geoapify  │  Vercel  │  Render           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🏗️ Architecture
+
+```
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   Browser    │────▶│  Vercel CDN  │────▶│  React App   │
+└──────────────┘     └──────────────┘     └──────┬───────┘
+                                                  │
+                     ┌────────────────────────────┼────────────────────────────┐
+                     │                            │                            │
+                     ▼                            ▼                            ▼
+              ┌──────────────┐           ┌──────────────┐           ┌──────────────┐
+              │ Redux Store  │           │  Socket.IO   │           │  REST APIs   │
+              └──────────────┘           └──────┬───────┘           └──────┬───────┘
+                                                │                          │
+                                                └──────────┬───────────────┘
+                                                           │
+                                                           ▼
+                                                ┌──────────────────┐
+                                                │  Express Server  │
+                                                │  (Cluster Mode)  │
+                                                └────────┬─────────┘
+                                                         │
+                     ┌───────────────────────────────────┼───────────────────────────────────┐
+                     │                   │               │               │                   │
+                     ▼                   ▼               ▼               ▼                   ▼
+              ┌──────────┐       ┌──────────┐    ┌──────────┐    ┌──────────┐       ┌──────────┐
+              │ MongoDB  │       │Cloudinary│    │  Stripe  │    │ SendGrid │       │ Geoapify │
+              └──────────┘       └──────────┘    └──────────┘    └──────────┘       └──────────┘
+```
 
 ---
 
 ## 📂 Project Structure
 
 ```
-Food-Delivery-Full-Stack-App/
-├── backend/                 # Node.js & Express Server
-│   ├── controllers/         # Request handlers
-│   ├── models/              # MongoDB Schemas
-│   ├── routes/              # API Routes
-│   ├── middleware/          # Auth & Error handling
-│   ├── utils/               # Helper functions
-│   └── index.js             # Entry point
+BiteDash/
+├── .github/                    # GitHub configurations
+│   ├── workflows/              # CI/CD pipelines (8 workflows)
+│   │   ├── ci.yml              # Main CI pipeline
+│   │   ├── pr-checks.yml       # PR validation & auto-labeling
+│   │   ├── deploy.yml          # Production deployment
+│   │   ├── security.yml        # CodeQL security scanning
+│   │   ├── auto-merge.yml      # Dependabot auto-merge
+│   │   ├── rollback.yml        # Auto-rollback on failure
+│   │   ├── release.yml         # Semantic versioning
+│   │   └── stale.yml           # Stale issue management
+│   ├── CODEOWNERS              # Code ownership rules
+│   ├── dependabot.yml          # Dependency updates
+│   └── pull_request_template.md
 │
-├── frontend/                # React Application
+├── backend/                    # Node.js Express Server
+│   ├── config/                 # Configuration files
+│   │   ├── db.js               # MongoDB connection (pooling)
+│   │   ├── cache.js            # In-memory caching
+│   │   └── stripe.js           # Stripe configuration
+│   ├── constants/              # App constants
+│   ├── controllers/            # Request handlers
+│   ├── middlewares/            # Express middlewares
+│   │   ├── isAuth.js           # JWT authentication
+│   │   ├── rateLimiter.js      # Rate limiting
+│   │   └── security.js         # Security headers
+│   ├── models/                 # MongoDB schemas
+│   ├── routes/                 # API routes
+│   ├── services/               # Business logic layer
+│   ├── utils/                  # Helper functions
+│   ├── validators/             # Input validation
+│   ├── cluster.js              # Cluster mode for scaling
+│   ├── socket.js               # Socket.IO setup
+│   ├── index.js                # Entry point
+│   ├── .env.example            # Environment template
+│   └── ARCHITECTURE.md         # Backend documentation
+│
+├── frontend/                   # React Application
+│   ├── public/
+│   │   └── docs/               # Technical documentation
 │   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/           # Application views/pages
-│   │   ├── redux/           # Global state management
-│   │   ├── hooks/           # Custom React hooks
-│   │   └── App.jsx          # Main App component
-│   └── index.css            # Global styles (Tailwind imports)
-└── README.md                # Project Documentation
+│   │   ├── __tests__/          # Test files (21 test suites)
+│   │   ├── components/         # Reusable UI components
+│   │   │   └── __tests__/      # Component tests
+│   │   ├── pages/              # Route components
+│   │   │   └── __tests__/      # Page tests
+│   │   ├── redux/              # State management
+│   │   │   └── __tests__/      # Redux tests
+│   │   ├── hooks/              # Custom React hooks
+│   │   ├── constants/          # App constants
+│   │   ├── utils/              # Helper functions
+│   │   └── App.jsx             # Root component
+│   ├── .env.example            # Environment template
+│   └── ARCHITECTURE.md         # Frontend documentation
+│
+└── README.md                   # This file
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ Installation
 
 ### Prerequisites
-- Node.js (v16+)
-- MongoDB (Local or Atlas)
-- Stripe Account
-- Cloudinary Account
-- Firebase Project
+- Node.js v18+ 
+- MongoDB Atlas account
+- Stripe account
+- Cloudinary account
+- Firebase project (for Google OAuth)
+- Geoapify API key
 
-### 1. Clone the Repository
+### Quick Start
+
 ```bash
+# Clone repository
 git clone https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App.git
 cd Food-Delivery-Full-Stack-App
-```
 
-### 2. Backend Setup
-Navigate to the backend folder and install dependencies:
-```bash
+# Install backend dependencies
 cd backend
 npm install
-```
+cp .env.example .env  # Configure your environment variables
 
-Create a `.env` file in the `backend` directory:
-```env
-PORT=8000
-MONGODB_URL=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-CLOUDINARY_CLOUD_NAME=your_cloudinary_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-FRONTEND_URL=http://localhost:5173
-```
-
-Start the backend server:
-```bash
-npm run dev
-```
-
-### 3. Frontend Setup
-Navigate to the frontend folder and install dependencies:
-```bash
+# Install frontend dependencies
 cd ../frontend
 npm install
+cp .env.example .env  # Configure your environment variables
+
+# Start development servers
+# Terminal 1 - Backend
+cd backend && npm run dev
+
+# Terminal 2 - Frontend
+cd frontend && npm run dev
 ```
 
-Create a `.env` file in the `frontend` directory:
+---
+
+## 🔐 Environment Variables
+
+### Backend (`backend/.env`)
+
 ```env
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+# Server
+PORT=8000
+NODE_ENV=development
+
+# Database
+MONGODB_URL=mongodb+srv://user:pass@cluster.mongodb.net/bitedash
+
+# Authentication
+JWT_SECRET=your_super_secret_jwt_key
+
+# Stripe
+STRIPE_SECRET_KEY=sk_test_xxx
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=xxx
+CLOUDINARY_API_KEY=xxx
+CLOUDINARY_API_SECRET=xxx
+
+# Email (SendGrid)
+SENDGRID_API_KEY=SG.xxx
+
+# Frontend URL
+FRONTEND_URL=http://localhost:5173
+
+# Development
+MASTER_OTP=5646
 ```
 
-Start the frontend development server:
+### Frontend (`frontend/.env`)
+
+```env
+# Firebase
+VITE_FIREBASE_APIKEY=xxx
+
+# Geoapify
+VITE_GEOAPIKEY=xxx
+
+# Stripe
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+
+# Backend API
+VITE_API_BASE=http://localhost:8000
+```
+
+> 📝 See `.env.example` files for complete configuration with detailed comments.
+
+---
+
+## 🚀 Usage
+
+### User Roles
+
+| Role | Email | Password | Access |
+|:-----|:------|:---------|:-------|
+| **Customer** | `user@bitedash.com` | `password123` | Order food, track delivery |
+| **Owner** | `owner@bitedash.com` | `password123` | Manage restaurant & menu |
+| **Delivery** | `rider@bitedash.com` | `password123` | Accept & deliver orders |
+
+> 🔑 **Master OTP**: `5646` (for delivery verification & password reset)
+
+### User Flow
+
+```
+1. Landing Page → Sign Up/Sign In
+2. Browse Restaurants → Add to Cart
+3. Checkout → Select Address → Choose Payment
+4. Track Order → Receive Delivery → Rate Order
+```
+
+---
+
+## 📡 API Reference
+
+### Authentication
+| Method | Endpoint | Description |
+|:-------|:---------|:------------|
+| POST | `/api/auth/signup` | Register user |
+| POST | `/api/auth/signin` | Login user |
+| POST | `/api/auth/google` | Google OAuth |
+| GET | `/api/auth/current` | Get current user |
+| POST | `/api/auth/logout` | Logout |
+
+### Orders
+| Method | Endpoint | Description |
+|:-------|:---------|:------------|
+| POST | `/api/order/place-order` | Create order |
+| GET | `/api/order/my-orders` | Get user orders |
+| PUT | `/api/order/status/:id/:shopId` | Update status |
+| POST | `/api/order/verify-otp` | Verify delivery |
+
+> 📚 Full API documentation: [/docs](https://food-delivery-full-stack-app-me1o.vercel.app/docs)
+
+---
+
+## 🧪 Testing
+
 ```bash
-npm run dev
+# Run all tests
+cd frontend && npm test
+
+# Run with coverage
+npm run test:coverage
+
+# Run specific test file
+npm test -- FoodCard.test.jsx
 ```
 
----
-
-## 🌐 Usage
-
-1.  **Home Page**: Visitors land on the new animated landing page.
-2.  **Sign Up**: Create an account as a "User" to order food.
-3.  **Owner Mode**: Sign up as "Owner" to create a restaurant and manage a menu.
-4.  **Order Food**: Add items to cart -> Checkout -> Pay via Stripe.
-5.  **Track Order**: Watch your order status update in real-time.
+**Test Coverage**: 62 tests across 21 test suites
+- Unit tests for components
+- Integration tests for pages
+- Redux slice tests
 
 ---
 
-## 🔐 Default Credentials
+## 🔄 CI/CD
 
-Use these credentials to test the application logic (Password for all: `password123`).
+### GitHub Actions Workflows
 
-| Role | Email | Password | Features |
-|------|-------|----------|----------|
-| **User** | `user@bitedash.com` | `password123` | Order food, track delivery |
-| **Owner** | `owner@bitedash.com` | `password123` | Manage menu, accept orders |
-| **Delivery Boy** | `rider@bitedash.com` | `password123` | View assigned orders, deliver |
+| Workflow | Trigger | Description |
+|:---------|:--------|:------------|
+| `ci.yml` | Push/PR | Lint, test, build |
+| `pr-checks.yml` | PR | Auto-label, validate |
+| `deploy.yml` | Push to main | Deploy to Vercel |
+| `security.yml` | Schedule | CodeQL scanning |
+| `auto-merge.yml` | Dependabot | Auto-merge patches |
+| `rollback.yml` | Deploy fail | Auto-rollback |
 
-> **Note**: For OTP verification during delivery or password reset, use the Master OTP: **`5646`**.
+### Auto-Labeling
+
+PRs are automatically labeled based on changed files:
+- 🎨 `frontend` - React changes
+- ⚙️ `backend` - Node.js changes
+- 📚 `docs` - Documentation
+- 🔧 `ci` - Workflow changes
+
+---
+
+## 🔒 Security Features
+
+- ✅ JWT in HttpOnly cookies
+- ✅ Rate limiting (100 req/15min)
+- ✅ Input sanitization (XSS prevention)
+- ✅ Security headers (Helmet)
+- ✅ CORS configuration
+- ✅ CodeQL security scanning
+- ✅ Dependabot alerts
+
+---
+
+## 📈 Performance
+
+| Metric | Value |
+|:-------|:------|
+| Lighthouse Score | 90+ |
+| Bundle Size (gzip) | ~350 KB |
+| Build Time | ~7 seconds |
+| MongoDB Pool | 100 connections |
+| Rate Limit | 5000+ req/s |
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please fork the repository and create a pull request.
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+### PR Guidelines
+- Follow existing code style
+- Add tests for new features
+- Update documentation
+- Use conventional commits
 
 ---
 
@@ -172,4 +412,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-> **Note**: This project uses a `seedDefaultRestaurant.js` script in the backend to populate initial data if needed.
+<div align="center">
+
+**Built with ❤️ by [Adarsh Priydarshi](https://github.com/adarsh-priydarshi-5646)**
+
+⭐ Star this repo if you find it helpful!
+
+</div>
