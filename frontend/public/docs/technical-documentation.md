@@ -1,4 +1,4 @@
-# Vingo Food Delivery Platform
+# BiteDash Food Delivery Platform
 ## Complete Technical Documentation
 
 **Version**: 1.0.0  
@@ -10,16 +10,16 @@
 
 # Introduction
 
-Welcome to the technical portal for the **Vingo Food Delivery Platform**. This documentation is designed to provide developers, architects, and stakeholders with a deep understanding of the system's internals.
+Welcome to the technical portal for the **BiteDash Food Delivery Platform**. This documentation is designed to provide developers, architects, and stakeholders with a deep understanding of the system's internals.
 
-### What is Vingo?
-Vingo is a hyper-local food delivery ecosystem that bridges the gap between artisanal restaurants and hungry customers. Built with a focus on speed, reliability, and modularity, Vingo leverages the full power of the MERN stack to deliver a 60FPS mobile-first experience.
+### What is BiteDash?
+BiteDash is a hyper-local food delivery ecosystem that bridges the gap between artisanal restaurants and hungry customers. Built with a focus on speed, reliability, and modularity, BiteDash leverages the full power of the MERN stack to deliver a 60FPS mobile-first experience.
 
 ---
 
 # Overview
 
-**Vingo** is a full-stack platform integrated with real-time tracking, secure payments, and a three-way marketplace (User, Owner, Delivery).
+**BiteDash** is a full-stack platform integrated with real-time tracking, secure payments, and a three-way marketplace (User, Owner, Delivery).
 
 ### Key Features
 
@@ -975,9 +975,9 @@ user.index({ location: '2dsphere' });
 # Guides
 
 ### 1. Project Setup
-To run Vingo locally, follow these steps:
+To run BiteDash locally, follow these steps:
 
-1. **Clone the Repo**: `git clone vingo-repo-url`
+1. **Clone the Repo**: `git clone bitedash-repo-url`
 2. **Install Deps**: Run `npm install` in both `frontend` and `backend` directories.
 3. **Env Config**: Copy `.env.template` to `.env` and fill in keys for MongoDB, Stripe, Cloudinary, and Geoapify.
 4. **Dev Start**: `npm run dev` in both folders.
@@ -989,7 +989,7 @@ To run Vingo locally, follow these steps:
 4. **Activation**: Your shop is instantly live for the city you selected.
 
 ### 3. Real-Time Order Processing
-Vingo uses a state-machine driven order flow:
+BiteDash uses a state-machine driven order flow:
 `Pending` -> `Accepted/Preparing` -> `Out for Delivery` -> `Delivered/Verified`.
 
 ---
@@ -1716,7 +1716,7 @@ MASTER_OTP=5646
 
 **Connection String**:
 ```
-mongodb+srv://username:password@cluster.mongodb.net/vingo?retryWrites=true&w=majority
+mongodb+srv://username:password@cluster.mongodb.net/bitedash?retryWrites=true&w=majority
 ```
 
 **Indexes**:
@@ -1729,7 +1729,7 @@ mongodb+srv://username:password@cluster.mongodb.net/vingo?retryWrites=true&w=maj
 
 ## Conclusion
 
-This documentation provides a comprehensive overview of the **Vingo Food Delivery Platform**. The system is production-ready with:
+This documentation provides a comprehensive overview of the **BiteDash Food Delivery Platform**. The system is production-ready with:
 
 - ✅ **17 frontend pages** (all documented)
 - ✅ **30+ backend APIs** (all documented)

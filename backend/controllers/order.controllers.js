@@ -897,7 +897,7 @@ export const createStripePaymentIntent = async (req, res) => {
           price_data: {
             currency: "inr",
             product_data: {
-              name: "Vingo Food Order",
+              name: "BiteDash Food Order",
               description: `Order ID: ${orderId}`,
               images: ["https://t3.ftcdn.net/jpg/03/33/90/46/360_F_333904627_tnCepUpc3Uynb6stmEbverr8HeWS2VZl.jpg"],
             },

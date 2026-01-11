@@ -402,7 +402,7 @@ function CheckOut() {
 
               <div className="mt-6 p-4 rounded-xl bg-gray-50 border border-gray-100">
                 <p className="text-[10px] text-gray-400 text-center font-bold uppercase tracking-widest leading-relaxed">
-                  By placing the order, you agree to Vingo's terms & conditions and privacy policy
+                  By placing the order, you agree to BiteDash's terms & conditions and privacy policy
                 </p>
               </div>
             </div>

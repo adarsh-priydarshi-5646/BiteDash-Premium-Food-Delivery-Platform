@@ -113,7 +113,7 @@ function Profile() {
   const stats = [
     { label: "Total Orders", value: profileStats.totalOrders, icon: <FaShoppingBag />, color: "bg-blue-50 text-blue-600" },
     { label: "Reviews", value: profileStats.totalReviews, icon: <FaStar />, color: "bg-yellow-50 text-yellow-600" },
-    { label: "Vingo Points", value: profileStats.points, icon: <FaStar />, color: "bg-purple-50 text-purple-600" },
+    { label: "BiteDash Points", value: profileStats.points, icon: <FaStar />, color: "bg-purple-50 text-purple-600" },
     { label: "Saved Time", value: profileStats.savedTime, icon: <FaClock />, color: "bg-green-50 text-green-600" },
   ];
 

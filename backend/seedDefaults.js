@@ -8,8 +8,8 @@ dotenv.config();
 
 const users = [
   {
-    fullName: "Vingo Owner",
-    email: "owner@vingo.com",
+    fullName: "BiteDash Owner",
+    email: "owner@bitedash.com",
     password: "password123",
     mobile: "9999999999",
     role: "owner",
@@ -23,7 +23,7 @@ const users = [
   },
   {
     fullName: "Delivery Guy",
-    email: "delivery@vingo.com",
+    email: "delivery@bitedash.com",
     password: "password123",
     mobile: "6666666666",
     role: "deliveryBoy",
@@ -60,7 +60,7 @@ const seedDefaults = async () => {
         const shop = await Shop.findOne({ owner: user._id });
         if (!shop) {
           await Shop.create({
-            name: "Vingo HQ Eats",
+            name: "BiteDash HQ Eats",
             image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop",
             owner: user._id,
             city: "New Delhi",

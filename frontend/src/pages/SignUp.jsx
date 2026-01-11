@@ -78,13 +78,13 @@ function SignUp() {
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">
         {}
        <div className="absolute top-6 left-6 cursor-pointer" onClick={() => navigate("/")}>
-          <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">Vingo</h1>
+          <h1 className="text-3xl font-extrabold italic text-[#E23744] tracking-tight">BiteDash</h1>
        </div>
 
       <div className="w-full max-w-[440px] bg-white p-2">
         <div className="text-center mb-6">
            <h2 className="text-3xl font-medium text-gray-800 tracking-wide mb-2">Sign up</h2>
-           <p className="text-gray-500 text-sm">to continue to Vingo</p>
+           <p className="text-gray-500 text-sm">to continue to BiteDash</p>
         </div>
 
         <div className="space-y-4">
