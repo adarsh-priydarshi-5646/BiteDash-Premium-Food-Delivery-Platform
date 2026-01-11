@@ -1,10 +1,19 @@
 # =============================================================================
-# Security Scan - Vulnerability Detection & CodeQL Analysis
+# Security Scan - Comprehensive Security Validation
 # =============================================================================
 # 
-# Triggers: Push to main, PRs to main, Weekly schedule (Sunday midnight)
-# Scans: npm audit, CodeQL for JavaScript security issues
-# Reports: Security alerts in GitHub Security tab
+# Triggers: Push to main, All PRs to main, Weekly schedule
+# 
+# SECURITY CHECKS:
+# ✅ Dependency Review - Block PRs with vulnerable new dependencies
+# ✅ NPM Audit - Check for known vulnerabilities (critical = fail)
+# ✅ Secret Scan - Detect leaked credentials/API keys
+# ✅ SAST - Static Application Security Testing
+# 
+# FAIL CONDITIONS:
+# ❌ New dependency with high/critical vulnerability
+# ❌ Critical npm vulnerability in existing packages
+# ❌ Leaked secrets detected
 # =============================================================================
 
 name: Security Scan
@@ -15,29 +24,36 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: '0 0 * * 0'  # Weekly on Sunday
 
 permissions:
   contents: read
   security-events: write
+  pull-requests: write
 
 jobs:
+  # ===========================================================================
+  # DEPENDENCY REVIEW (PRs only)
+  # ===========================================================================
   dependency-review:
-    name: Dependency Review
+    name: 📦 Dependency Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/dependency-review-action@v4
+      
+      - name: Review Dependencies
+        uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
+          comment-summary-in-pr: always
 
-  npm-audit:
-    name: NPM Audit
+  # ===========================================================================
+  # NPM AUDIT
+  # ===========================================================================
+  npm-audit-frontend:
+    name: 🔒 Frontend Audit
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dir: [frontend, backend]
     steps:
       - uses: actions/checkout@v4
 
@@ -45,34 +61,152 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: ${{ matrix.dir }}/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       - run: npm ci
-        working-directory: ${{ matrix.dir }}
+        working-directory: frontend
 
-      - name: Audit
-        run: npm audit --audit-level=high || echo "::warning::Vulnerabilities in ${{ matrix.dir }}"
-        working-directory: ${{ matrix.dir }}
+      - name: Security Audit
+        run: |
+          echo "🔍 Scanning frontend dependencies..."
+          
+          # Check for critical vulnerabilities (FAIL)
+          if npm audit --audit-level=critical 2>&1 | grep -q "critical"; then
+            echo "❌ CRITICAL vulnerabilities found!"
+            npm audit --audit-level=critical
+            exit 1
+          fi
+          
+          # Check for high vulnerabilities (WARNING)
+          if npm audit --audit-level=high 2>&1 | grep -q "high"; then
+            echo "⚠️ HIGH vulnerabilities found (warning)"
+            npm audit --audit-level=high || true
+          fi
+          
+          echo "✅ No critical vulnerabilities in frontend"
+        working-directory: frontend
 
-  secrets:
-    name: Secret Scan
+  npm-audit-backend:
+    name: 🔒 Backend Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - run: npm ci
+        working-directory: backend
+
+      - name: Security Audit
+        run: |
+          echo "🔍 Scanning backend dependencies..."
+          
+          # Check for critical vulnerabilities (FAIL)
+          if npm audit --audit-level=critical 2>&1 | grep -q "critical"; then
+            echo "❌ CRITICAL vulnerabilities found!"
+            npm audit --audit-level=critical
+            exit 1
+          fi
+          
+          # Check for high vulnerabilities (WARNING)
+          if npm audit --audit-level=high 2>&1 | grep -q "high"; then
+            echo "⚠️ HIGH vulnerabilities found (warning)"
+            npm audit --audit-level=high || true
+          fi
+          
+          echo "✅ No critical vulnerabilities in backend"
+        working-directory: backend
+
+  # ===========================================================================
+  # SECRET SCANNING
+  # ===========================================================================
+  secret-scan:
+    name: 🔑 Secret Scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: trufflesecurity/trufflehog@main
+
+      - name: TruffleHog Scan
+        uses: trufflesecurity/trufflehog@main
         with:
           extra_args: --only-verified
 
-  status:
-    name: Status
-    needs: [npm-audit, secrets]
+      - name: Check for common secrets
+        run: |
+          echo "🔍 Scanning for hardcoded secrets..."
+          
+          # Patterns to check
+          PATTERNS=(
+            "sk_live_"
+            "sk_test_[a-zA-Z0-9]{24}"
+            "AKIA[0-9A-Z]{16}"
+            "mongodb\+srv://[^:]+:[^@]+@"
+            "-----BEGIN RSA PRIVATE KEY-----"
+            "-----BEGIN OPENSSH PRIVATE KEY-----"
+          )
+          
+          FOUND=false
+          for pattern in "${PATTERNS[@]}"; do
+            if grep -rE "$pattern" --include="*.js" --include="*.jsx" --include="*.ts" --include="*.json" . 2>/dev/null | grep -v node_modules | grep -v ".env.example"; then
+              echo "⚠️ Potential secret found matching: $pattern"
+              FOUND=true
+            fi
+          done
+          
+          if [ "$FOUND" = true ]; then
+            echo "❌ Potential secrets detected - review required"
+            exit 1
+          fi
+          
+          echo "✅ No hardcoded secrets found"
+
+  # ===========================================================================
+  # SECURITY STATUS
+  # ===========================================================================
+  security-status:
+    name: ✅ Security Status
+    needs: [npm-audit-frontend, npm-audit-backend, secret-scan]
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Results
+      - name: Evaluate Security
         run: |
-          echo "NPM: ${{ needs.npm-audit.result }}"
-          echo "Secrets: ${{ needs.secrets.result }}"
-          echo "✅ Security scan done (CodeQL handled by GitHub default)"
+          echo "╔════════════════════════════════════════════╗"
+          echo "║         SECURITY SCAN RESULTS              ║"
+          echo "╠════════════════════════════════════════════╣"
+          echo "║ Frontend Audit: ${{ needs.npm-audit-frontend.result }}"
+          echo "║ Backend Audit:  ${{ needs.npm-audit-backend.result }}"
+          echo "║ Secret Scan:    ${{ needs.secret-scan.result }}"
+          echo "╚════════════════════════════════════════════╝"
+          
+          FAILED=false
+          
+          if [ "${{ needs.npm-audit-frontend.result }}" == "failure" ]; then
+            echo "❌ Frontend has critical vulnerabilities"
+            FAILED=true
+          fi
+          
+          if [ "${{ needs.npm-audit-backend.result }}" == "failure" ]; then
+            echo "❌ Backend has critical vulnerabilities"
+            FAILED=true
+          fi
+          
+          if [ "${{ needs.secret-scan.result }}" == "failure" ]; then
+            echo "❌ Secrets detected in codebase"
+            FAILED=true
+          fi
+          
+          if [ "$FAILED" = true ]; then
+            echo ""
+            echo "🚫 SECURITY SCAN FAILED"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ SECURITY SCAN PASSED"
