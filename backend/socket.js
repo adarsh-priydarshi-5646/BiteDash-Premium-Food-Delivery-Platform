@@ -1,5 +1,3 @@
-import User from "./models/user.model.js";
-
 /**
  * Socket.IO Handler - Real-time bidirectional communication
  * 
@@ -7,6 +5,7 @@ import User from "./models/user.model.js";
  * Features: User socket ID storage, delivery boy location broadcasts
  * Used for order status updates, delivery tracking, new order notifications
  */
+import User from "./models/user.model.js";
 export const socketHandler = (io) => {
   io.on("connection", (socket) => {
     socket.on("identity", async ({ userId }) => {
