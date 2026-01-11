@@ -16,6 +16,7 @@ export const securityHeaders = (req, res, next) => {
 
 /**
  * Sanitizes input to prevent NoSQL injection
+ * Note: In Express 5.x, req.query is read-only, so we sanitize in-place
  */
 export const sanitizeRequest = (req, res, next) => {
   const sanitize = (obj) => {
@@ -31,9 +32,28 @@ export const sanitizeRequest = (req, res, next) => {
     return obj;
   };
 
-  if (req.body) req.body = sanitize(req.body);
-  if (req.query) req.query = sanitize(req.query);
-  if (req.params) req.params = sanitize(req.params);
+  // Sanitize body (mutable)
+  if (req.body) {
+    sanitize(req.body);
+  }
+
+  // Sanitize query params in-place (Express 5.x: req.query is read-only)
+  if (req.query && typeof req.query === 'object') {
+    for (const key in req.query) {
+      if (key.startsWith('$') || key.includes('.')) {
+        delete req.query[key];
+      }
+    }
+  }
+
+  // Sanitize params in-place
+  if (req.params && typeof req.params === 'object') {
+    for (const key in req.params) {
+      if (key.startsWith('$') || key.includes('.')) {
+        delete req.params[key];
+      }
+    }
+  }
 
   next();
 };
