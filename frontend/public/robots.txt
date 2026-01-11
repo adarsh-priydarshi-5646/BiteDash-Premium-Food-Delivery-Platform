@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://food-delivery-full-stack-app-me1o.vercel.app/sitemap.xml
+Sitemap: https://bitedash-food.vercel.app/sitemap.xml

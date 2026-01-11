@@ -11,7 +11,7 @@
 
 **A Production-Ready Full-Stack Food Delivery Platform**
 
-[Live Demo](https://food-delivery-full-stack-app-me1o.vercel.app) • [API Docs](https://food-delivery-full-stack-app-me1o.vercel.app/docs) • [Report Bug](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/issues)
+[Live Demo](https://bitedash-food.vercel.app) • [API Docs](https://bitedash-food.vercel.app/docs) • [Report Bug](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/issues)
 
 </div>
 
@@ -325,7 +325,7 @@ VITE_API_BASE=http://localhost:8000
 | PUT    | `/api/order/status/:id/:shopId` | Update status   |
 | POST   | `/api/order/verify-otp`         | Verify delivery |
 
-> 📚 Full API documentation: [/docs](https://food-delivery-full-stack-app-me1o.vercel.app/docs)
+> 📚 Full API documentation: [/docs](https://bitedash-food.vercel.app/docs)
 
 ---
 

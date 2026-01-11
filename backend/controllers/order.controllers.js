@@ -889,8 +889,8 @@ export const createStripePaymentIntent = async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.FRONTEND_URL || 'https://food-delivery-full-stack-app-me1o.vercel.app'}/order-placed?session_id={CHECKOUT_SESSION_ID}&orderId=${orderId}`,
-      cancel_url: `${process.env.FRONTEND_URL || 'https://food-delivery-full-stack-app-me1o.vercel.app'}/checkout`,
+      success_url: `${process.env.FRONTEND_URL || 'https://bitedash-food.vercel.app'}/order-placed?session_id={CHECKOUT_SESSION_ID}&orderId=${orderId}`,
+      cancel_url: `${process.env.FRONTEND_URL || 'https://bitedash-food.vercel.app'}/checkout`,
       customer_email: user.email,
       client_reference_id: orderId,
       metadata: {
