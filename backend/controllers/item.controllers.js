@@ -250,3 +250,18 @@ export const rating = async (req, res) => {
       .json({ message: 'Failed to submit rating. Please try again.' });
   }
 };
+
+export const getAllItems = async (req, res) => {
+  try {
+    const items = await Item.find({})
+      .populate('shop', 'name image city')
+      .sort({ createdAt: -1 })
+      .limit(50);
+    return res.status(200).json({ data: items });
+  } catch (error) {
+    console.error('Get all items error:', error);
+    return res
+      .status(500)
+      .json({ message: 'Failed to get items. Please try again.' });
+  }
+};

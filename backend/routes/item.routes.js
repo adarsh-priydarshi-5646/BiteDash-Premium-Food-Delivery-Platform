@@ -13,6 +13,7 @@ import {
   addItem,
   deleteItem,
   editItem,
+  getAllItems,
   getItemByCity,
   getItemById,
   getItemsByShop,
@@ -23,6 +24,7 @@ import { upload } from '../middlewares/upload.middleware.js';
 
 const itemRouter = express.Router();
 
+itemRouter.get('/all-items', cacheMiddleware(60), getAllItems);
 itemRouter.post('/add-item', isAuth, upload.single('image'), addItem);
 itemRouter.post('/edit-item/:itemId', isAuth, upload.single('image'), editItem);
 itemRouter.get('/delete/:itemId', isAuth, deleteItem);
