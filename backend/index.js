@@ -100,17 +100,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Note: Frontend is served separately via Vercel (bitedash-food.vercel.app)
-// This block is only for monolithic deployments where frontend/backend are together
-// if (process.env.NODE_ENV === 'production' && process.env.SERVE_FRONTEND === 'true') {
-//   app.use(express.static(path.join(__dirname, '../frontend/dist')));
-//   app.get('/{*splat}', (req, res) => {
-//     if (!req.path.startsWith('/api')) {
-//       res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-//     }
-//   });
-// }
-
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);
   res.status(err.status || 500).json({
