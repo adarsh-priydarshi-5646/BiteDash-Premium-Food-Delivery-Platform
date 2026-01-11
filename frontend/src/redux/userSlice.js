@@ -1,11 +1,11 @@
 /**
  * User Redux Slice - Central state management for user data
- * 
+ *
  * State: userData, cart (persisted to localStorage), orders, filters
  * Actions: Auth state, cart CRUD, order updates, category/price filters
  * Real-time updates via Socket.IO for order status changes
  */
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const saveCartToLocalStorage = (cartItems, totalAmount) => {
   try {
@@ -31,7 +31,7 @@ const loadCartFromLocalStorage = () => {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     userData: null,
     authLoading: true,
@@ -46,7 +46,7 @@ const userSlice = createSlice({
     searchItems: null,
     socket: null,
     selectedAddressId: null,
-    
+
     selectedCategories: [],
     priceRange: { min: 0, max: 1000 },
     sortBy: 'popularity',
@@ -91,10 +91,7 @@ const userSlice = createSlice({
         state.cartItems.push(cartItem);
       }
 
-      state.totalAmount = state.cartItems.reduce(
-        (sum, i) => sum + i.price * i.quantity,
-        0
-      );
+      state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
 
@@ -108,19 +105,13 @@ const userSlice = createSlice({
       if (item) {
         item.quantity = quantity;
       }
-      state.totalAmount = state.cartItems.reduce(
-        (sum, i) => sum + i.price * i.quantity,
-        0
-      );
+      state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
 
     removeCartItem: (state, action) => {
       state.cartItems = state.cartItems.filter((i) => i.id !== action.payload);
-      state.totalAmount = state.cartItems.reduce(
-        (sum, i) => sum + i.price * i.quantity,
-        0
-      );
+      state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
 
@@ -168,7 +159,7 @@ const userSlice = createSlice({
     toggleCategory: (state, action) => {
       const category = action.payload;
       if (state.selectedCategories.includes(category)) {
-        state.selectedCategories = state.selectedCategories.filter(c => c !== category);
+        state.selectedCategories = state.selectedCategories.filter((c) => c !== category);
       } else {
         state.selectedCategories.push(category);
       }

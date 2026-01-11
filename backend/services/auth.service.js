@@ -1,6 +1,6 @@
 /**
  * Auth Service - Authentication business logic layer
- * 
+ *
  * Functions: createUser, validateCredentials, generateOtp, verifyOtp, resetPassword
  * Separates business logic from controllers for testability
  * Uses bcrypt for hashing, JWT for tokens, SendGrid for OTP emails
@@ -70,10 +70,8 @@ export const findUserById = async (userId) => {
  * Create new user
  */
 export const createUser = async (userData) => {
-  const hashedPassword = userData.password 
-    ? await hashPassword(userData.password) 
-    : undefined;
-  
+  const hashedPassword = userData.password ? await hashPassword(userData.password) : undefined;
+
   return await User.create({
     ...userData,
     password: hashedPassword,
@@ -97,12 +95,12 @@ export const verifyUserOtp = async (user, otp) => {
   if (!user || user.resetOtp !== otp || user.otpExpires < Date.now()) {
     return false;
   }
-  
+
   user.isOtpVerified = true;
   user.resetOtp = undefined;
   user.otpExpires = undefined;
   await user.save();
-  
+
   return true;
 };
 
@@ -113,11 +111,11 @@ export const resetUserPassword = async (user, newPassword) => {
   if (!user || !user.isOtpVerified) {
     return false;
   }
-  
+
   user.password = await hashPassword(newPassword);
   user.isOtpVerified = false;
   await user.save();
-  
+
   return true;
 };
 

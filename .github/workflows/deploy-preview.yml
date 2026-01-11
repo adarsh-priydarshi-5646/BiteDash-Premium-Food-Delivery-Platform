@@ -1,7 +1,7 @@
 # =============================================================================
 # Preview Deploy - Vercel Preview Deployments for PRs
 # =============================================================================
-# 
+#
 # Triggers: PR opened/synchronized with frontend changes
 # Deploys: Frontend to Vercel preview environment
 # Comments: Adds preview URL to PR automatically
@@ -61,16 +61,16 @@ jobs:
         with:
           script: |
             const url = '${{ steps.deploy.outputs.preview-url }}';
-            
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number
             });
-            
+
             const existing = comments.find(c => c.body.includes('🚀 Preview:'));
             const body = `🚀 **Preview:** ${url}\n\n_Updated: ${new Date().toISOString()}_`;
-            
+
             if (existing) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,

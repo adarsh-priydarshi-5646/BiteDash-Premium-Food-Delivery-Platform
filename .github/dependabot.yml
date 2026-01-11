@@ -1,10 +1,10 @@
 # =============================================================================
 # Dependabot - Automated Dependency Updates
 # =============================================================================
-# 
+#
 # Automatically creates PRs for outdated dependencies.
 # Schedule: Weekly on Monday at 9:00 AM UTC
-# 
+#
 # Groups: Related packages are grouped into single PRs
 # Labels: Auto-labeled with 'dependencies' + ecosystem label
 # Docs: https://docs.github.com/en/code-security/dependabot
@@ -15,83 +15,83 @@ updates:
   # -------------------------------------------------------------------------
   # Frontend Dependencies (React, Vite, Testing)
   # -------------------------------------------------------------------------
-  - package-ecosystem: "npm"
-    directory: "/frontend"
+  - package-ecosystem: 'npm'
+    directory: '/frontend'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "UTC"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'UTC'
     open-pull-requests-limit: 10
     reviewers:
-      - "adarsh-priydarshi-5646"
+      - 'adarsh-priydarshi-5646'
     labels:
-      - "dependencies"
-      - "frontend"
+      - 'dependencies'
+      - 'frontend'
     commit-message:
-      prefix: "chore(deps)"
+      prefix: 'chore(deps)'
     groups:
       react:
         patterns:
-          - "react*"
-          - "@types/react*"
+          - 'react*'
+          - '@types/react*'
       testing:
         patterns:
-          - "vitest"
-          - "@testing-library/*"
-          - "jsdom"
+          - 'vitest'
+          - '@testing-library/*'
+          - 'jsdom'
       linting:
         patterns:
-          - "eslint*"
-          - "@eslint/*"
+          - 'eslint*'
+          - '@eslint/*'
       build:
         patterns:
-          - "vite"
-          - "@vitejs/*"
-          - "terser"
+          - 'vite'
+          - '@vitejs/*'
+          - 'terser'
 
   # -------------------------------------------------------------------------
   # Backend Dependencies (Express, MongoDB, Auth)
   # -------------------------------------------------------------------------
-  - package-ecosystem: "npm"
-    directory: "/backend"
+  - package-ecosystem: 'npm'
+    directory: '/backend'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "UTC"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'UTC'
     open-pull-requests-limit: 10
     reviewers:
-      - "adarsh-priydarshi-5646"
+      - 'adarsh-priydarshi-5646'
     labels:
-      - "dependencies"
-      - "backend"
+      - 'dependencies'
+      - 'backend'
     commit-message:
-      prefix: "chore(deps)"
+      prefix: 'chore(deps)'
     groups:
       express:
         patterns:
-          - "express"
-          - "cors"
-          - "cookie-parser"
+          - 'express'
+          - 'cors'
+          - 'cookie-parser'
       database:
         patterns:
-          - "mongoose"
+          - 'mongoose'
       security:
         patterns:
-          - "bcryptjs"
-          - "jsonwebtoken"
+          - 'bcryptjs'
+          - 'jsonwebtoken'
 
   # -------------------------------------------------------------------------
   # GitHub Actions Dependencies
   # -------------------------------------------------------------------------
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: 'weekly'
+      day: 'monday'
     labels:
-      - "dependencies"
-      - "ci"
+      - 'dependencies'
+      - 'ci'
     commit-message:
-      prefix: "ci(deps)"
+      prefix: 'ci(deps)'

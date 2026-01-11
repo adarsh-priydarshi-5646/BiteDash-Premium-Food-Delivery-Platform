@@ -1,6 +1,6 @@
 /**
  * Shop Page Tests - Restaurant detail & menu
- * 
+ *
  * Tests: Shop info display, menu items grid, add to cart
  * Mocks: Axios for shop data, React Router params
  */
@@ -12,72 +12,74 @@ import axios from 'axios';
 
 vi.mock('axios');
 vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
-    return {
-        ...actual,
-        useParams: () => ({ shopId: 'shop-123' }),
-        useNavigate: () => vi.fn(),
-    };
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useParams: () => ({ shopId: 'shop-123' }),
+    useNavigate: () => vi.fn(),
+  };
 });
 
 vi.mock('react-icons/fa6', () => ({
-    FaStore: () => <div data-testid="store-icon" />,
-    FaLocationDot: () => <div data-testid="location-icon" />,
-    FaStar: () => <div data-testid="star-icon" />,
-    FaClock: () => <div data-testid="clock-icon" />,
-    FaArrowLeft: () => <div data-testid="arrow-left-icon" />,
+  FaStore: () => <div data-testid="store-icon" />,
+  FaLocationDot: () => <div data-testid="location-icon" />,
+  FaStar: () => <div data-testid="star-icon" />,
+  FaClock: () => <div data-testid="clock-icon" />,
+  FaArrowLeft: () => <div data-testid="arrow-left-icon" />,
 }));
 
-vi.mock('../../components/FoodCard', () => ({ default: ({ data }) => <div data-testid="food-card">{data.name}</div> }));
+vi.mock('../../components/FoodCard', () => ({
+  default: ({ data }) => <div data-testid="food-card">{data.name}</div>,
+}));
 
 describe('Shop Component', () => {
-    const mockShopData = {
-        shop: {
-            name: 'Pizza Hut',
-            rating: 4.5,
-            deliveryTime: 30,
-            address: 'Downtown',
-            image: 'http://test.com/img.jpg',
-            cuisine: 'Italian, Pizza'
-        },
-        items: [
-            { _id: '1', name: 'Margherita' },
-            { _id: '2', name: 'Pepperoni' }
-        ]
-    };
+  const mockShopData = {
+    shop: {
+      name: 'Pizza Hut',
+      rating: 4.5,
+      deliveryTime: 30,
+      address: 'Downtown',
+      image: 'http://test.com/img.jpg',
+      cuisine: 'Italian, Pizza',
+    },
+    items: [
+      { _id: '1', name: 'Margherita' },
+      { _id: '2', name: 'Pepperoni' },
+    ],
+  };
 
-    it('renders shop details and menu items', async () => {
-        axios.get.mockResolvedValueOnce({ data: mockShopData });
+  it('renders shop details and menu items', async () => {
+    axios.get.mockResolvedValueOnce({ data: mockShopData });
 
-        render(
-            <BrowserRouter>
-                <Shop />
-            </BrowserRouter>
-        );
+    render(
+      <BrowserRouter>
+        <Shop />
+      </BrowserRouter>
+    );
 
-        await waitFor(() => {
-            expect(screen.getByText('Pizza Hut')).toBeInTheDocument();
-            expect(screen.getByText('Margherita')).toBeInTheDocument();
-            expect(screen.getByText('Pepperoni')).toBeInTheDocument();
-            expect(screen.getByText('30 mins')).toBeInTheDocument();
-            expect(screen.getByText('4.5')).toBeInTheDocument();
-        });
+    await waitFor(() => {
+      expect(screen.getByText('Pizza Hut')).toBeInTheDocument();
+      expect(screen.getByText('Margherita')).toBeInTheDocument();
+      expect(screen.getByText('Pepperoni')).toBeInTheDocument();
+      expect(screen.getByText('30 mins')).toBeInTheDocument();
+      expect(screen.getByText('4.5')).toBeInTheDocument();
+    });
+  });
+
+  it('renders no items state correctly', async () => {
+    axios.get.mockResolvedValueOnce({
+      data: { ...mockShopData, items: [] },
     });
 
-    it('renders no items state correctly', async () => {
-        axios.get.mockResolvedValueOnce({ 
-            data: { ...mockShopData, items: [] } 
-        });
+    render(
+      <BrowserRouter>
+        <Shop />
+      </BrowserRouter>
+    );
 
-        render(
-            <BrowserRouter>
-                <Shop />
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(screen.getByText('No Items Available')).toBeInTheDocument();
-            expect(screen.getByText("This restaurant hasn't added any items yet")).toBeInTheDocument();
-        });
+    await waitFor(() => {
+      expect(screen.getByText('No Items Available')).toBeInTheDocument();
+      expect(screen.getByText("This restaurant hasn't added any items yet")).toBeInTheDocument();
     });
+  });
 });

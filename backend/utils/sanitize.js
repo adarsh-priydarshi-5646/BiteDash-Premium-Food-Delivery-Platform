@@ -1,6 +1,6 @@
 /**
  * Input Sanitization - Security utilities for user input
- * 
+ *
  * escapeRegex: Escapes special regex chars to prevent ReDoS attacks
  * sanitizeQuery: Removes NoSQL injection patterns from queries
  * sanitizeHtml: Strips dangerous HTML tags for XSS prevention

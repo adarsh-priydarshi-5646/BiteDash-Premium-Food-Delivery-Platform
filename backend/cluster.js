@@ -1,6 +1,6 @@
 /**
  * Cluster Mode - Multi-process server for CPU utilization
- * 
+ *
  * Spawns worker processes equal to CPU cores (max 4)
  * Auto-restarts crashed workers with 1s delay
  * Run with: node cluster.js (production) instead of node index.js
@@ -35,7 +35,6 @@ if (cluster.isPrimary) {
     }
     process.exit(0);
   });
-
 } else {
   import('./index.js');
   console.log(`Worker ${process.pid} started`);

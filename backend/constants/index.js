@@ -1,6 +1,6 @@
 /**
  * Application Constants - Centralized config & magic values
- * 
+ *
  * Categories: HTTP status codes, order statuses, OTP config, cookie settings
  * Geo config: Max distance for delivery boy search (10km)
  * Prevents magic numbers scattered across codebase

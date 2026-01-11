@@ -1,15 +1,15 @@
 /**
  * useGetShopByCity Hook - Fetches restaurants in user's city
- * 
+ *
  * Makes GET /shop/city/:city when city is available
  * Updates userSlice.shopsInMyCity for restaurant listing
  * Re-fetches when currentCity changes
  */
-import axios from "axios";
-import React, { useEffect } from "react";
-import { serverUrl } from "../App";
-import { useDispatch, useSelector } from "react-redux";
-import { setShopsInMyCity, setUserData } from "../redux/userSlice";
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { serverUrl } from '../App';
+import { useDispatch, useSelector } from 'react-redux';
+import { setShopsInMyCity, setUserData } from '../redux/userSlice';
 
 function useGetShopByCity() {
   const dispatch = useDispatch();
@@ -17,11 +17,10 @@ function useGetShopByCity() {
   useEffect(() => {
     const fetchShops = async () => {
       try {
-        if (!currentCity) return; 
-        const result = await axios.get(
-          `${serverUrl}/api/shop/get-by-city/${currentCity}`,
-          { withCredentials: true }
-        );
+        if (!currentCity) return;
+        const result = await axios.get(`${serverUrl}/api/shop/get-by-city/${currentCity}`, {
+          withCredentials: true,
+        });
         dispatch(setShopsInMyCity(result.data));
       } catch (error) {
         console.error(error);

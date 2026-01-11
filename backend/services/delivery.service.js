@@ -1,6 +1,6 @@
 /**
  * Delivery Service - Delivery assignment business logic
- * 
+ *
  * Functions: findNearbyDeliveryBoys, assignDeliveryBoy, getAvailableDeliveryBoys
  * Uses MongoDB geospatial queries ($near) for location-based search
  * Filters out busy delivery boys with active assignments
@@ -12,7 +12,11 @@ import { GEO_CONFIG, ASSIGNMENT_STATUS } from '../constants/index.js';
 /**
  * Find nearby delivery boys using geospatial query
  */
-export const findNearbyDeliveryBoys = async (longitude, latitude, maxDistance = GEO_CONFIG.MAX_DELIVERY_DISTANCE) => {
+export const findNearbyDeliveryBoys = async (
+  longitude,
+  latitude,
+  maxDistance = GEO_CONFIG.MAX_DELIVERY_DISTANCE
+) => {
   return await User.find({
     role: 'deliveryBoy',
     location: {
@@ -35,7 +39,7 @@ export const getBusyDeliveryBoyIds = async (deliveryBoyIds) => {
     assignedTo: { $in: deliveryBoyIds },
     status: { $nin: [ASSIGNMENT_STATUS.BROADCASTED, ASSIGNMENT_STATUS.COMPLETED] },
   }).distinct('assignedTo');
-  
+
   return new Set(busyIds.map((id) => String(id)));
 };
 
@@ -64,7 +68,7 @@ export const createDeliveryAssignment = async (orderId, shopId, shopOrderId, can
  */
 export const notifyDeliveryBoys = (io, deliveryBoys, assignmentData) => {
   if (!io) return;
-  
+
   deliveryBoys.forEach((boy) => {
     const boySocketId = boy.socketId;
     if (boySocketId) {
@@ -84,7 +88,7 @@ export const isDeliveryBoyBusy = async (deliveryBoyId) => {
     assignedTo: deliveryBoyId,
     status: { $nin: [ASSIGNMENT_STATUS.BROADCASTED, ASSIGNMENT_STATUS.COMPLETED] },
   });
-  
+
   return !!assignment;
 };
 
@@ -93,16 +97,16 @@ export const isDeliveryBoyBusy = async (deliveryBoyId) => {
  */
 export const acceptDeliveryAssignment = async (assignmentId, deliveryBoyId) => {
   const assignment = await DeliveryAssignment.findById(assignmentId);
-  
+
   if (!assignment || assignment.status !== ASSIGNMENT_STATUS.BROADCASTED) {
     return null;
   }
-  
+
   assignment.assignedTo = deliveryBoyId;
   assignment.status = ASSIGNMENT_STATUS.ASSIGNED;
   assignment.acceptedAt = new Date();
   await assignment.save();
-  
+
   return assignment;
 };
 

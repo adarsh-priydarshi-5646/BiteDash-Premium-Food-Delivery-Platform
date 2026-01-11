@@ -1,15 +1,15 @@
 # =============================================================================
 # Security Scan - Comprehensive Security Validation
 # =============================================================================
-# 
+#
 # Triggers: Push to main, All PRs to main, Weekly schedule
-# 
+#
 # SECURITY CHECKS:
 # ✅ Dependency Review - Block PRs with vulnerable new dependencies
 # ✅ NPM Audit - Check for known vulnerabilities (critical = fail)
 # ✅ Secret Scan - Detect leaked credentials/API keys
 # ✅ SAST - Static Application Security Testing
-# 
+#
 # FAIL CONDITIONS:
 # ❌ New dependency with high/critical vulnerability
 # ❌ Critical npm vulnerability in existing packages
@@ -24,7 +24,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 0 * * 0'  # Weekly on Sunday
+    - cron: '0 0 * * 0' # Weekly on Sunday
 
 permissions:
   contents: read
@@ -41,7 +41,7 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Review Dependencies
         uses: actions/dependency-review-action@v4
         with:
@@ -69,20 +69,20 @@ jobs:
       - name: Security Audit
         run: |
           echo "🔍 Scanning frontend dependencies..."
-          
+
           # Check for critical vulnerabilities (FAIL)
           if npm audit --audit-level=critical 2>&1 | grep -q "critical"; then
             echo "❌ CRITICAL vulnerabilities found!"
             npm audit --audit-level=critical
             exit 1
           fi
-          
+
           # Check for high vulnerabilities (WARNING)
           if npm audit --audit-level=high 2>&1 | grep -q "high"; then
             echo "⚠️ HIGH vulnerabilities found (warning)"
             npm audit --audit-level=high || true
           fi
-          
+
           echo "✅ No critical vulnerabilities in frontend"
         working-directory: frontend
 
@@ -104,20 +104,20 @@ jobs:
       - name: Security Audit
         run: |
           echo "🔍 Scanning backend dependencies..."
-          
+
           # Check for critical vulnerabilities (FAIL)
           if npm audit --audit-level=critical 2>&1 | grep -q "critical"; then
             echo "❌ CRITICAL vulnerabilities found!"
             npm audit --audit-level=critical
             exit 1
           fi
-          
+
           # Check for high vulnerabilities (WARNING)
           if npm audit --audit-level=high 2>&1 | grep -q "high"; then
             echo "⚠️ HIGH vulnerabilities found (warning)"
             npm audit --audit-level=high || true
           fi
-          
+
           echo "✅ No critical vulnerabilities in backend"
         working-directory: backend
 
@@ -140,7 +140,7 @@ jobs:
       - name: Check for common secrets
         run: |
           echo "🔍 Scanning for hardcoded secrets..."
-          
+
           # Patterns to check
           PATTERNS=(
             "sk_live_"
@@ -150,7 +150,7 @@ jobs:
             "-----BEGIN RSA PRIVATE KEY-----"
             "-----BEGIN OPENSSH PRIVATE KEY-----"
           )
-          
+
           FOUND=false
           for pattern in "${PATTERNS[@]}"; do
             if grep -rE "$pattern" --include="*.js" --include="*.jsx" --include="*.ts" --include="*.json" . 2>/dev/null | grep -v node_modules | grep -v ".env.example"; then
@@ -158,12 +158,12 @@ jobs:
               FOUND=true
             fi
           done
-          
+
           if [ "$FOUND" = true ]; then
             echo "❌ Potential secrets detected - review required"
             exit 1
           fi
-          
+
           echo "✅ No hardcoded secrets found"
 
   # ===========================================================================
@@ -184,29 +184,29 @@ jobs:
           echo "║ Backend Audit:  ${{ needs.npm-audit-backend.result }}"
           echo "║ Secret Scan:    ${{ needs.secret-scan.result }}"
           echo "╚════════════════════════════════════════════╝"
-          
+
           FAILED=false
-          
+
           if [ "${{ needs.npm-audit-frontend.result }}" == "failure" ]; then
             echo "❌ Frontend has critical vulnerabilities"
             FAILED=true
           fi
-          
+
           if [ "${{ needs.npm-audit-backend.result }}" == "failure" ]; then
             echo "❌ Backend has critical vulnerabilities"
             FAILED=true
           fi
-          
+
           if [ "${{ needs.secret-scan.result }}" == "failure" ]; then
             echo "❌ Secrets detected in codebase"
             FAILED=true
           fi
-          
+
           if [ "$FAILED" = true ]; then
             echo ""
             echo "🚫 SECURITY SCAN FAILED"
             exit 1
           fi
-          
+
           echo ""
           echo "✅ SECURITY SCAN PASSED"

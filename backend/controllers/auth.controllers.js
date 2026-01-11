@@ -1,14 +1,14 @@
 /**
  * Auth Controller - Handles user authentication & account management
- * 
+ *
  * Endpoints: signUp, signIn, signOut, sendOtp, verifyOtp, resetPassword, googleAuth
  * Uses bcrypt for password hashing, JWT tokens stored in HTTP-only cookies
  * OTP sent via SendGrid email for password reset (expires in 5 mins)
  */
-import User from "../models/user.model.js";
-import bcrypt from "bcryptjs";
-import genToken from "../utils/token.js";
-import { sendOtpMailSendGrid } from "../utils/sendgridMail.js";
+import User from '../models/user.model.js';
+import bcrypt from 'bcryptjs';
+import genToken from '../utils/token.js';
+import { sendOtpMailSendGrid } from '../utils/sendgridMail.js';
 
 export const signUp = async (req, res) => {
   try {
@@ -17,17 +17,13 @@ export const signUp = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ message: "User Already exist." });
+      return res.status(400).json({ message: 'User Already exist.' });
     }
     if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "password must be at least 6 characters." });
+      return res.status(400).json({ message: 'password must be at least 6 characters.' });
     }
     if (mobile.length < 10) {
-      return res
-        .status(400)
-        .json({ message: "mobile no must be at least 10 digits." });
+      return res.status(400).json({ message: 'mobile no must be at least 10 digits.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -42,18 +38,17 @@ export const signUp = async (req, res) => {
 
     const token = await genToken(user._id);
 
-    res.cookie("token", token, {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    res.cookie('token', token, {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
 
     return res.status(201).json(user);
-
   } catch (error) {
-    console.error("Sign up error:", error);
-    return res.status(500).json({ message: "Sign up failed. Please try again." });
+    console.error('Sign up error:', error);
+    return res.status(500).json({ message: 'Sign up failed. Please try again.' });
   }
 };
 
@@ -64,40 +59,38 @@ export const signIn = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "User does not exist." });
+      return res.status(400).json({ message: 'User does not exist.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "incorrect Password" });
+      return res.status(400).json({ message: 'incorrect Password' });
     }
 
     const token = await genToken(user._id);
 
-    res.cookie("token", token, {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    res.cookie('token', token, {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
 
     return res.status(200).json(user);
-
   } catch (error) {
-    console.error("Sign in error:", error);
-    return res.status(500).json({ message: "Sign in failed. Please try again." });
+    console.error('Sign in error:', error);
+    return res.status(500).json({ message: 'Sign in failed. Please try again.' });
   }
 };
 
 export const signOut = async (req, res) => {
   try {
-    res.clearCookie("token");
-    return res.status(200).json({ message: "log out successfully" });
-
+    res.clearCookie('token');
+    return res.status(200).json({ message: 'log out successfully' });
   } catch (error) {
-    console.error("Sign out error:", error);
-    return res.status(500).json({ message: "Sign out failed. Please try again." });
+    console.error('Sign out error:', error);
+    return res.status(500).json({ message: 'Sign out failed. Please try again.' });
   }
 };
 
@@ -108,7 +101,7 @@ export const sendOtp = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "User does not exist." });
+      return res.status(400).json({ message: 'User does not exist.' });
     }
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
 
@@ -116,21 +109,19 @@ export const sendOtp = async (req, res) => {
     user.otpExpires = Date.now() + 5 * 60 * 1000;
     user.isOtpVerified = false;
     await user.save();
-    
-    
+
     try {
       await sendOtpMailSendGrid(email, otp);
     } catch (sendgridError) {
       console.error(`SendGrid failed:`, sendgridError.message);
     }
 
-    return res.status(200).json({ 
-      message: "OTP sent successfully to your email"
+    return res.status(200).json({
+      message: 'OTP sent successfully to your email',
     });
-
   } catch (error) {
-    console.error("Send OTP error:", error);
-    return res.status(500).json({ message: "Failed to send OTP. Please try again." });
+    console.error('Send OTP error:', error);
+    return res.status(500).json({ message: 'Failed to send OTP. Please try again.' });
   }
 };
 
@@ -141,18 +132,17 @@ export const verifyOtp = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user || user.resetOtp != otp || user.otpExpires < Date.now()) {
-      return res.status(400).json({ message: "invalid/expired otp" });
+      return res.status(400).json({ message: 'invalid/expired otp' });
     }
     user.isOtpVerified = true;
     user.resetOtp = undefined;
     user.otpExpires = undefined;
     await user.save();
 
-    return res.status(200).json({ message: "otp verify successfully" });
-
+    return res.status(200).json({ message: 'otp verify successfully' });
   } catch (error) {
-    console.error("Verify OTP error:", error);
-    return res.status(500).json({ message: "OTP verification failed. Please try again." });
+    console.error('Verify OTP error:', error);
+    return res.status(500).json({ message: 'OTP verification failed. Please try again.' });
   }
 };
 
@@ -163,7 +153,7 @@ export const resetPassword = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user || !user.isOtpVerified) {
-      return res.status(400).json({ message: "otp verification required" });
+      return res.status(400).json({ message: 'otp verification required' });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -172,11 +162,10 @@ export const resetPassword = async (req, res) => {
     user.isOtpVerified = false;
     await user.save();
 
-    return res.status(200).json({ message: "password reset successfully" });
-
+    return res.status(200).json({ message: 'password reset successfully' });
   } catch (error) {
-    console.error("Reset password error:", error);
-    return res.status(500).json({ message: "Password reset failed. Please try again." });
+    console.error('Reset password error:', error);
+    return res.status(500).json({ message: 'Password reset failed. Please try again.' });
   }
 };
 
@@ -197,17 +186,16 @@ export const googleAuth = async (req, res) => {
 
     const token = await genToken(user._id);
 
-    res.cookie("token", token, {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    res.cookie('token', token, {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
 
     return res.status(200).json(user);
-    
   } catch (error) {
-    console.error("Google auth error:", error);
-    return res.status(500).json({ message: "Google authentication failed. Please try again." });
+    console.error('Google auth error:', error);
+    return res.status(500).json({ message: 'Google authentication failed. Please try again.' });
   }
 };

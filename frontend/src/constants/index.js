@@ -1,6 +1,6 @@
 /**
  * Frontend Constants - Centralized config & magic values
- * 
+ *
  * Categories: API endpoints, app config, regex patterns, storage keys
  * Order statuses, payment methods, user roles
  * Prevents hardcoded values scattered across components
@@ -16,25 +16,25 @@ export const API_ENDPOINTS = {
   VERIFY_OTP: '/api/auth/verify-otp',
   RESET_PASSWORD: '/api/auth/reset-password',
   GOOGLE_AUTH: '/api/auth/google',
-  
+
   // User
   GET_CURRENT_USER: '/api/user/get-current-user',
   UPDATE_LOCATION: '/api/user/update-location',
   UPDATE_PROFILE: '/api/user/update-profile',
-  
+
   // Shop
   GET_MY_SHOP: '/api/shop/get-my-shop',
   GET_SHOPS_BY_CITY: '/api/shop/get-shops-by-city',
   CREATE_SHOP: '/api/shop/create-shop',
   UPDATE_SHOP: '/api/shop/update-shop',
-  
+
   // Items
   GET_ITEMS_BY_CITY: '/api/item/get-items-by-city',
   SEARCH_ITEMS: '/api/item/search-items',
   ADD_ITEM: '/api/item/add-item',
   UPDATE_ITEM: '/api/item/update-item',
   DELETE_ITEM: '/api/item/delete-item',
-  
+
   // Orders
   PLACE_ORDER: '/api/order/place-order',
   GET_MY_ORDERS: '/api/order/get-my-orders',
@@ -42,7 +42,7 @@ export const API_ENDPOINTS = {
   UPDATE_ORDER_STATUS: '/api/order/update-status',
   CANCEL_ORDER: '/api/order/cancel-order',
   RATE_ORDER: '/api/order/rate-order',
-  
+
   // Delivery
   GET_ASSIGNMENTS: '/api/order/get-assignments',
   ACCEPT_ORDER: '/api/order/accept-order',
@@ -50,7 +50,7 @@ export const API_ENDPOINTS = {
   SEND_DELIVERY_OTP: '/api/order/send-delivery-otp',
   VERIFY_DELIVERY_OTP: '/api/order/verify-delivery-otp',
   GET_TODAY_DELIVERIES: '/api/order/get-today-deliveries',
-  
+
   // Payment
   CREATE_PAYMENT_INTENT: '/api/order/create-payment-intent',
   VERIFY_PAYMENT: '/api/order/verify-payment',

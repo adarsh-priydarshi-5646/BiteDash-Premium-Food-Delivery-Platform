@@ -1,13 +1,13 @@
 /**
  * RestaurantCard Component - Restaurant display card
- * 
+ *
  * Features: Shop image, name, rating, delivery time, location
  * Navigates to /shop/:shopId on click
  * Responsive card with hover effects
  */
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { FaStar, FaClock, FaMapMarkerAlt } from "react-icons/fa";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaStar, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 
 function RestaurantCard({ restaurant }) {
   const navigate = useNavigate();
@@ -48,14 +48,17 @@ function RestaurantCard({ restaurant }) {
         {}
         {restaurant.cuisine && (
           <div className="flex flex-wrap gap-1 mb-3">
-            {restaurant.cuisine.split(',').slice(0, 3).map((cuisine, index) => (
-              <span
-                key={index}
-                className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
-              >
-                {cuisine.trim()}
-              </span>
-            ))}
+            {restaurant.cuisine
+              .split(',')
+              .slice(0, 3)
+              .map((cuisine, index) => (
+                <span
+                  key={index}
+                  className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+                >
+                  {cuisine.trim()}
+                </span>
+              ))}
           </div>
         )}
 
