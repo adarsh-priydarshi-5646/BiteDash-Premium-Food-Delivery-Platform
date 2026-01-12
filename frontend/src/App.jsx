@@ -1,9 +1,14 @@
 /**
- * App Component - Root component with routing & global state initialization
+ * App Component - Root component with routing & global state
  *
  * Features: Protected routes based on auth, lazy loading for code splitting,
- * Socket.IO connection for real-time updates, cart hydration from localStorage
- * Role-based dashboards: User, Owner, DeliveryBoy
+ * Socket.IO connection for real-time updates, cart hydration from localStorage,
+ * role-based dashboards (User, Owner, DeliveryBoy)
+ * 
+ * Libraries: react-router-dom, socket.io-client, react-redux, framer-motion
+ * Routes: /, /signin, /signup, /cart, /shop/:id, /my-orders, /profile, etc.
+ * State: Redux store with userSlice, ownerSlice, mapSlice
+ * Socket: Connects on mount, listens for orderStatusUpdate, newOrder events
  */
 import React, { useEffect, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';

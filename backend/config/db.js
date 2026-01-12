@@ -2,8 +2,11 @@
  * MongoDB Connection - Database connection with optimized pooling
  *
  * Connection pooling: 100 max, 20 min connections for high traffic
- * Auto-reconnect with 5s timeout, 10s socket timeout
- * Graceful shutdown handling for clean disconnection
+ * Timeouts: 5s server selection, 10s socket, 30s idle
+ * 
+ * Libraries: mongoose
+ * Features: Auto-reconnect, graceful shutdown, connection event logging
+ * Env: MONGODB_URL (connection string with credentials)
  */
 import mongoose from 'mongoose';
 const connectDb = async () => {

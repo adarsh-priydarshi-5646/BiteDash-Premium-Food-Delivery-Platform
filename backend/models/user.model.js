@@ -1,9 +1,14 @@
 /**
- * User Model - Multi-role user schema with geospatial location support
+ * User Model - Multi-role user schema with geospatial location
  *
  * Roles: user (customer), owner (restaurant), deliveryBoy (delivery partner)
- * Features: Multiple addresses, bank details for owners, OTP for password reset
- * Geospatial 2dsphere index on location for nearby delivery boy queries
+ * Fields: fullName, email, password (hashed), mobile, role, addresses[], 
+ * bankDetails, location (2dsphere index), socketId, otp, otpExpiry
+ * 
+ * Libraries: mongoose
+ * Indexes: email (unique), location (2dsphere for geo queries)
+ * Features: Multiple addresses, bank details for owners/delivery, OTP reset
+ * Geospatial: Find nearby delivery boys within 10km radius
  */
 import mongoose from 'mongoose';
 import { type } from 'os';

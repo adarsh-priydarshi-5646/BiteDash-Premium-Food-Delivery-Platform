@@ -1,9 +1,12 @@
 /**
  * Socket.IO Handler - Real-time bidirectional communication
  *
- * Events: identity (user connection), updateLocation (delivery tracking)
- * Features: User socket ID storage, delivery boy location broadcasts
- * Used for order status updates, delivery tracking, new order notifications
+ * Events: identity (user connection), updateLocation (delivery tracking),
+ * disconnect. Emits: orderStatusUpdate, newOrder, deliveryAssigned
+ * 
+ * Libraries: socket.io, mongoose (User model)
+ * Storage: Saves socket.id in User.socketId for targeted messaging
+ * Use cases: Order status updates, delivery tracking, new order notifications
  */
 import User from './models/user.model.js';
 export const socketHandler = (io) => {

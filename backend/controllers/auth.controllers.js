@@ -1,9 +1,14 @@
 /**
- * Auth Controller - Handles user authentication & account management
+ * Auth Controller - User authentication & account management
  *
  * Endpoints: signUp, signIn, signOut, sendOtp, verifyOtp, resetPassword, googleAuth
- * Uses bcrypt for password hashing, JWT tokens stored in HTTP-only cookies
- * OTP sent via SendGrid email for password reset (expires in 5 mins)
+ * Libraries: bcryptjs (password hashing), jsonwebtoken (JWT), @sendgrid/mail (OTP)
+ * 
+ * Features: JWT tokens in HTTP-only cookies (7-day expiry), OTP email (5-min expiry),
+ * Google OAuth via Firebase, password strength validation, rate limiting
+ * 
+ * Security: Bcrypt salt rounds 10, JWT secret from env, HTTP-only cookies,
+ * OTP stored hashed in database, email verification for password reset
  */
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs';
