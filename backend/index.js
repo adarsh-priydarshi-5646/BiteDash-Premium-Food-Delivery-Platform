@@ -1,9 +1,15 @@
 /**
  * Express Server - Main application entry point
  *
- * Features: REST API routes, Socket.IO for real-time updates,
- * Security middlewares (rate limiting, CORS, sanitization),
- * Graceful shutdown handling, health check endpoint
+ * Features: REST API routes, Socket.IO real-time updates, JWT auth,
+ * Security middlewares (helmet, CORS, rate limiting), Gzip compression,
+ * Multer file uploads, MongoDB connection, graceful shutdown
+ * 
+ * Libraries: express, socket.io, mongoose, dotenv, cors, cookie-parser,
+ * helmet, compression, multer
+ * 
+ * Routes: /api/auth, /api/user, /api/shop, /api/item, /api/order, /health
+ * Port: 8000 (configurable via PORT env)
  */
 import express from 'express';
 import dotenv from 'dotenv';

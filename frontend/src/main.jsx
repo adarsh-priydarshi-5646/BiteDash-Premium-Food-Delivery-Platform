@@ -2,8 +2,11 @@
  * Main Entry Point - React app bootstrap
  *
  * Wraps App with: StrictMode, BrowserRouter, Redux Provider
- * Includes Vercel Analytics for visitor tracking
- * Renders to #root element in index.html
+ * Libraries: react, react-dom, react-router-dom, redux, @vercel/analytics
+ * 
+ * Features: Vercel Analytics for visitor tracking, Redux global state,
+ * client-side routing, strict mode for development warnings
+ * Renders to: #root element in index.html
  */
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

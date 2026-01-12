@@ -1,9 +1,14 @@
 /**
  * Order Model - Multi-shop order with delivery tracking & payment
  *
- * Structure: Main order contains shopOrders array (one per restaurant)
- * Features: COD/Stripe payment, delivery OTP verification, order rating
- * Tracks status per shop: pending → accepted → preparing → ready → out of delivery → delivered
+ * Structure: Main order → shopOrders[] (one per restaurant) → items[]
+ * Fields: user, totalAmount, paymentMethod (COD/Stripe), deliveryAddress,
+ * shopOrders[] {shop, items[], deliveryBoy, status, otp, rating}
+ * 
+ * Libraries: mongoose
+ * Status flow: pending → accepted → preparing → ready → out for delivery → delivered
+ * Features: Multi-shop orders, delivery OTP verification, per-shop ratings
+ * Payment: COD or Stripe checkout session
  */
 import mongoose from 'mongoose';
 

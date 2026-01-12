@@ -1,9 +1,17 @@
 /**
  * User Redux Slice - Central state management for user data
  *
- * State: userData, cart (persisted to localStorage), orders, filters
- * Actions: Auth state, cart CRUD, order updates, category/price filters
- * Real-time updates via Socket.IO for order status changes
+ * State: userData, cartItems, totalAmount, myOrders, searchItems, currentCity,
+ * selectedCategory, priceRange, sortBy
+ * 
+ * Actions: setUserData, addToCart, removeCartItem, updateQuantity, clearCart,
+ * setMyOrders, setSearchItems, setCurrentCity, setSelectedCategory, setPriceRange, setSortBy
+ * 
+ * Libraries: @reduxjs/toolkit
+ * Features: Cart persistence in localStorage, real-time order updates via Socket.IO,
+ * automatic total calculation, category/price filtering, city-based search
+ * 
+ * LocalStorage: Syncs cartItems & totalAmount on every cart action
  */
 import { createSlice } from '@reduxjs/toolkit';
 

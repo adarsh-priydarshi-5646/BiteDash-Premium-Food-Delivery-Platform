@@ -1,9 +1,14 @@
 /**
- * Delivery Assignment Model - Order broadcast & assignment to delivery partners
+ * Delivery Assignment Model - Order broadcast & assignment system
  *
  * Flow: Order broadcasted to nearby delivery boys → one accepts → assigned
- * Fields: order, shop, shopOrderId, brodcastedTo (array), assignedTo, status
- * Status: brodcasted → assigned → completed (deleted after delivery)
+ * Fields: order, shop, shopOrderId, brodcastedTo[] (User refs), 
+ * assignedTo (User ref), status (brodcasted/assigned/completed)
+ * 
+ * Libraries: mongoose
+ * Features: Geospatial broadcast (10km radius), first-come-first-serve assignment
+ * Lifecycle: Created on order → deleted after delivery completion
+ * Indexes: order, shop, assignedTo
  */
 import mongoose from 'mongoose';
 

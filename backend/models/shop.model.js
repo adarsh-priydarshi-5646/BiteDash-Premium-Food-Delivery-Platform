@@ -1,9 +1,13 @@
 /**
  * Shop Model - Restaurant/Shop schema with owner & menu items
  *
- * Fields: name, image, city, state, address, owner (User ref), items (Item refs)
- * Features: isDefault flag for demo shop, populated items array for menu
- * One-to-one relationship with owner, one-to-many with items
+ * Fields: name, image (Cloudinary URL), city, state, address, 
+ * owner (User ref), items[] (Item refs), isDefault (demo flag)
+ * 
+ * Libraries: mongoose
+ * Relationships: One-to-one with User (owner), one-to-many with Items
+ * Features: City-based filtering, Cloudinary image storage, demo shop support
+ * Indexes: owner (unique), city (for fast city queries)
  */
 import mongoose from 'mongoose';
 

@@ -1,9 +1,14 @@
 /**
- * Shop Controller - Restaurant/Shop CRUD operations with city-based filtering
+ * Shop Controller - Restaurant/Shop CRUD with city-based filtering
  *
  * Endpoints: createEditShop, getMyShop, getShopByCity
- * Features: Image upload via Cloudinary, owner-shop relationship, default shop support
- * Uses regex sanitization to prevent ReDoS attacks in city search
+ * Libraries: mongoose (Shop model), cloudinary (image upload), multer (file handling)
+ * 
+ * Features: Image upload to Cloudinary, owner-shop one-to-one relationship,
+ * city-based filtering with regex, default demo shop support, in-memory caching
+ * 
+ * Security: Regex sanitization to prevent ReDoS attacks, owner verification
+ * Cache: 5-minute TTL for city shop lists
  */
 import Shop from '../models/shop.model.js';
 import uploadOnCloudinary from '../utils/cloudinary.js';

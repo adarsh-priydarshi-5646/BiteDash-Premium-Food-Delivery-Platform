@@ -1,9 +1,13 @@
 /**
- * Item Model - Food menu item with pricing, category & rating system
+ * Item Model - Food menu item with pricing, category & rating
  *
- * Fields: name, image, category, foodType (veg/non-veg), price, shop reference
- * Features: Embedded rating object with count & average for 5-star system
- * Linked to Shop model, supports Cloudinary image URLs
+ * Fields: name, image (Cloudinary URL), category, foodType (veg/non-veg),
+ * price, description, shop (Shop ref), rating {count, average}
+ * 
+ * Libraries: mongoose
+ * Relationships: Many-to-one with Shop
+ * Features: 5-star rating system, category/foodType filtering, text search
+ * Indexes: shop, category, name (text index for search)
  */
 import mongoose from 'mongoose';
 

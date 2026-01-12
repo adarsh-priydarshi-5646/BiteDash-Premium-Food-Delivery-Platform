@@ -1,9 +1,16 @@
 /**
  * Order Controller - Complete order lifecycle management
  *
- * Features: Place orders (COD/Stripe), assign delivery boys via geolocation,
- * real-time status updates via Socket.IO, OTP verification for delivery
- * Supports multi-shop orders, delivery tracking & order ratings
+ * Endpoints: placeOrder, getMyOrders, updateOrderStatus, acceptOrder, getCurrentOrder,
+ * getDeliveryBoyAssignment, acceptDeliveryAssignment, verifyDeliveryOtp, rateOrder,
+ * deleteOrder, createStripeCheckout
+ * 
+ * Libraries: mongoose (Order, DeliveryAssignment, Shop, User), stripe, @sendgrid/mail
+ * Features: Multi-shop orders, COD/Stripe payment, geospatial delivery boy assignment,
+ * real-time Socket.IO updates, OTP verification, order ratings
+ * 
+ * Flow: Place order → Broadcast to nearby delivery boys (10km) → Accept → Deliver → Verify OTP
+ * Payment: Stripe checkout session or COD, webhook for payment confirmation
  */
 import DeliveryAssignment from '../models/deliveryAssignment.model.js';
 import Order from '../models/order.model.js';

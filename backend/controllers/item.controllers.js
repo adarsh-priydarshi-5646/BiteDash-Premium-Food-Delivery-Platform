@@ -1,9 +1,15 @@
 /**
- * Item Controller - Food menu items CRUD with search & rating system
+ * Item Controller - Food menu items CRUD with search & rating
  *
- * Endpoints: addItem, editItem, deleteItem, getItemById, getItemByCity, searchItems, rating
- * Features: Cloudinary image upload, city-based filtering, text search, 5-star rating system
- * Items linked to shops, supports veg/non-veg foodType & category classification
+ * Endpoints: addItem, editItem, deleteItem, getItemById, getItemByCity,
+ * searchItems, rateItem, getAllItems
+ * 
+ * Libraries: mongoose (Item, Shop models), cloudinary, multer
+ * Features: Cloudinary image upload, city-based filtering, text search with regex,
+ * 5-star rating system with average calculation, category/foodType filtering
+ * 
+ * Search: Supports item name + city filtering, rate limited (30 req/min)
+ * Cache: 5-minute TTL for city item lists
  */
 import Item from '../models/item.model.js';
 import Shop from '../models/shop.model.js';

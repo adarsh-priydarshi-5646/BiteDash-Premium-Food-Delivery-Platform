@@ -1,9 +1,12 @@
 /**
  * In-Memory Cache - TTL-based caching for API responses
  *
- * Methods: get, set (with TTL), delete, clear, cleanup
- * Auto-cleanup of expired entries every 60 seconds
- * For production: Replace with Redis for distributed caching
+ * Methods: get, set (with TTL), delete, clear, cleanup (auto every 60s)
+ * Storage: Map for data, Map for expiry timestamps
+ * 
+ * Libraries: None (vanilla JavaScript with Map)
+ * Use cases: Cache shop/item lists by city (5 min TTL)
+ * Production: Replace with Redis for distributed caching across instances
  */
 class Cache {
   constructor() {
