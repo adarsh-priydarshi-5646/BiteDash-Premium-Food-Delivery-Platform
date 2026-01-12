@@ -26,7 +26,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center p-2">
+              <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center p-2.5 shadow-md">
                 <img
                   src="/BiteDash.png"
                   alt="BiteDash Logo"

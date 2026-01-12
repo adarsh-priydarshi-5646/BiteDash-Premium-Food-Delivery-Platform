@@ -140,8 +140,8 @@ const LandingPage = () => {
       {/* Top Navbar (Absolute over Hero) */}
       <nav className="absolute top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-5 text-white max-w-[1100px] mx-auto left-0 right-0 font-[400]">
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-lg flex items-center justify-center p-1">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center p-2 shadow-md">
               <img src="/BiteDash.png" alt="BiteDash Logo" className="w-full h-full object-contain" />
             </div>
             <span className="font-bold text-xl hidden sm:block">BiteDash</span>
