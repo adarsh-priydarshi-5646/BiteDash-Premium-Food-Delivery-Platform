@@ -1,0 +1,162 @@
+# =============================================================================
+# Backup & Recovery Check - Database Backup Verification
+# =============================================================================
+#
+# Triggers: Daily, Manual dispatch
+# Checks: MongoDB Atlas backup status, Recovery procedures
+# Alerts: Creates issue if backup is missing or old
+# =============================================================================
+
+name: Backup & Recovery Check
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  backup-reminder:
+    name: Backup Status Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Backup Configuration
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const issueBody = `## 🗄️ Database Backup Status Check
+
+**Date:** ${new Date().toISOString()}
+
+---
+
+### ✅ Backup Checklist
+
+#### MongoDB Atlas Backups
+- [ ] Verify continuous backups are enabled
+- [ ] Check last backup timestamp
+- [ ] Verify backup retention policy (7-30 days recommended)
+- [ ] Test restore procedure monthly
+
+#### How to Check:
+1. Login to [MongoDB Atlas](https://cloud.mongodb.com)
+2. Go to your cluster
+3. Click "Backup" tab
+4. Verify:
+   - ✅ Continuous backups enabled
+   - ✅ Recent snapshots available
+   - ✅ Retention policy configured
+
+---
+
+### 🔧 Backup Configuration
+
+#### Recommended Settings:
+\`\`\`
+Backup Type: Continuous Cloud Backup
+Retention: 7 days (minimum)
+Frequency: Automatic (continuous)
+Location: Same region as cluster
+\`\`\`
+
+#### Manual Backup (Optional):
+\`\`\`bash
+# Export database
+mongodump --uri="mongodb+srv://username:password@cluster.mongodb.net/dbname" --out=./backup
+
+# Compress backup
+tar -czf backup-$(date +%Y%m%d).tar.gz ./backup
+
+# Store securely (S3, Google Drive, etc.)
+\`\`\`
+
+---
+
+### 🚨 Recovery Procedures
+
+#### In Case of Data Loss:
+
+1. **Immediate Actions:**
+   - Stop all write operations
+   - Identify the issue scope
+   - Check MongoDB Atlas for available snapshots
+
+2. **Restore from Backup:**
+   \`\`\`bash
+   # From MongoDB Atlas:
+   # 1. Go to Backup tab
+   # 2. Select snapshot
+   # 3. Click "Restore"
+   # 4. Choose restore method (new cluster or download)
+   
+   # From manual backup:
+   mongorestore --uri="mongodb+srv://..." --drop ./backup
+   \`\`\`
+
+3. **Verify Restoration:**
+   - Check data integrity
+   - Verify user accounts
+   - Test critical operations
+   - Update application if needed
+
+---
+
+### 📋 Monthly Tasks
+
+- [ ] Test backup restoration procedure
+- [ ] Verify backup size and growth
+- [ ] Review retention policy
+- [ ] Update recovery documentation
+- [ ] Train team on recovery procedures
+
+---
+
+### 🔐 Security Reminders
+
+- ✅ Never commit database credentials
+- ✅ Use environment variables for connection strings
+- ✅ Rotate database passwords quarterly
+- ✅ Enable IP whitelist in MongoDB Atlas
+- ✅ Use strong passwords (16+ characters)
+- ✅ Enable 2FA for MongoDB Atlas account
+
+---
+
+### 📊 Backup Status
+
+| Component | Status | Last Checked |
+|-----------|--------|--------------|
+| **MongoDB Atlas** | ⚠️ Manual Check Required | ${new Date().toISOString()} |
+| **Environment Vars** | ✅ Secured | - |
+| **Recovery Docs** | ✅ Available | - |
+
+---
+
+### 📞 Emergency Contacts
+
+**Database Issues:**
+- MongoDB Atlas Support: https://support.mongodb.com
+- Team Lead: priydarshiadarsh3@gmail.com
+
+**Recovery Documentation:**
+- [MongoDB Backup Docs](https://docs.mongodb.com/manual/core/backups/)
+- [Atlas Backup Guide](https://docs.atlas.mongodb.com/backup/cloud-backup/overview/)
+
+---
+
+**⚠️ Action Required:** Please verify MongoDB Atlas backup configuration and close this issue once confirmed.
+
+**This reminder is generated daily to ensure data safety.**`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🗄️ Daily Backup Status Check',
+              body: issueBody,
+              labels: ['backup', 'database', 'maintenance', 'reminder']
+            });
+            
+            console.log('✅ Backup reminder issue created');

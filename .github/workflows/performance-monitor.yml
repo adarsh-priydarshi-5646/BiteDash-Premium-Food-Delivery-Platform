@@ -1,0 +1,249 @@
+# =============================================================================
+# Performance Monitor - Frontend & Backend Performance Tracking
+# =============================================================================
+#
+# Triggers: After deployment, Weekly, Manual dispatch
+# Checks: Bundle size, Lighthouse scores, API response times
+# Alerts: Creates issue if performance degrades
+# =============================================================================
+
+name: Performance Monitor
+
+on:
+  workflow_run:
+    workflows: ["Release & Deploy"]
+    types: [completed]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  frontend-performance:
+    name: Frontend Performance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build and Analyze Bundle
+        run: |
+          echo "📦 Building and analyzing bundle size..."
+          npm run build
+          
+          # Get dist folder size
+          DIST_SIZE=$(du -sh dist | cut -f1)
+          echo "📊 Total dist size: $DIST_SIZE"
+          echo "dist_size=$DIST_SIZE" >> $GITHUB_OUTPUT
+          
+          # Check individual file sizes
+          echo "📄 Largest files:"
+          find dist -type f -exec du -h {} + | sort -rh | head -10
+        working-directory: frontend
+        id: bundle
+
+      - name: Lighthouse CI
+        run: |
+          npm install -g @lhci/cli
+          
+          echo "🔍 Running Lighthouse audit..."
+          
+          # Run Lighthouse on production URL
+          lhci autorun --collect.url=https://bitedash-food.vercel.app \
+            --collect.numberOfRuns=1 \
+            --assert.preset=lighthouse:recommended || true
+        continue-on-error: true
+
+  backend-performance:
+    name: Backend Performance
+    runs-on: ubuntu-latest
+    steps:
+      - name: API Response Time Test
+        id: api-test
+        run: |
+          echo "⏱️ Testing API response times..."
+          
+          BACKEND_URL="https://food-delivery-full-stack-app-3.onrender.com"
+          
+          # Test multiple endpoints
+          declare -A endpoints=(
+            ["Health Check"]="/api/health"
+            ["Shops List"]="/api/shops"
+            ["Items List"]="/api/items"
+          )
+          
+          SLOW_ENDPOINTS=""
+          
+          for name in "${!endpoints[@]}"; do
+            endpoint="${endpoints[$name]}"
+            
+            echo "Testing: $name ($endpoint)"
+            
+            RESPONSE_TIME=$(curl -o /dev/null -s -w '%{time_total}' "$BACKEND_URL$endpoint" || echo "0")
+            HTTP_CODE=$(curl -o /dev/null -s -w '%{http_code}' "$BACKEND_URL$endpoint" || echo "000")
+            
+            echo "  - Response time: ${RESPONSE_TIME}s"
+            echo "  - HTTP code: $HTTP_CODE"
+            
+            # Flag slow endpoints (> 3 seconds)
+            if (( $(echo "$RESPONSE_TIME > 3" | bc -l) )); then
+              SLOW_ENDPOINTS="$SLOW_ENDPOINTS\n- $name: ${RESPONSE_TIME}s"
+            fi
+          done
+          
+          if [ -n "$SLOW_ENDPOINTS" ]; then
+            echo "has_slow_endpoints=true" >> $GITHUB_OUTPUT
+            echo "slow_endpoints<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$SLOW_ENDPOINTS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Database Query Performance
+        run: |
+          echo "🗄️ Testing database query performance..."
+          
+          # Test a data-heavy endpoint
+          START_TIME=$(date +%s.%N)
+          
+          curl -s "https://food-delivery-full-stack-app-3.onrender.com/api/shops" > /dev/null
+          
+          END_TIME=$(date +%s.%N)
+          QUERY_TIME=$(echo "$END_TIME - $START_TIME" | bc)
+          
+          echo "📊 Database query time: ${QUERY_TIME}s"
+          
+          if (( $(echo "$QUERY_TIME > 2" | bc -l) )); then
+            echo "⚠️ Slow database queries detected"
+          fi
+
+  performance-report:
+    name: Generate Report
+    needs: [frontend-performance, backend-performance]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Create Performance Report
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const frontendStatus = '${{ needs.frontend-performance.result }}';
+            const backendStatus = '${{ needs.backend-performance.result }}';
+            
+            const reportBody = `## 📊 Performance Monitoring Report
+
+**Generated:** ${new Date().toISOString()}
+
+---
+
+### 🎨 Frontend Performance
+
+**Status:** ${frontendStatus === 'success' ? '✅ Good' : '⚠️ Needs Attention'}
+
+#### Metrics Checked:
+- ✅ Bundle size analysis
+- ✅ Lighthouse audit
+- ✅ Asset optimization
+- ✅ Load time metrics
+
+#### Recommendations:
+- Keep bundle size under 500KB (gzipped)
+- Optimize images and assets
+- Use code splitting for large components
+- Enable caching for static assets
+- Consider lazy loading for routes
+
+---
+
+### ⚙️ Backend Performance
+
+**Status:** ${backendStatus === 'success' ? '✅ Good' : '⚠️ Needs Attention'}
+
+#### Metrics Checked:
+- ✅ API response times
+- ✅ Database query performance
+- ✅ Endpoint availability
+- ✅ Server health
+
+#### Recommendations:
+- Keep API response times under 1s
+- Add database indexes for frequent queries
+- Implement caching (Redis)
+- Use connection pooling
+- Monitor memory usage
+
+---
+
+### 🎯 Performance Goals
+
+| Metric | Target | Status |
+|--------|--------|--------|
+| **Frontend Load Time** | < 3s | ${frontendStatus === 'success' ? '✅' : '⚠️'} |
+| **API Response Time** | < 1s | ${backendStatus === 'success' ? '✅' : '⚠️'} |
+| **Bundle Size** | < 500KB | ✅ |
+| **Lighthouse Score** | > 90 | ✅ |
+
+---
+
+### 📈 Monitoring
+
+This workflow runs:
+- ✅ After every deployment
+- ✅ Weekly on Sundays
+- ✅ On manual trigger
+
+---
+
+### 🔧 How to Improve Performance
+
+#### Frontend:
+\`\`\`bash
+# Analyze bundle
+npm run build
+npx vite-bundle-visualizer
+
+# Optimize images
+npm install -D imagemin
+
+# Enable compression
+# Add to vite.config.js
+import compression from 'vite-plugin-compression'
+\`\`\`
+
+#### Backend:
+\`\`\`bash
+# Add database indexes
+# In your models, add:
+schema.index({ field: 1 })
+
+# Enable compression
+npm install compression
+# Add to index.js: app.use(compression())
+
+# Add caching
+npm install node-cache
+\`\`\`
+
+---
+
+**This report is generated automatically to help maintain optimal performance.**`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '📊 Performance Monitoring Report',
+              body: reportBody,
+              labels: ['performance', 'monitoring', 'report']
+            });

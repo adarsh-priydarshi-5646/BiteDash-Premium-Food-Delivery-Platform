@@ -1,0 +1,208 @@
+# =============================================================================
+# Backend Health Check - Monitor Backend API Health
+# =============================================================================
+#
+# Triggers: After deployment, Every 6 hours, Manual dispatch
+# Checks: API endpoints, Database connection, Response times
+# Alerts: Creates issue if health check fails
+# =============================================================================
+
+name: Backend Health Check
+
+on:
+  workflow_run:
+    workflows: ["Release & Deploy"]
+    types: [completed]
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  health-check:
+    name: Check Backend Health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check API Health
+        id: health
+        run: |
+          echo "🔍 Checking backend health..."
+          
+          BACKEND_URL="https://food-delivery-full-stack-app-3.onrender.com"
+          
+          # Check if backend is responding
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$BACKEND_URL/api/health" || echo "000")
+          
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Backend is healthy (HTTP $HTTP_CODE)"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Backend health check failed (HTTP $HTTP_CODE)"
+            echo "status=unhealthy" >> $GITHUB_OUTPUT
+            echo "http_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          fi
+          
+          # Check response time
+          RESPONSE_TIME=$(curl -o /dev/null -s -w '%{time_total}' "$BACKEND_URL/api/health" || echo "0")
+          echo "⏱️ Response time: ${RESPONSE_TIME}s"
+          echo "response_time=$RESPONSE_TIME" >> $GITHUB_OUTPUT
+          
+          # Check if response time is acceptable (< 5 seconds)
+          if (( $(echo "$RESPONSE_TIME > 5" | bc -l) )); then
+            echo "⚠️ Slow response time detected"
+            echo "slow_response=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check Database Connection
+        id: db-check
+        run: |
+          echo "🔍 Checking database connectivity..."
+          
+          # Try to fetch some data to verify DB connection
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://food-delivery-full-stack-app-3.onrender.com/api/shops" || echo "000")
+          
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Database connection is healthy"
+            echo "db_status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Database connection issue (HTTP $HTTP_CODE)"
+            echo "db_status=unhealthy" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Alert Issue
+        if: steps.health.outputs.status == 'unhealthy' || steps.db-check.outputs.db_status == 'unhealthy'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const healthStatus = '${{ steps.health.outputs.status }}';
+            const httpCode = '${{ steps.health.outputs.http_code }}';
+            const dbStatus = '${{ steps.db-check.outputs.db_status }}';
+            const responseTime = '${{ steps.health.outputs.response_time }}';
+            
+            const issueBody = `## 🚨 Backend Health Check Failed
+            
+### ⚠️ Alert Details
+
+**Timestamp:** ${new Date().toISOString()}  
+**Backend URL:** https://food-delivery-full-stack-app-3.onrender.com
+
+---
+
+### 📊 Health Status
+
+| Component | Status | Details |
+|-----------|--------|---------|
+| **API Health** | ${healthStatus === 'healthy' ? '✅ Healthy' : '❌ Unhealthy'} | HTTP ${httpCode} |
+| **Database** | ${dbStatus === 'healthy' ? '✅ Connected' : '❌ Connection Issue'} | - |
+| **Response Time** | ${responseTime}s | ${parseFloat(responseTime) > 5 ? '⚠️ Slow' : '✅ Normal'} |
+
+---
+
+### 🔧 Possible Issues
+
+${healthStatus === 'unhealthy' ? `
+#### API Not Responding
+- Backend server might be down
+- Render service might be sleeping (free tier)
+- Deployment might have failed
+- Network connectivity issues
+` : ''}
+
+${dbStatus === 'unhealthy' ? `
+#### Database Connection Failed
+- MongoDB connection string might be invalid
+- Database credentials expired
+- Network timeout to MongoDB Atlas
+- Database server might be down
+` : ''}
+
+---
+
+### 🛠️ Troubleshooting Steps
+
+1. **Check Render Dashboard**
+   - Visit: https://dashboard.render.com
+   - Check service status and logs
+   - Verify deployment status
+
+2. **Check MongoDB Atlas**
+   - Visit: https://cloud.mongodb.com
+   - Verify cluster is running
+   - Check network access settings
+   - Verify database user credentials
+
+3. **Check Environment Variables**
+   - Ensure all required env vars are set in Render
+   - Verify MongoDB connection string
+   - Check API keys and secrets
+
+4. **Manual Health Check**
+   \`\`\`bash
+   curl https://food-delivery-full-stack-app-3.onrender.com/api/health
+   \`\`\`
+
+5. **Check Logs**
+   - View Render logs for error messages
+   - Look for connection errors or crashes
+
+---
+
+### 📞 Contact
+
+**Email:** priydarshiadarsh3@gmail.com
+
+---
+
+**This issue was automatically created by the Backend Health Check workflow.**`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Backend Health Check Failed',
+              body: issueBody,
+              labels: ['backend', 'health-check', 'urgent', 'bug']
+            });
+
+      - name: Performance Warning
+        if: steps.health.outputs.slow_response == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const responseTime = '${{ steps.health.outputs.response_time }}';
+            
+            console.log('⚠️ Performance issue detected');
+            console.log(`Response time: ${responseTime}s (threshold: 5s)`);
+            
+            // Create a warning issue
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '⚠️ Backend Performance Degradation Detected',
+              body: `## ⚠️ Slow Response Time Alert
+
+**Response Time:** ${responseTime}s  
+**Threshold:** 5s  
+**Backend URL:** https://food-delivery-full-stack-app-3.onrender.com
+
+### 🔍 Possible Causes
+
+- High server load
+- Database query performance issues
+- Render free tier cold start
+- Network latency
+- Memory/CPU constraints
+
+### 🛠️ Recommendations
+
+1. Check Render metrics for resource usage
+2. Optimize database queries
+3. Consider upgrading Render plan
+4. Add caching layer (Redis)
+5. Review slow API endpoints
+
+**Timestamp:** ${new Date().toISOString()}`,
+              labels: ['backend', 'performance', 'monitoring']
+            });
