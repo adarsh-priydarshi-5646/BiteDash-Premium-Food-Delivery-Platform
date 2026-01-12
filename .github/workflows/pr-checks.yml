@@ -255,13 +255,71 @@ jobs:
           echo "🎉 This PR is safe to merge!"
 
   # ===========================================================================
-  # AUTO-MERGE (Only if all checks pass)
+  # DEPLOYMENT READINESS CHECK (Before Merge)
+  # ===========================================================================
+  deployment-check:
+    name: Deployment Readiness
+    needs: [status]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build for Production
+        run: |
+          echo "🏗️ Testing production build..."
+          npm run build
+        working-directory: frontend
+        env:
+          VITE_API_URL: https://food-delivery-full-stack-app-3.onrender.com
+          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
+
+      - name: Verify Build Output
+        run: |
+          echo "🔍 Verifying build artifacts..."
+          
+          if [ ! -f "dist/index.html" ]; then
+            echo "❌ index.html not found"
+            exit 1
+          fi
+          
+          if [ ! -d "dist/assets" ]; then
+            echo "❌ assets directory not found"
+            exit 1
+          fi
+          
+          # Check if build has minimum size (not empty)
+          BUILD_SIZE=$(du -sk dist | cut -f1)
+          if [ "$BUILD_SIZE" -lt 100 ]; then
+            echo "❌ Build size too small ($BUILD_SIZE KB)"
+            exit 1
+          fi
+          
+          echo "✅ Build verified ($BUILD_SIZE KB)"
+          echo "✅ Code is deployment-ready!"
+        working-directory: frontend
+
+  # ===========================================================================
+  # AUTO-MERGE (Only if all checks pass including deployment readiness)
   # ===========================================================================
   auto-merge:
     name: Auto Merge
-    needs: [status]
+    needs: [status, deployment-check]
     runs-on: ubuntu-latest
     if: always()
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Check and Merge
         uses: actions/github-script@v8
@@ -269,13 +327,28 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             const statusResult = '${{ needs.status.result }}';
+            const deploymentResult = '${{ needs.deployment-check.result }}';
 
             console.log('📊 Status:', statusResult);
+            console.log('🚀 Deployment Check:', deploymentResult);
             console.log('🏷️ Labels:', pr.labels.map(l => l.name).join(', '));
 
             // NEVER merge if checks failed
-            if (statusResult !== 'success') {
+            if (statusResult !== 'success' || deploymentResult !== 'success') {
               console.log('❌ Checks failed - merge blocked');
+              
+              // Add comment explaining why merge was blocked
+              const failedChecks = [];
+              if (statusResult !== 'success') failedChecks.push('Code Quality Checks');
+              if (deploymentResult !== 'success') failedChecks.push('Deployment Readiness');
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ❌ Auto-Merge Blocked\n\nThe following checks failed:\n${failedChecks.map(c => `- ❌ ${c}`).join('\n')}\n\nPlease fix the issues and push again.`
+              });
+              
               return;
             }
 
@@ -294,13 +367,73 @@ jobs:
             }
 
             try {
+              // Merge the PR
               await github.rest.pulls.merge({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: pr.number,
-                merge_method: 'squash'
+                merge_method: 'squash',
+                commit_title: `${pr.title} (#${pr.number})`,
+                commit_message: `${pr.body || ''}\n\n✅ All checks passed\n🚀 Deployment ready\n🤖 Auto-merged by GitHub Actions`
               });
+              
               console.log('✅ Auto-merged successfully!');
+              
+              // Post beautiful success message
+              const successMessage = `## 🎉 Congratulations! Your PR has been merged!
+
+### ✨ Merge Summary
+- **Status:** Successfully merged to \`main\` branch
+- **Method:** Squash and merge
+- **Commit:** Will be deployed shortly
+
+### 🚀 What's Next?
+
+Your changes are now in the main branch and will be automatically deployed to production!
+
+#### Deployment Pipeline:
+1. ✅ **Code Quality** - All linting and tests passed
+2. ✅ **Build Verification** - Production build successful  
+3. ✅ **Deployment Readiness** - Code verified for deployment
+4. 🔄 **Deploying Now** - Your changes are being deployed to Vercel
+5. 🌐 **Live Soon** - Will be live at [bitedash-food.vercel.app](https://bitedash-food.vercel.app)
+
+### 📊 PR Stats
+- **Author:** @${pr.user.login}
+- **Files Changed:** ${pr.changed_files}
+- **Additions:** +${pr.additions} lines
+- **Deletions:** -${pr.deletions} lines
+- **Commits:** ${pr.commits}
+
+### 🛡️ Safety Features Active
+- ✅ Automatic rollback if deployment fails
+- ✅ Health checks after deployment
+- ✅ Issue creation on failure
+
+---
+
+**Thank you for your contribution to BiteDash!** 🙏
+
+Your code is now part of our production application. Monitor the deployment in the [Actions tab](${context.payload.repository.html_url}/actions).
+
+*If you notice any issues after deployment, we have automatic rollback enabled to keep production stable.*`;
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: successMessage
+              });
+              
+              console.log('✅ Posted success message');
+              
             } catch (e) {
               console.log('⚠️ Merge failed:', e.message);
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ⚠️ Auto-Merge Failed\n\n**Error:** ${e.message}\n\nPlease merge manually or contact the maintainers.`
+              });
             }
