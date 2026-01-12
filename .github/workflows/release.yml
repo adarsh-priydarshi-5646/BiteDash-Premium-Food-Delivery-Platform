@@ -422,7 +422,7 @@ Contact DevOps immediately!`,
             }
 
   # ===========================================================================
-  # SUCCESS NOTIFICATION (If everything passes)
+  # SUCCESS NOTIFICATION (Always runs after successful deployment)
   # ===========================================================================
   success-notification:
     name: Deployment Success
@@ -432,24 +432,51 @@ Contact DevOps immediately!`,
     permissions:
       contents: read
       issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
 
       - name: Post Success Notification
         uses: actions/github-script@v8
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const commitSha = context.sha.substring(0, 7);
-            const commitMessage = context.payload.head_commit.message;
-            const commitAuthor = context.payload.head_commit.author.name;
+            const commitMessage = context.payload.head_commit?.message || '';
+            const commitAuthor = context.payload.head_commit?.author?.name || 'Unknown';
             
-            // Find PR number from commit message
+            console.log('📝 Commit Message:', commitMessage);
+            console.log('👤 Author:', commitAuthor);
+            console.log('🔍 Looking for PR number...');
+            
+            // Find PR number from commit message (works for both auto and manual merge)
             const prMatch = commitMessage.match(/#(\d+)/);
             
-            if (prMatch) {
-              const prNumber = parseInt(prMatch[1]);
-              
-              const successMessage = `## 🎉 Deployment Successful!
+            if (!prMatch) {
+              console.log('⚠️ No PR number found in commit message');
+              console.log('Commit message format should include: (#123)');
+              return;
+            }
+            
+            const prNumber = parseInt(prMatch[1]);
+            console.log('✅ Found PR number:', prNumber);
+            
+            // Verify PR exists
+            let pr;
+            try {
+              const { data } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              pr = data;
+              console.log('✅ PR verified:', pr.title);
+            } catch (e) {
+              console.log('❌ Could not find PR:', e.message);
+              return;
+            }
+            
+            const successMessage = `## 🎉 Deployment Successful!
 
 ### ✨ Your Changes Are Now Live!
 
@@ -471,8 +498,8 @@ Contact DevOps immediately!`,
 ### 📊 Deployment Stats
 
 - **Author:** ${commitAuthor}
+- **PR Title:** ${pr.title}
 - **Workflow:** ${context.workflow}
-- **Run Time:** ~${Math.floor(Math.random() * 3) + 2} minutes
 - **Status:** 🟢 Live in Production
 
 ---
@@ -495,19 +522,23 @@ Contact DevOps immediately!`,
 
 **Thank you for contributing to BiteDash!** 🚀
 
-Your code is now serving users in production. Great work! 🎊`;
+Your code is now serving users in production. Great work! �
 
-              try {
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  body: successMessage
-                });
-                console.log('✅ Posted success notification to PR:', prNumber);
-              } catch (e) {
-                console.log('⚠️ Could not post to PR:', e.message);
-              }
+---
+
+*This message is posted automatically after every successful deployment to main branch.*`;
+
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: successMessage
+              });
+              console.log('✅ Posted success notification to PR #' + prNumber);
+            } catch (e) {
+              console.error('❌ Failed to post comment:', e.message);
+              console.error('Error details:', e);
             }
             
             console.log('🎉 Deployment successful!');
