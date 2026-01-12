@@ -2,18 +2,14 @@
 # Preview Deploy - Vercel Preview Deployments for PRs
 # =============================================================================
 #
-# Triggers: PR opened/synchronized with frontend changes
-# Deploys: Frontend to Vercel preview environment
-# Comments: Adds preview URL to PR automatically
+# DISABLED: To prevent Vercel rate limits
+# Deployments only happen on main branch merges
 # =============================================================================
 
 name: Preview Deploy
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - 'frontend/**'
+  workflow_dispatch: # Manual trigger only
 
 permissions:
   contents: read
@@ -21,67 +17,10 @@ permissions:
 
 jobs:
   preview:
-    name: Deploy Preview
+    name: Deploy Preview (Disabled)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - run: npm ci
-        working-directory: frontend
-
-      - name: Build
-        run: npm run build
-        working-directory: frontend
-        env:
-          VITE_API_URL: https://api.example.com
-          VITE_STRIPE_PUBLIC_KEY: pk_test_placeholder
-
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
-
-      - name: Deploy Preview
-        id: deploy
+      - name: Info
         run: |
-          URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes)
-          echo "preview-url=$URL" >> $GITHUB_OUTPUT
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Comment PR
-        if: steps.deploy.outputs.preview-url
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const url = '${{ steps.deploy.outputs.preview-url }}';
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number
-            });
-
-            const existing = comments.find(c => c.body.includes('🚀 Preview:'));
-            const body = `🚀 **Preview:** ${url}\n\n_Updated: ${new Date().toISOString()}_`;
-
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body: body
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: body
-              });
-            }
+          echo "Preview deployments are disabled to prevent rate limits"
+          echo "Deployments only happen on main branch"
