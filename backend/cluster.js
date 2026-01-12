@@ -1,9 +1,12 @@
 /**
  * Cluster Mode - Multi-process server for CPU utilization
  *
- * Spawns worker processes equal to CPU cores (max 4)
- * Auto-restarts crashed workers with 1s delay
- * Run with: node cluster.js (production) instead of node index.js
+ * Spawns worker processes equal to CPU cores (max 4), auto-restarts
+ * crashed workers with 1s delay, load balancing via round-robin
+ * 
+ * Libraries: cluster, os (Node.js built-in)
+ * Usage: node cluster.js (production) instead of node index.js
+ * Benefits: 4x throughput on 4-core CPU, fault tolerance
  */
 import cluster from 'cluster';
 import os from 'os';

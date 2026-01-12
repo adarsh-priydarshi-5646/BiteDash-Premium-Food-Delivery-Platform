@@ -1,9 +1,15 @@
 /**
- * User Controller - User profile, addresses, bank details & statistics
+ * User Controller - Profile, addresses, bank details & statistics
  *
- * Endpoints: getCurrentUser, updateProfile, updateUserLocation, addAddress, updateAddress, removeAddress
- * Features: Multiple saved addresses with default selection, bank details for owners, profile stats
- * Supports geolocation updates for delivery tracking, earnings calculation for restaurant owners
+ * Endpoints: getCurrentUser, updateProfile, updateUserLocation, addAddress,
+ * updateAddress, removeAddress, updateBankDetails, getBankDetails, getUserStats
+ * 
+ * Libraries: mongoose (User, Order models)
+ * Features: Multiple saved addresses with default selection, geolocation updates,
+ * bank details for owners/delivery boys, earnings calculation, order statistics
+ * 
+ * Stats: Total orders, total spent/earned, average order value, delivery count
+ * Geolocation: Updates User.location for delivery boy tracking
  */
 import User from '../models/user.model.js';
 import Order from '../models/order.model.js';
