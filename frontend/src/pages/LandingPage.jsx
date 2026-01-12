@@ -140,6 +140,12 @@ const LandingPage = () => {
       {/* Top Navbar (Absolute over Hero) */}
       <nav className="absolute top-0 w-full z-50 flex justify-between items-center px-4 md:px-12 py-5 text-white max-w-[1100px] mx-auto left-0 right-0 font-[400]">
         <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center overflow-hidden">
+              <img src="/BiteDash.png" alt="BiteDash Logo" className="w-full h-full object-cover" />
+            </div>
+            <span className="font-bold text-xl hidden sm:block">BiteDash</span>
+          </div>
           <button className="hover:opacity-80 text-sm hidden md:block">
             Get the App
           </button>

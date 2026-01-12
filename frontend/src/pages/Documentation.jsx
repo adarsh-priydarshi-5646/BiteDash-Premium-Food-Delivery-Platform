@@ -467,7 +467,9 @@ export default function Documentation() {
               {isSidebarOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
             </button>
             <a href="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-[#E23744] rounded flex items-center justify-center text-white font-bold text-xs">B</div>
+              <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center overflow-hidden">
+                <img src="/BiteDash.png" alt="BiteDash Logo" className="w-full h-full object-cover" />
+              </div>
               <span className="font-semibold text-gray-900 text-sm">BiteDash Docs</span>
             </a>
           </div>
