@@ -491,22 +491,6 @@ I implemented JWT-based authentication with these security measures:
 
 ---
 
-## 🐛 Known Issues & Limitations
-
-Being transparent about current limitations:
-
-1. **Cache Persistence**: In-memory cache doesn't persist across server restarts. Planning to implement Redis for production.
-
-2. **Payment Verification**: Currently relies on client-side redirect. Should implement Stripe webhooks for server-side verification.
-
-3. **Concurrent Order Assignment**: Rare race condition where multiple delivery partners might accept the same order simultaneously. Need to implement atomic operations.
-
-4. **Offline Support**: No offline functionality currently. Users need active internet connection.
-
-5. **Single Currency**: Only supports INR. Need to add multi-currency support for international expansion.
-
----
-
 ## 🔮 Future Improvements
 
 Features I plan to add:

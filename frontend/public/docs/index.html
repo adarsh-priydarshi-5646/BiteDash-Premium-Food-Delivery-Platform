@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiteDash - API Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .nav {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .nav h2 { margin-bottom: 15px; color: #667eea; }
+        .nav ul { list-style: none; }
+        .nav li { margin: 10px 0; }
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav a:hover { color: #764ba2; }
+        .section {
+            background: white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .section h3 {
+            color: #764ba2;
+            margin: 20px 0 10px;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        .method.post { background: #28a745; color: white; }
+        .method.get { background: #007bff; color: white; }
+        .method.put { background: #ffc107; color: black; }
+        .method.delete { background: #dc3545; color: white; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #e9ecef;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🍔 BiteDash API Documentation</h1>
+        <p>Complete API reference for the BiteDash food delivery platform</p>
+    </header>
+
+    <div class="container">
+        <div class="nav">
+            <h2>📋 Quick Navigation</h2>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#authentication">Authentication</a></li>
+                <li><a href="#orders">Orders API</a></li>
+                <li><a href="#shops">Shops API</a></li>
+                <li><a href="#items">Items API</a></li>
+                <li><a href="#users">Users API</a></li>
+                <li><a href="#errors">Error Handling</a></li>
+            </ul>
+        </div>
+
+        <div id="overview" class="section">
+            <h2>Overview</h2>
+            <p>The BiteDash API is organized around REST principles. I built this API to handle all operations for the food delivery platform including authentication, order management, and real-time updates.</p>
+            
+            <h3>Base URLs</h3>
+            <ul>
+                <li><strong>Production:</strong> <code>https://food-delivery-full-stack-app-3.onrender.com</code></li>
+                <li><strong>Development:</strong> <code>http://localhost:8000</code></li>
+            </ul>
+
+            <h3>Authentication</h3>
+            <p>I use JWT tokens stored in httpOnly cookies for authentication. After successful login, the token is automatically included in subsequent requests.</p>
+
+            <h3>Rate Limiting</h3>
+            <p>API requests are limited to 100 requests per 15 minutes per IP address to prevent abuse.</p>
+
+            <h3>Response Format</h3>
+            <p>All responses are returned in JSON format with appropriate HTTP status codes.</p>
+        </div>
+
+        <div id="authentication" class="section">
+            <h2>Authentication API</h2>
+            <p>I implemented JWT-based authentication with support for email/password and Google OAuth.</p>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/auth/signup</code>
+                <p><strong>Description:</strong> Register a new user account</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "mobile": "1234567890",
+  "role": "user"
+}</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+  "message": "User created successfully",
+  "user": {
+    "_id": "...",
+    "fullName": "John Doe",
+    "email": "john@example.com",
+    "role": "user"
+  }
+}</pre>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/auth/signin</code>
+                <p><strong>Description:</strong> Login with email and password</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "email": "john@example.com",
+  "password": "password123"
+}</pre>
+                <p><strong>Response:</strong> Sets httpOnly cookie and returns user data</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/auth/google</code>
+                <p><strong>Description:</strong> Login or register using Google OAuth</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "email": "john@example.com",
+  "fullName": "John Doe",
+  "profilePic": "https://..."
+}</pre>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/auth/current</code>
+                <p><strong>Description:</strong> Get currently authenticated user</p>
+                <p><strong>Authentication:</strong> Required</p>
+                <p><strong>Response:</strong> Returns user object or 401 if not authenticated</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/auth/logout</code>
+                <p><strong>Description:</strong> Logout and clear authentication cookie</p>
+                <p><strong>Authentication:</strong> Required</p>
+            </div>
+        </div>
+
+        <div id="orders" class="section">
+            <h2>Orders API</h2>
+            <p>I built the order management system to handle the complete order lifecycle from placement to delivery.</p>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/order/place-order</code>
+                <p><strong>Description:</strong> Create a new order</p>
+                <p><strong>Authentication:</strong> Required</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "cartItems": [
+    {
+      "id": "item_id",
+      "name": "Pizza",
+      "price": 299,
+      "quantity": 2,
+      "shop": "shop_id"
+    }
+  ],
+  "paymentMethod": "cod",
+  "deliveryAddress": {
+    "text": "123 Main St",
+    "latitude": 28.6139,
+    "longitude": 77.2090
+  },
+  "totalAmount": 598
+}</pre>
+                <p><strong>Response:</strong> Returns created order with order ID</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/order/my-orders</code>
+                <p><strong>Description:</strong> Get all orders for authenticated user</p>
+                <p><strong>Authentication:</strong> Required</p>
+                <p><strong>Response:</strong> Returns array of orders based on user role</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>/api/order/status/:orderId/:shopId</code>
+                <p><strong>Description:</strong> Update order status (owner/delivery only)</p>
+                <p><strong>Authentication:</strong> Required</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "status": "preparing"
+}</pre>
+                <p><strong>Valid Status Values:</strong></p>
+                <ul>
+                    <li><code>pending</code> - Order placed</li>
+                    <li><code>accepted</code> - Restaurant accepted</li>
+                    <li><code>preparing</code> - Food being prepared</li>
+                    <li><code>ready</code> - Ready for pickup</li>
+                    <li><code>out of delivery</code> - Out for delivery</li>
+                    <li><code>delivered</code> - Delivered to customer</li>
+                    <li><code>cancelled</code> - Order cancelled</li>
+                </ul>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/order/verify-otp</code>
+                <p><strong>Description:</strong> Verify delivery with OTP</p>
+                <p><strong>Authentication:</strong> Required (delivery partner)</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "orderId": "...",
+  "shopOrderId": "...",
+  "otp": "1234"
+}</pre>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/order/create-payment</code>
+                <p><strong>Description:</strong> Create Stripe checkout session</p>
+                <p><strong>Authentication:</strong> Required</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "amount": 598,
+  "orderId": "..."
+}</pre>
+                <p><strong>Response:</strong> Returns Stripe session URL for payment</p>
+            </div>
+        </div>
+
+        <div id="shops" class="section">
+            <h2>Shops API</h2>
+            <p>I implemented shop management for restaurant owners to manage their restaurants.</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/shop/city/:city</code>
+                <p><strong>Description:</strong> Get all shops in a specific city</p>
+                <p><strong>Example:</strong> <code>/api/shop/city/Delhi</code></p>
+                <p><strong>Response:</strong> Returns array of shops with cached results (5 min TTL)</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/shop/create</code>
+                <p><strong>Description:</strong> Create a new shop (owner only)</p>
+                <p><strong>Authentication:</strong> Required (owner role)</p>
+                <p><strong>Request Body:</strong> Multipart form data</p>
+                <pre>name: "Pizza Palace"
+city: "Delhi"
+state: "Delhi"
+address: "123 Main Street"
+image: [file upload]</pre>
+                <p><strong>Note:</strong> Image is uploaded to Cloudinary automatically</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>/api/shop/:id</code>
+                <p><strong>Description:</strong> Update shop details</p>
+                <p><strong>Authentication:</strong> Required (owner only)</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <code>/api/shop/:id</code>
+                <p><strong>Description:</strong> Delete a shop</p>
+                <p><strong>Authentication:</strong> Required (owner only)</p>
+            </div>
+        </div>
+
+        <div id="items" class="section">
+            <h2>Items API</h2>
+            <p>I built the menu item management system for restaurant owners.</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/item/city/:city</code>
+                <p><strong>Description:</strong> Get all menu items in a city</p>
+                <p><strong>Query Parameters:</strong></p>
+                <ul>
+                    <li><code>search</code> - Search by item name</li>
+                    <li><code>category</code> - Filter by category</li>
+                    <li><code>isVeg</code> - Filter vegetarian items</li>
+                </ul>
+                <p><strong>Example:</strong> <code>/api/item/city/Delhi?search=pizza&isVeg=true</code></p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/api/item/create</code>
+                <p><strong>Description:</strong> Add new menu item</p>
+                <p><strong>Authentication:</strong> Required (owner only)</p>
+                <p><strong>Request Body:</strong> Multipart form data</p>
+                <pre>name: "Margherita Pizza"
+price: 299
+category: "Pizza"
+isVeg: true
+shop: "shop_id"
+image: [file upload]</pre>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>/api/item/:id</code>
+                <p><strong>Description:</strong> Update menu item</p>
+                <p><strong>Authentication:</strong> Required (owner only)</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <code>/api/item/:id</code>
+                <p><strong>Description:</strong> Remove menu item</p>
+                <p><strong>Authentication:</strong> Required (owner only)</p>
+            </div>
+        </div>
+
+        <div id="users" class="section">
+            <h2>Users API</h2>
+            <p>I implemented user profile management and location tracking.</p>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/user/me</code>
+                <p><strong>Description:</strong> Get current user profile</p>
+                <p><strong>Authentication:</strong> Required</p>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>/api/user/update</code>
+                <p><strong>Description:</strong> Update user profile</p>
+                <p><strong>Authentication:</strong> Required</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "fullName": "John Doe",
+  "mobile": "1234567890"
+}</pre>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>/api/user/location</code>
+                <p><strong>Description:</strong> Update user location (delivery partners)</p>
+                <p><strong>Authentication:</strong> Required</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "latitude": 28.6139,
+  "longitude": 77.2090
+}</pre>
+                <p><strong>Note:</strong> Location is stored with 2dsphere index for geospatial queries</p>
+            </div>
+        </div>
+
+        <div id="errors" class="section">
+            <h2>Error Handling</h2>
+            <p>I implemented consistent error responses across all endpoints.</p>
+
+            <h3>HTTP Status Codes</h3>
+            <ul>
+                <li><code>200</code> - Success</li>
+                <li><code>201</code> - Created</li>
+                <li><code>400</code> - Bad Request (validation error)</li>
+                <li><code>401</code> - Unauthorized (authentication required)</li>
+                <li><code>403</code> - Forbidden (insufficient permissions)</li>
+                <li><code>404</code> - Not Found</li>
+                <li><code>429</code> - Too Many Requests (rate limit exceeded)</li>
+                <li><code>500</code> - Internal Server Error</li>
+            </ul>
+
+            <h3>Error Response Format</h3>
+            <pre>{
+  "message": "Error description",
+  "error": "Detailed error message"
+}</pre>
+
+            <h3>Common Errors</h3>
+            <div class="endpoint">
+                <p><strong>Authentication Error:</strong></p>
+                <pre>{
+  "message": "Authentication required"
+}</pre>
+            </div>
+
+            <div class="endpoint">
+                <p><strong>Validation Error:</strong></p>
+                <pre>{
+  "message": "Validation failed",
+  "errors": [
+    "Email is required",
+    "Password must be at least 6 characters"
+  ]
+}</pre>
+            </div>
+
+            <div class="endpoint">
+                <p><strong>Rate Limit Error:</strong></p>
+                <pre>{
+  "message": "Too many requests, please try again later"
+}</pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Real-Time Features (Socket.IO)</h2>
+            <p>I implemented Socket.IO for real-time order tracking and notifications.</p>
+
+            <h3>Connection</h3>
+            <pre>const socket = io('https://food-delivery-full-stack-app-3.onrender.com', {
+  withCredentials: true
+});</pre>
+
+            <h3>Events</h3>
+            <div class="endpoint">
+                <p><strong>Client → Server:</strong></p>
+                <ul>
+                    <li><code>identity</code> - Register user connection with userId</li>
+                    <li><code>updateLocation</code> - Update delivery partner location</li>
+                </ul>
+            </div>
+
+            <div class="endpoint">
+                <p><strong>Server → Client:</strong></p>
+                <ul>
+                    <li><code>newOrder</code> - New order notification (restaurant owners)</li>
+                    <li><code>newAssignment</code> - New delivery assignment (delivery partners)</li>
+                    <li><code>update-status</code> - Order status update (customers)</li>
+                    <li><code>updateDeliveryLocation</code> - Delivery partner location update</li>
+                    <li><code>orderDelivered</code> - Order delivered notification</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Testing the API</h2>
+            <p>You can test the API using tools like Postman or curl.</p>
+
+            <h3>Example: Login Request</h3>
+            <pre>curl -X POST https://food-delivery-full-stack-app-3.onrender.com/api/auth/signin \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "password123"
+  }'</pre>
+
+            <h3>Example: Get Orders (with authentication)</h3>
+            <pre>curl -X GET https://food-delivery-full-stack-app-3.onrender.com/api/order/my-orders \
+  -H "Cookie: token=your_jwt_token"</pre>
+        </div>
+
+        <div class="section">
+            <h2>Additional Resources</h2>
+            <ul>
+                <li><a href="https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App">GitHub Repository</a></li>
+                <li><a href="https://bitedash-food.vercel.app">Live Application</a></li>
+                <li><a href="mailto:priydarshiadarsh3@gmail.com">Contact Developer</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px 20px; color: #666;">
+        <p>Built by Adarsh Priydarshi | <a href="https://github.com/adarsh-priydarshi-5646" style="color: #667eea;">GitHub</a></p>
+    </footer>
+</body>
+</html>
