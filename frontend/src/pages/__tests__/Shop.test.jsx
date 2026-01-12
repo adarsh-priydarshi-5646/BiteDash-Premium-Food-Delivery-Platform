@@ -118,8 +118,8 @@ describe('Shop Component', () => {
       expect(screen.getByText('Pizza Hut')).toBeInTheDocument();
       expect(screen.getByText('Margherita')).toBeInTheDocument();
       expect(screen.getByText('Pepperoni')).toBeInTheDocument();
-      expect(screen.getByText('30 mins')).toBeInTheDocument();
-      expect(screen.getByText('4.5')).toBeInTheDocument();
+      expect(screen.getAllByText(/30.*mins/)[0]).toBeInTheDocument();
+      expect(screen.getAllByText('4.5')[0]).toBeInTheDocument();
     });
   });
 

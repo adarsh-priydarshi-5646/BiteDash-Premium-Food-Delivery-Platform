@@ -14,6 +14,9 @@ import {
   FaLocationDot,
   FaStar,
   FaClock,
+  FaUtensils,
+  FaMotorcycle,
+  FaArrowLeft,
 } from 'react-icons/fa6';
 import FoodCard from '../components/FoodCard';
 import Nav from '../components/Nav';
@@ -44,93 +47,134 @@ function Shop() {
   }, [shopId]);
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8]">
+    <div className="min-h-screen bg-gray-50">
       <Nav />
 
-      {}
-      {shop && (
-        <div className="relative w-full h-72 md:h-80 lg:h-96">
-          <img
-            src={shop.image}
-            alt={shop.name}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      {/* Main Content - starts after navbar */}
+      <div className="pt-20">
+        {shop && (
+          <>
+            {/* Shop Header - Compact Design */}
+            <div className="bg-white border-b border-gray-200">
+              <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+                <div className="flex items-center gap-4">
+                  {/* Back Button */}
+                  <button
+                    onClick={() => navigate(-1)}
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex-shrink-0"
+                  >
+                    <FaArrowLeft className="text-gray-600" />
+                  </button>
 
-          <div className="absolute inset-0 flex flex-col justify-end px-6 pb-8 md:px-12 md:pb-12">
-            <div className="max-w-7xl mx-auto w-full">
-              {}
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mb-4 shadow-lg">
-                <FaStore className="text-[#E23744] text-2xl" />
-              </div>
+                  {/* Shop Image - Small Thumbnail */}
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
+                    <img
+                      src={shop.image}
+                      alt={shop.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
 
-              {}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 drop-shadow-lg">
-                {shop.name}
-              </h1>
+                  {/* Shop Info */}
+                  <div className="flex-1 min-w-0">
+                    <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
+                      {shop.name}
+                    </h1>
+                    
+                    <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
+                      {shop.cuisine && (
+                        <span className="truncate">{shop.cuisine}</span>
+                      )}
+                    </div>
 
-              {}
-              <div className="flex flex-wrap items-center gap-4 text-white">
-                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                  <FaLocationDot className="text-red-400" />
-                  <span className="font-medium">{shop.address}</span>
+                    <div className="flex items-center gap-1 text-gray-500 text-sm mt-1">
+                      <FaLocationDot className="text-[#E23744] text-xs flex-shrink-0" />
+                      <span className="truncate">{shop.address}</span>
+                    </div>
+                  </div>
+
+                  {/* Stats - Right Side */}
+                  <div className="hidden sm:flex items-center gap-3">
+                    {shop.rating && (
+                      <div className="flex items-center gap-1 bg-green-500 text-white px-2.5 py-1 rounded-lg">
+                        <FaStar className="text-xs" />
+                        <span className="font-bold text-sm">{shop.rating}</span>
+                      </div>
+                    )}
+
+                    {shop.deliveryTime && (
+                      <div className="flex items-center gap-1 text-gray-600 text-sm">
+                        <FaClock className="text-orange-500" />
+                        <span>{shop.deliveryTime} mins</span>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-1 text-gray-600 text-sm">
+                      <FaMotorcycle className="text-blue-500" />
+                      <span>Free Delivery</span>
+                    </div>
+                  </div>
                 </div>
 
-                {shop.rating && (
-                  <div className="flex items-center gap-2 bg-green-600 px-3 py-1.5 rounded-full">
-                    <FaStar className="text-white text-sm" />
-                    <span className="font-bold">{shop.rating}</span>
-                  </div>
-                )}
+                {/* Mobile Stats */}
+                <div className="flex sm:hidden items-center gap-3 mt-3 pt-3 border-t border-gray-100">
+                  {shop.rating && (
+                    <div className="flex items-center gap-1 bg-green-500 text-white px-2 py-1 rounded-md text-xs">
+                      <FaStar className="text-[10px]" />
+                      <span className="font-bold">{shop.rating}</span>
+                    </div>
+                  )}
 
-                {shop.deliveryTime && (
-                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                    <FaClock className="text-yellow-400" />
-                    <span className="font-medium">
-                      {shop.deliveryTime} mins
-                    </span>
+                  {shop.deliveryTime && (
+                    <div className="flex items-center gap-1 text-gray-600 text-xs">
+                      <FaClock className="text-orange-500" />
+                      <span>{shop.deliveryTime} mins</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-1 text-gray-600 text-xs">
+                    <FaMotorcycle className="text-blue-500" />
+                    <span>Free Delivery</span>
                   </div>
-                )}
+                </div>
+              </div>
+            </div>
+
+            {/* Menu Section */}
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900">
+                  Menu <span className="text-gray-400 font-normal text-sm">({items.length} items)</span>
+                </h2>
               </div>
 
-              {}
-              {shop.cuisine && (
-                <p className="text-gray-200 mt-3 text-lg">{shop.cuisine}</p>
+              {items.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
+                  {items.map((item) => (
+                    <FoodCard data={item} key={item._id} />
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-gray-100">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <FaUtensils className="text-gray-400 text-2xl" />
+                  </div>
+                  <h3 className="text-gray-900 text-lg font-bold mb-2">
+                    No Items Available
+                  </h3>
+                  <p className="text-gray-500 mb-4 text-sm">
+                    This restaurant hasn't added any menu items yet.
+                  </p>
+                  <button
+                    onClick={() => navigate('/')}
+                    className="px-5 py-2 bg-[#E23744] text-white font-semibold rounded-lg hover:bg-[#c02a35] transition-all text-sm"
+                  >
+                    Explore Other Restaurants
+                  </button>
+                </div>
               )}
             </div>
-          </div>
-        </div>
-      )}
-
-      {}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Our Menu</h2>
-          <p className="text-gray-600">{items.length} items available</p>
-        </div>
-
-        {items.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {items.map((item) => (
-              <FoodCard data={item} key={item._id} />
-            ))}
-          </div>
-        ) : (
-          <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-200">
-            <FaStore className="text-gray-300 text-6xl mx-auto mb-4" />
-            <h3 className="text-gray-900 text-xl font-bold mb-2">
-              No Items Available
-            </h3>
-            <p className="text-gray-500 mb-6">
-              This restaurant hasn't added any items yet
-            </p>
-            <button
-              onClick={() => navigate('/')}
-              className="px-6 py-3 bg-[#E23744] text-white font-semibold rounded-lg hover:bg-[#c02a35] transition-colors"
-            >
-              Explore Other Restaurants
-            </button>
-          </div>
+          </>
         )}
       </div>
     </div>

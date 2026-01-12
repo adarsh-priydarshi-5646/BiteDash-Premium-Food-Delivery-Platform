@@ -36,7 +36,7 @@ jobs:
   # DEPENDENCY REVIEW (PRs only)
   # ===========================================================================
   dependency-review:
-    name: 📦 Dependency Review
+    name: Dependency Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
@@ -52,7 +52,7 @@ jobs:
   # NPM AUDIT
   # ===========================================================================
   npm-audit-frontend:
-    name: 🔒 Frontend Audit
+    name: Frontend Audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -87,7 +87,7 @@ jobs:
         working-directory: frontend
 
   npm-audit-backend:
-    name: 🔒 Backend Audit
+    name: Backend Audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -125,7 +125,7 @@ jobs:
   # SECRET SCANNING
   # ===========================================================================
   secret-scan:
-    name: 🔑 Secret Scan
+    name: Secret Scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -170,7 +170,7 @@ jobs:
   # SECURITY STATUS
   # ===========================================================================
   security-status:
-    name: ✅ Security Status
+    name: Security Status
     needs: [npm-audit-frontend, npm-audit-backend, secret-scan]
     runs-on: ubuntu-latest
     if: always()
