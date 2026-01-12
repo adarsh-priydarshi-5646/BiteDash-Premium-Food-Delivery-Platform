@@ -17,4 +17,8 @@ const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
 
+if (!stripe && process.env.NODE_ENV === 'production') {
+  console.warn('⚠️ WARNING: Stripe not configured. Only COD payments will work.');
+}
+
 export default stripe;

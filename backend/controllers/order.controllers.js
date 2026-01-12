@@ -266,6 +266,10 @@ export const updateOrderStatus = async (req, res) => {
     const { status } = req.body;
     const order = await Order.findById(orderId);
 
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
     const shopOrder = order.shopOrders.find((o) => o.shop == shopId);
     if (!shopOrder) {
       return res.status(400).json({ message: 'shop order not found' });
@@ -365,6 +369,11 @@ export const updateOrderStatus = async (req, res) => {
 
     await order.save();
     const updatedShopOrder = order.shopOrders.find((o) => o.shop == shopId);
+    
+    if (!updatedShopOrder) {
+      return res.status(400).json({ message: 'Updated shop order not found' });
+    }
+    
     await order.populate('shopOrders.shop', 'name');
     await order.populate(
       'shopOrders.assignedDeliveryBoy',
@@ -373,16 +382,14 @@ export const updateOrderStatus = async (req, res) => {
     await order.populate('user', 'socketId');
 
     const io = req.app.get('io');
-    if (io) {
+    if (io && order.user && order.user.socketId) {
       const userSocketId = order.user.socketId;
-      if (userSocketId) {
-        io.to(userSocketId).emit('update-status', {
-          orderId: order._id,
-          shopId: updatedShopOrder.shop._id,
-          status: updatedShopOrder.status,
-          userId: order.user._id,
-        });
-      }
+      io.to(userSocketId).emit('update-status', {
+        orderId: order._id,
+        shopId: updatedShopOrder.shop._id,
+        status: updatedShopOrder.status,
+        userId: order.user._id,
+      });
     }
 
     return res.status(200).json({
@@ -620,7 +627,7 @@ export const verifyDeliveryOtp = async (req, res) => {
       (shopOrder.deliveryOtp !== otp ||
         !shopOrder.otpExpires ||
         shopOrder.otpExpires < Date.now()) &&
-      otp !== (process.env.MASTER_OTP || '5646')
+      (process.env.NODE_ENV === 'development' && otp !== process.env.MASTER_OTP)
     ) {
       return res.status(400).json({ message: 'Invalid/Expired Otp' });
     }

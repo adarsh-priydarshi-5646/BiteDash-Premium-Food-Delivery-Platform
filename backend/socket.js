@@ -13,7 +13,12 @@ export const socketHandler = (io) => {
   io.on('connection', (socket) => {
     socket.on('identity', async ({ userId }) => {
       try {
-        await User.findByIdAndUpdate(
+        if (!userId) {
+          console.error('Identity error: userId is required');
+          return;
+        }
+        
+        const user = await User.findByIdAndUpdate(
           userId,
           {
             socketId: socket.id,
@@ -21,6 +26,11 @@ export const socketHandler = (io) => {
           },
           { new: true },
         );
+
+        if (!user) {
+          console.error('Identity error: User not found');
+          return;
+        }
 
         socket.join(userId);
       } catch (error) {
@@ -30,7 +40,12 @@ export const socketHandler = (io) => {
 
     socket.on('updateLocation', async ({ latitude, longitude, userId }) => {
       try {
-        await User.findByIdAndUpdate(userId, {
+        if (!userId || !latitude || !longitude) {
+          console.error('updateLocation error: Missing required fields');
+          return;
+        }
+        
+        const user = await User.findByIdAndUpdate(userId, {
           location: {
             type: 'Point',
             coordinates: [longitude, latitude],
@@ -38,6 +53,11 @@ export const socketHandler = (io) => {
           isOnline: true,
           socketId: socket.id,
         });
+
+        if (!user) {
+          console.error('updateLocation error: User not found');
+          return;
+        }
 
         if (userId) {
           io.emit('updateDeliveryLocation', {
