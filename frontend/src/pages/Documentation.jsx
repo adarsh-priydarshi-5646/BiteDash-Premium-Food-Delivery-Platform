@@ -369,6 +369,21 @@ export default function Documentation() {
       { id: "testing-the-api", label: "Testing", icon: <FaWrench />, docs: null },
       { id: "summary", label: "Summary", icon: <FaCheckCircle />, docs: null },
     ],
+    interview: [
+      { id: "project-overview-questions", label: "Project Overview", icon: <FaLightbulb />, docs: null },
+      { id: "architecture--system-design", label: "Architecture & Design", icon: <FaBuilding />, docs: null },
+      { id: "authentication--security", label: "Authentication & Security", icon: <FaLock />, docs: null },
+      { id: "real-time-features-socketio", label: "Real-Time Features", icon: <SiSocketdotio />, docs: null },
+      { id: "geospatial-features", label: "Geospatial Features", icon: <FaMapMarkerAlt />, docs: null },
+      { id: "payment-integration", label: "Payment Integration", icon: <FaCreditCard />, docs: null },
+      { id: "frontend-architecture-react", label: "Frontend Architecture", icon: <SiReact />, docs: null },
+      { id: "deployment--devops", label: "Deployment & DevOps", icon: <FaRocket />, docs: null },
+      { id: "debugging--problem-solving", label: "Debugging & Problem Solving", icon: <FaWrench />, docs: null },
+      { id: "performance--optimization", label: "Performance & Optimization", icon: <FaTachometerAlt />, docs: null },
+      { id: "learning--growth-questions", label: "Learning & Growth", icon: <FaBook />, docs: null },
+      { id: "behavioral-questions", label: "Behavioral Questions", icon: <FaUsers />, docs: null },
+      { id: "final-preparation-tips", label: "Final Preparation Tips", icon: <FaCheckCircle />, docs: null },
+    ],
     developer: [{ id: "developer", label: "Developer Profile", icon: <FaUsers />, docs: null }],
   };
 
@@ -389,7 +404,9 @@ export default function Documentation() {
           ? "/docs/technical-documentation.md" 
           : activeDoc === "techstack"
           ? "/docs/tech-stack-deep-dive.md"
-          : "/docs/api-reference.md";
+          : activeDoc === "api"
+          ? "/docs/api-reference.md"
+          : "/docs/interview-preparation.md";
         const res = await fetch(docFile);
         const text = await res.text();
         const parts = text.split(/^## /m);
@@ -521,9 +538,10 @@ export default function Documentation() {
               <button onClick={() => setActiveDoc("technical")} className={"flex-1 px-2 py-1.5 text-[11px] font-medium rounded-md transition-all " + (activeDoc === "technical" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600")}>Technical</button>
               <button onClick={() => setActiveDoc("techstack")} className={"flex-1 px-2 py-1.5 text-[11px] font-medium rounded-md transition-all " + (activeDoc === "techstack" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600")}>Tech Stack</button>
               <button onClick={() => setActiveDoc("api")} className={"flex-1 px-2 py-1.5 text-[11px] font-medium rounded-md transition-all " + (activeDoc === "api" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600")}>API</button>
+              <button onClick={() => setActiveDoc("interview")} className={"flex-1 px-2 py-1.5 text-[11px] font-medium rounded-md transition-all " + (activeDoc === "interview" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600")}>Interview</button>
               <button onClick={() => setActiveDoc("developer")} className={"flex-1 px-2 py-1.5 text-[11px] font-medium rounded-md transition-all " + (activeDoc === "developer" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600")}>Developer</button>
             </div>
-            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2">{activeDoc === "technical" ? "Documentation" : activeDoc === "techstack" ? "Deep Dive" : activeDoc === "api" ? "API Reference" : "About"}</p>
+            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2">{activeDoc === "technical" ? "Documentation" : activeDoc === "techstack" ? "Deep Dive" : activeDoc === "api" ? "API Reference" : activeDoc === "interview" ? "Interview Q&A" : "About"}</p>
             <ul className="space-y-0.5">
               {currentNavItems.map(item => (
                 <li key={item.id}>
