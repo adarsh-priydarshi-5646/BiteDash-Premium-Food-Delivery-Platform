@@ -10,8 +10,12 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-circular.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon-circular.png" />
   <link rel="shortcut icon" href="/favicon-circular.png" />
+  <link rel="manifest" href="/manifest.json" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#E23744" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="BiteDash" />
 
   <!-- Performance: Preconnect to critical domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -66,24 +70,43 @@
       "name": "BiteDash",
       "alternateName": "BiteDash Food Delivery",
       "url": "https://bitedash-food.vercel.app/",
-      "logo": "https://bitedash-food.vercel.app/BiteDash.png",
-      "image": "https://bitedash-food.vercel.app/BiteDash.png",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://bitedash-food.vercel.app/BiteDash.png",
+        "width": 512,
+        "height": 512,
+        "caption": "BiteDash Logo"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://bitedash-food.vercel.app/BiteDash.png",
+        "width": 512,
+        "height": 512
+      },
       "description": "Fast food delivery platform with real-time tracking and secure payments",
       "foundingDate": "2024",
       "founder": {
         "@type": "Person",
-        "name": "Adarsh Priydarshi"
+        "name": "Adarsh Priydarshi",
+        "url": "https://github.com/adarsh-priydarshi-5646"
       },
       "sameAs": [
         "https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App",
-        "https://bitedash-food.vercel.app/"
+        "https://bitedash-food.vercel.app/",
+        "https://www.linkedin.com/in/adarsh-p1/"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+91-9876543210",
         "contactType": "customer service",
         "areaServed": "IN",
-        "availableLanguage": ["en", "hi"]
+        "availableLanguage": ["en", "hi"],
+        "email": "priydarshiadarsh3@gmail.com"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN",
+        "addressRegion": "Delhi NCR"
       }
     }
   </script>
