@@ -1,10 +1,8 @@
 # Interview Preparation Guide
 
-## Complete Q&A for BiteDash Food Delivery Platform
-
 This document contains every possible interview question about my project with detailed answers, real data, code examples, and cross-questions. I've organized it by topic to help me prepare thoroughly.
 
-### How to Use This Guide
+## How to Use This Guide
 
 **For Interview Preparation:**
 1. Read each section thoroughly

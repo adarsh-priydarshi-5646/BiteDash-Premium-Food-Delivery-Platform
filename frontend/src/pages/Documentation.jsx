@@ -358,7 +358,7 @@ export default function Documentation() {
       { id: "summary", label: "Summary", icon: <FaClipboardList />, docs: null },
     ],
     interview: [
-      { id: "introduction", label: "Introduction", icon: <FaBook />, docs: null },
+      { id: "how-to-use-this-guide", label: "How to Use This Guide", icon: <FaBook />, docs: null },
       { id: "project-overview-questions", label: "Project Overview", icon: <FaLightbulb />, docs: null },
       { id: "architecture-system-design", label: "Architecture & Design", icon: <FaBuilding />, docs: null },
       { id: "authentication-security", label: "Authentication & Security", icon: <FaLock />, docs: null },
