@@ -34,7 +34,7 @@ jobs:
   # AUTO-LABELING
   # ===========================================================================
   label-pr:
-    name: 🏷️ Auto Label
+    name: Auto Label
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -111,7 +111,7 @@ jobs:
   # FRONTEND VALIDATION
   # ===========================================================================
   frontend:
-    name: 🎨 Frontend
+    name: Frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -169,7 +169,7 @@ jobs:
   # BACKEND VALIDATION
   # ===========================================================================
   backend:
-    name: ⚙️ Backend
+    name: Backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -218,7 +218,7 @@ jobs:
   # FINAL STATUS
   # ===========================================================================
   status:
-    name: ✅ PR Status
+    name: PR Status
     needs: [frontend, backend]
     runs-on: ubuntu-latest
     if: always()
@@ -258,7 +258,7 @@ jobs:
   # AUTO-MERGE (Only if all checks pass)
   # ===========================================================================
   auto-merge:
-    name: 🤖 Auto Merge
+    name: Auto Merge
     needs: [status]
     runs-on: ubuntu-latest
     if: always()
