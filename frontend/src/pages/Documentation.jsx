@@ -1,3 +1,19 @@
+/**
+ * Documentation Page - MDN-style technical documentation with developer profile
+ *
+ * Features: Markdown rendering, syntax highlighting, code copy buttons,
+ * tabbed navigation (Technical/Tech Stack/Developer), sidebar navigation,
+ * emoji to React icon conversion, responsive mobile menu
+ * 
+ * Libraries: marked (markdown parser), react-icons (icon library),
+ * react-dom/server (SSR for icons), framer-motion (animations)
+ * 
+ * Sections: Introduction, Architecture, Frontend/Backend guides, API reference,
+ * Real-time events, State management, Performance, Deployment, Developer profile
+ * 
+ * Features: Auto-generated table of contents, code syntax highlighting,
+ * copy-to-clipboard for code blocks, live app link, GitHub integration
+ */
 import { useState, useEffect, useRef } from "react";
 import { marked } from "marked";
 import { FaChevronRight, FaBars, FaTimes, FaGithub, FaLinkedin, FaEnvelope, FaCode, FaCloud, FaTools, FaRocket, FaShieldAlt, FaCogs, FaChartLine, FaUsers, FaGlobe, FaMobile, FaDatabase, FaServer, FaPlug, FaBolt, FaClipboardList, FaLock, FaSave, FaBuilding, FaCube, FaBan, FaCheckCircle, FaLayerGroup, FaNetworkWired, FaMemory, FaPaintBrush, FaExchangeAlt, FaFileCode, FaBook, FaLightbulb, FaWrench, FaBoxOpen, FaTachometerAlt, FaUserShield, FaCreditCard, FaMapMarkerAlt, FaBell, FaSearch, FaFilter, FaStar, FaHeart, FaExternalLinkAlt } from "react-icons/fa";
