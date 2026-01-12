@@ -1,765 +1,431 @@
-# 🍔 BiteDash - Premium Food Delivery Platform
+# BiteDash - Food Delivery Platform
 
-<div align="center">
+A full-stack food delivery application built with React, Node.js, and MongoDB. Features real-time order tracking, geospatial delivery assignment, and integrated payment processing.
 
-![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)
-![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)
-![Tests](https://img.shields.io/badge/Tests-62%20Passing-brightgreen?style=for-the-badge)
-![Coverage](https://img.shields.io/badge/Coverage-85%25-green?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
-
-<img src="https://t4.ftcdn.net/jpg/02/92/20/37/360_F_292203735_CSsyqyS6A4Z9Czd4Msf7qZEhoxjpzZl1.jpg" alt="BiteDash Banner" width="800" />
-
-### **Enterprise-Grade Full-Stack Food Delivery Platform with Real-Time Tracking**
-
-*Built with React, Node.js, MongoDB, Socket.IO, and 14 Automated CI/CD Workflows*
-
-[🚀 Live Demo](https://bitedash-food.vercel.app) • [📚 API Docs](https://bitedash-food.vercel.app/docs) • [🐛 Report Bug](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/issues) • [✨ Request Feature](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/issues)
-
-</div>
+**Live Demo**: [bitedash-food.vercel.app](https://bitedash-food.vercel.app)  
+**Documentation**: [bitedash-food.vercel.app/docs](https://bitedash-food.vercel.app/docs)  
+**API Backend**: [food-delivery-full-stack-app-3.onrender.com](https://food-delivery-full-stack-app-3.onrender.com)
 
 ---
 
-## 🎯 Project Highlights
+## Overview
 
-<table>
-<tr>
-<td width="50%">
+BiteDash is a food delivery platform that connects customers with restaurants and delivery partners. The application handles the complete order lifecycle from browsing restaurants to delivery confirmation with OTP verification.
 
-### 🏆 **Technical Excellence**
-- ✅ **14 CI/CD Workflows** - Enterprise-level automation
-- ✅ **62 Automated Tests** - 85% code coverage
-- ✅ **Real-Time Features** - Socket.IO for live updates
-- ✅ **Geospatial Queries** - 10km radius delivery assignment
-- ✅ **Auto-Rollback** - Production-grade deployment safety
-- ✅ **Complete Documentation** - JSDoc in all 129 files
+### Key Features
 
-</td>
-<td width="50%">
+**For Customers:**
+- Browse restaurants by city and category
+- Real-time order tracking with live location updates
+- Multiple payment options (Stripe and Cash on Delivery)
+- Order history and ratings
 
-### 📊 **Key Metrics**
-- 🚀 **Lighthouse Score**: 90+
-- ⚡ **Build Time**: ~7 seconds
-- 📦 **Bundle Size**: ~350 KB (gzipped)
-- 🔒 **Security**: A+ rating
-- 🌐 **API Endpoints**: 45+
-- 👥 **User Roles**: 3 (Customer, Owner, Delivery)
+**For Restaurant Owners:**
+- Manage menu items with image uploads
+- Real-time order notifications
+- Accept or reject incoming orders
+- Track earnings and order statistics
 
-</td>
-</tr>
-</table>
+**For Delivery Partners:**
+- Receive orders within 10km radius using geospatial queries
+- Live navigation to pickup and delivery locations
+- OTP-based delivery verification
+- Daily earnings tracking
 
 ---
 
-## 🎥 Demo & Screenshots
+## Tech Stack
 
-<div align="center">
+### Frontend
+- React 19 with Redux Toolkit for state management
+- TailwindCSS for styling
+- Vite as build tool
+- Socket.IO client for real-time updates
+- Leaflet for maps
+- Recharts for analytics
 
-### 🏠 **Landing Page**
-<img src="https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Landing+Page+Screenshot" alt="Landing Page" width="800"/>
+### Backend
+- Node.js 20 with Express 5
+- MongoDB with Mongoose ODM
+- Socket.IO for real-time communication
+- JWT authentication with httpOnly cookies
+- Cluster mode for multi-core utilization
 
-### 🍽️ **Restaurant Browsing**
-<img src="https://via.placeholder.com/800x400/10B981/FFFFFF?text=Restaurant+Browsing+Screenshot" alt="Restaurant Browsing" width="800"/>
+### External Services
+- MongoDB Atlas for database
+- Cloudinary for image storage
+- Stripe for payment processing
+- SendGrid for email notifications
+- Firebase for Google OAuth
+- Geoapify for location services
 
-### 📦 **Real-Time Order Tracking**
-<img src="https://via.placeholder.com/800x400/F59E0B/FFFFFF?text=Order+Tracking+Screenshot" alt="Order Tracking" width="800"/>
-
-</div>
-
-> 💡 **Tip**: Replace placeholder images with actual screenshots for better presentation
-
----
-
-## 📋 Table of Contents
-
-- [Project Highlights](#-project-highlights)
-- [Demo & Screenshots](#-demo--screenshots)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [Environment Variables](#-environment-variables)
-- [API Reference](#-api-reference)
-- [Testing](#-testing)
-- [CI/CD Pipeline](#-cicd-pipeline)
-- [Performance](#-performance)
-- [Security](#-security-features)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Contact](#-contact)
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+- CI/CD: GitHub Actions (14 automated workflows)
 
 ---
 
-## ✨ Features
-
-### 🎯 **Core Capabilities**
-
-<table>
-<tr>
-<td width="33%">
-
-#### 👤 **For Customers**
-- 🔐 Email/Google OAuth login
-- 🏪 Browse restaurants by city
-- 🔍 Smart search & filters
-- 🛒 Persistent shopping cart
-- 💳 Stripe + COD payments
-- 📍 Real-time order tracking
-- ⭐ Rate & review orders
-- 📱 Fully responsive UI
-
-</td>
-<td width="33%">
-
-#### 🏪 **For Restaurant Owners**
-- 📊 Analytics dashboard
-- 🍽️ Menu management
-- 📸 Cloudinary image uploads
-- 📦 Real-time order alerts
-- ✅ Accept/reject orders
-- 🛵 Auto delivery assignment
-- 💰 Earnings tracking
-- 📈 Sales reports
-
-</td>
-<td width="33%">
-
-#### 🛵 **For Delivery Partners**
-- 📋 View nearby orders
-- 🗺️ Geospatial assignment (10km)
-- 📍 Live location tracking
-- ✅ OTP-based verification
-- 💰 Daily earnings stats
-- 🔔 Real-time notifications
-- 📊 Delivery analytics
-- 🚀 Performance metrics
-
-</td>
-</tr>
-</table>
-
-### 🚀 **Advanced Features**
-
-| Feature | Description | Technology |
-|---------|-------------|------------|
-| **Multi-Shop Orders** | Order from multiple restaurants in one checkout | MongoDB Transactions |
-| **Geospatial Search** | Find delivery partners within 10km radius | MongoDB Geospatial Indexes |
-| **Real-Time Updates** | Live order status, location tracking | Socket.IO |
-| **Smart Caching** | API response caching for faster load times | In-Memory Cache (Redis-ready) |
-| **Auto-Rollback** | Automatic deployment rollback on failure | GitHub Actions |
-| **Health Monitoring** | Backend API health checks every 6 hours | Automated Workflows |
-| **Performance Tracking** | Bundle size, Lighthouse scores monitoring | CI/CD Pipeline |
-| **Security Scanning** | Dependency review, secret detection | CodeQL + TruffleHog |
-
----
-
-## 🛠️ Tech Stack
-
-<div align="center">
-
-### **Frontend**
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Redux](https://img.shields.io/badge/Redux-Toolkit-764ABC?style=for-the-badge&logo=redux&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-
-### **Backend**
-![Node.js](https://img.shields.io/badge/Node.js-20-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-5.0-000000?style=for-the-badge&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
-![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8-010101?style=for-the-badge&logo=socket.io&logoColor=white)
-
-### **Services & Tools**
-![Stripe](https://img.shields.io/badge/Stripe-Payment-008CDD?style=for-the-badge&logo=stripe&logoColor=white)
-![Cloudinary](https://img.shields.io/badge/Cloudinary-Images-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
-![Vercel](https://img.shields.io/badge/Vercel-Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white)
-
-</div>
-
-### **Complete Technology Breakdown**
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        FRONTEND                              │
-├─────────────────────────────────────────────────────────────┤
-│  React 19  │  Redux Toolkit  │  TailwindCSS 4  │  Vite 7    │
-│  React Router 7  │  Framer Motion  │  Leaflet  │  Recharts  │
-│  Axios  │  React Hook Form  │  Lucide Icons  │  Sonner     │
-└─────────────────────────────────────────────────────────────┘
-                              │
-┌─────────────────────────────────────────────────────────────┐
-│                        BACKEND                               │
-├─────────────────────────────────────────────────────────────┤
-│  Node.js 20  │  Express 5  │  Socket.IO 4.8  │  Mongoose   │
-│  JWT Auth  │  Bcrypt  │  Rate Limiting  │  Helmet  │  CORS │
-│  Multer  │  Cluster Mode  │  SendGrid  │  Nodemailer       │
-└─────────────────────────────────────────────────────────────┘
-                              │
-┌─────────────────────────────────────────────────────────────┐
-│                    DATABASE & STORAGE                        │
-├─────────────────────────────────────────────────────────────┤
-│  MongoDB Atlas  │  Geospatial Indexes  │  Connection Pool   │
-│  Cloudinary CDN  │  In-Memory Cache  │  Redis (Ready)      │
-└─────────────────────────────────────────────────────────────┘
-                              │
-┌─────────────────────────────────────────────────────────────┐
-│                    EXTERNAL SERVICES                         │
-├─────────────────────────────────────────────────────────────┤
-│  Stripe API  │  Firebase Auth  │  SendGrid Email  │ Geoapify│
-│  Vercel Hosting  │  Render Hosting  │  GitHub Actions      │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🏗️ Architecture
-
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│   Browser    │────▶│  Vercel CDN  │────▶│  React App   │
-└──────────────┘     └──────────────┘     └──────┬───────┘
-                                                  │
-                     ┌────────────────────────────┼────────────────────────────┐
-                     │                            │                            │
-                     ▼                            ▼                            ▼
-              ┌──────────────┐           ┌──────────────┐           ┌──────────────┐
-              │ Redux Store  │           │  Socket.IO   │           │  REST APIs   │
-              └──────────────┘           └──────┬───────┘           └──────┬───────┘
-                                                │                          │
-                                                └──────────┬───────────────┘
-                                                           │
-                                                           ▼
-                                                ┌──────────────────┐
-                                                │  Express Server  │
-                                                │  (Cluster Mode)  │
-                                                └────────┬─────────┘
-                                                         │
-                     ┌───────────────────────────────────┼───────────────────────────────────┐
-                     │                   │               │               │                   │
-                     ▼                   ▼               ▼               ▼                   ▼
-              ┌──────────┐       ┌──────────┐    ┌──────────┐    ┌──────────┐       ┌──────────┐
-              │ MongoDB  │       │Cloudinary│    │  Stripe  │    │ SendGrid │       │ Geoapify │
-              └──────────┘       └──────────┘    └──────────┘    └──────────┘       └──────────┘
-```
-
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```
 BiteDash/
-├── .github/                    # GitHub configurations
-│   ├── workflows/              # CI/CD pipelines (8 workflows)
-│   │   ├── ci.yml              # Main CI pipeline
-│   │   ├── pr-checks.yml       # PR validation & auto-labeling
-│   │   ├── deploy.yml          # Production deployment
-│   │   ├── security.yml        # CodeQL security scanning
-│   │   ├── auto-merge.yml      # Dependabot auto-merge
-│   │   ├── rollback.yml        # Auto-rollback on failure
-│   │   ├── release.yml         # Semantic versioning
-│   │   └── stale.yml           # Stale issue management
-│   ├── CODEOWNERS              # Code ownership rules
-│   ├── dependabot.yml          # Dependency updates
-│   └── pull_request_template.md
+├── backend/
+│   ├── config/          # Database, cache, and service configurations
+│   ├── controllers/     # Request handlers for each route
+│   ├── middlewares/     # Authentication, rate limiting, validation
+│   ├── models/          # MongoDB schemas
+│   ├── routes/          # API endpoint definitions
+│   ├── utils/           # Helper functions
+│   ├── validators/      # Input validation schemas
+│   ├── cluster.js       # Cluster mode setup
+│   ├── socket.js        # Socket.IO configuration
+│   └── index.js         # Application entry point
 │
-├── backend/                    # Node.js Express Server
-│   ├── config/                 # Configuration files
-│   │   ├── db.js               # MongoDB connection (pooling)
-│   │   ├── cache.js            # In-memory caching
-│   │   └── stripe.js           # Stripe configuration
-│   ├── constants/              # App constants
-│   ├── controllers/            # Request handlers
-│   ├── middlewares/            # Express middlewares
-│   │   ├── isAuth.js           # JWT authentication
-│   │   ├── rateLimiter.js      # Rate limiting
-│   │   └── security.js         # Security headers
-│   ├── models/                 # MongoDB schemas
-│   ├── routes/                 # API routes
-│   ├── services/               # Business logic layer
-│   ├── utils/                  # Helper functions
-│   ├── validators/             # Input validation
-│   ├── cluster.js              # Cluster mode for scaling
-│   ├── socket.js               # Socket.IO setup
-│   ├── index.js                # Entry point
-│   ├── .env.example            # Environment template
-│   └── ARCHITECTURE.md         # Backend documentation
-│
-├── frontend/                   # React Application
-│   ├── public/
-│   │   └── docs/               # Technical documentation
+├── frontend/
 │   ├── src/
-│   │   ├── __tests__/          # Test files (21 test suites)
-│   │   ├── components/         # Reusable UI components
-│   │   │   └── __tests__/      # Component tests
-│   │   ├── pages/              # Route components
-│   │   │   └── __tests__/      # Page tests
-│   │   ├── redux/              # State management
-│   │   │   └── __tests__/      # Redux tests
-│   │   ├── hooks/              # Custom React hooks
-│   │   ├── constants/          # App constants
-│   │   ├── utils/              # Helper functions
-│   │   └── App.jsx             # Root component
-│   ├── .env.example            # Environment template
-│   └── ARCHITECTURE.md         # Frontend documentation
+│   │   ├── components/  # Reusable UI components
+│   │   ├── pages/       # Route-level components
+│   │   ├── redux/       # State management slices
+│   │   ├── hooks/       # Custom React hooks
+│   │   └── utils/       # Helper functions
+│   └── public/
+│       └── docs/        # Technical documentation
 │
-└── README.md                   # This file
+└── .github/
+    └── workflows/       # CI/CD pipeline configurations
 ```
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
-### 📋 **Prerequisites**
+### Prerequisites
 
-Before you begin, ensure you have the following installed:
+- Node.js v18 or higher
+- MongoDB Atlas account
+- npm or yarn package manager
 
-- **Node.js** v18 or higher ([Download](https://nodejs.org/))
-- **MongoDB Atlas** account ([Sign up](https://www.mongodb.com/cloud/atlas))
-- **Git** ([Download](https://git-scm.com/))
+### Installation
 
-### 🚀 **Quick Start (5 minutes)**
-
+1. Clone the repository
 ```bash
-# 1️⃣ Clone the repository
 git clone https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App.git
 cd Food-Delivery-Full-Stack-App
+```
 
-# 2️⃣ Setup Backend
+2. Setup Backend
+```bash
 cd backend
 npm install
 cp .env.example .env
-# Edit .env with your credentials (see Environment Variables section)
+# Edit .env with your configuration
+```
 
-# 3️⃣ Setup Frontend
-cd ../frontend
+3. Setup Frontend
+```bash
+cd frontend
 npm install
 cp .env.example .env
-# Edit .env with your credentials
-
-# 4️⃣ Start Development Servers
-# Terminal 1 - Backend (http://localhost:8000)
-cd backend && npm run dev
-
-# Terminal 2 - Frontend (http://localhost:5173)
-cd frontend && npm run dev
+# Edit .env with your configuration
 ```
 
-### 🎯 **First Time Setup**
+4. Start Development Servers
+```bash
+# Terminal 1 - Backend
+cd backend
+npm run dev
 
-After starting the servers:
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+```
 
-1. **Visit**: http://localhost:5173
-2. **Sign Up**: Create a new account
-3. **Explore**: Browse demo restaurants (auto-seeded)
-4. **Test Order**: Place a test order with COD
+The application will be available at:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
 
-### 🔑 **Demo Accounts**
+### Environment Variables
 
-| Role | Email | Password | Access |
-|------|-------|----------|--------|
-| 👤 **Customer** | `user@bitedash.com` | `password123` | Browse & order food |
-| 🏪 **Owner** | `owner@bitedash.com` | `password123` | Manage restaurant |
-| 🛵 **Delivery** | `rider@bitedash.com` | `password123` | Accept deliveries |
-
-> 💡 **Master OTP**: Use `5646` for delivery verification & password reset (development only)
-
----
-
-## 🔐 Environment Variables
-
-### Backend (`backend/.env`)
-
+#### Backend (.env)
 ```env
-# Server
 PORT=8000
 NODE_ENV=development
-
-# Database
-MONGODB_URL=mongodb+srv://user:pass@cluster.mongodb.net/bitedash
-
-# Authentication
-JWT_SECRET=your_super_secret_jwt_key
-
-# Stripe
-STRIPE_SECRET_KEY=sk_test_xxx
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=xxx
-CLOUDINARY_API_KEY=xxx
-CLOUDINARY_API_SECRET=xxx
-
-# Email (SendGrid)
-SENDGRID_API_KEY=SG.xxx
-
-# Frontend URL
+MONGODB_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+STRIPE_SECRET_KEY=your_stripe_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_key
+CLOUDINARY_API_SECRET=your_cloudinary_secret
+SENDGRID_API_KEY=your_sendgrid_key
 FRONTEND_URL=http://localhost:5173
-
-# Development
-MASTER_OTP=5646
 ```
 
-### Frontend (`frontend/.env`)
-
+#### Frontend (.env)
 ```env
-# Firebase
-VITE_FIREBASE_APIKEY=xxx
-
-# Geoapify
-VITE_GEOAPIKEY=xxx
-
-# Stripe
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
-
-# Backend API
-VITE_API_BASE=http://localhost:8000
+VITE_FIREBASE_APIKEY=your_firebase_api_key
+VITE_GEOAPIKEY=your_geoapify_key
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 ```
 
-> 📝 See `.env.example` files for complete configuration with detailed comments.
+See `.env.example` files for complete configuration details.
 
 ---
 
-## 🚀 Usage
+## Architecture
 
-### User Roles
+### System Design
 
-| Role         | Email                | Password      | Access                     |
-| :----------- | :------------------- | :------------ | :------------------------- |
-| **Customer** | `user@bitedash.com`  | `password123` | Order food, track delivery |
-| **Owner**    | `owner@bitedash.com` | `password123` | Manage restaurant & menu   |
-| **Delivery** | `rider@bitedash.com` | `password123` | Accept & deliver orders    |
+The application follows a client-server architecture with real-time communication:
 
-> 🔑 **Master OTP**: `5646` (for delivery verification & password reset)
+1. **Frontend (React)**: Handles UI rendering and user interactions
+2. **Backend (Node.js)**: Processes business logic and data operations
+3. **Database (MongoDB)**: Stores application data with geospatial indexing
+4. **Socket.IO**: Enables real-time bidirectional communication
+5. **External APIs**: Handles payments, storage, and notifications
 
-### User Flow
+### Data Flow
 
 ```
-1. Landing Page → Sign Up/Sign In
-2. Browse Restaurants → Add to Cart
-3. Checkout → Select Address → Choose Payment
-4. Track Order → Receive Delivery → Rate Order
+User Action → React Component → Redux Action → API Call → Express Route
+→ Controller → Model → MongoDB → Response → Redux Store → UI Update
 ```
+
+For real-time features:
+```
+Server Event → Socket.IO → Client Listener → Redux Update → UI Update
+```
+
+### Key Technical Implementations
+
+**Geospatial Delivery Assignment:**
+- Uses MongoDB's geospatial queries with 2dsphere indexes
+- Finds delivery partners within 10km radius
+- Filters out busy partners using assignment status
+
+**Real-Time Order Tracking:**
+- Socket.IO rooms for targeted messaging
+- Location updates broadcast to relevant users
+- Order status changes pushed instantly
+
+**Payment Processing:**
+- Stripe Checkout Sessions for card payments
+- Webhook integration for payment confirmation
+- Fallback to Cash on Delivery option
 
 ---
 
-## 📡 API Reference
+## API Documentation
 
-### Authentication
+Complete API documentation is available at: [bitedash-food.vercel.app/docs](https://bitedash-food.vercel.app/docs)
 
-| Method | Endpoint            | Description      |
-| :----- | :------------------ | :--------------- |
-| POST   | `/api/auth/signup`  | Register user    |
-| POST   | `/api/auth/signin`  | Login user       |
-| POST   | `/api/auth/google`  | Google OAuth     |
-| GET    | `/api/auth/current` | Get current user |
-| POST   | `/api/auth/logout`  | Logout           |
+### Main Endpoints
 
-### Orders
+**Authentication**
+- `POST /api/auth/signup` - Register new user
+- `POST /api/auth/signin` - Login user
+- `POST /api/auth/google` - Google OAuth login
+- `GET /api/auth/current` - Get current user
+- `POST /api/auth/logout` - Logout user
 
-| Method | Endpoint                        | Description     |
-| :----- | :------------------------------ | :-------------- |
-| POST   | `/api/order/place-order`        | Create order    |
-| GET    | `/api/order/my-orders`          | Get user orders |
-| PUT    | `/api/order/status/:id/:shopId` | Update status   |
-| POST   | `/api/order/verify-otp`         | Verify delivery |
+**Orders**
+- `POST /api/order/place-order` - Create new order
+- `GET /api/order/my-orders` - Get user's orders
+- `PUT /api/order/status/:orderId/:shopId` - Update order status
+- `POST /api/order/verify-otp` - Verify delivery OTP
 
-> 📚 Full API documentation: [/docs](https://bitedash-food.vercel.app/docs)
+**Shops**
+- `GET /api/shop/city/:city` - Get shops by city
+- `POST /api/shop/create` - Create new shop (owner only)
+- `PUT /api/shop/:id` - Update shop details
+
+**Items**
+- `GET /api/item/city/:city` - Get items by city
+- `POST /api/item/create` - Add menu item (owner only)
+- `PUT /api/item/:id` - Update menu item
 
 ---
 
-## 🧪 Testing
+## Testing
+
+The project includes automated tests for critical functionality:
 
 ```bash
-# Run all tests
-cd frontend && npm test
-
-# Run with coverage
-npm run test:coverage
-
-# Run specific test file
-npm test -- FoodCard.test.jsx
+cd frontend
+npm test
 ```
 
-**Test Coverage**: 62 tests across 21 test suites
+Test coverage includes:
+- Component rendering tests
+- Redux slice logic tests
+- API integration tests
+- User interaction flows
 
-- Unit tests for components
-- Integration tests for pages
-- Redux slice tests
+Current test suite: 62 tests across 21 test files
 
 ---
 
-## 🔄 CI/CD Pipeline
+## CI/CD Pipeline
 
-### 🤖 **14 Automated Workflows**
+The project uses GitHub Actions for automated workflows:
 
-<table>
-<tr>
-<td width="50%">
+**On Pull Request:**
+- Code linting and formatting checks
+- Automated test execution
+- Security vulnerability scanning
+- Build verification
 
-#### **Quality & Testing**
-- ✅ **CI Pipeline** - Lint, test, build on every push
-- ✅ **PR Checks** - Auto-labeling, validation
-- ✅ **Code Quality** - Duplicate code detection
-- ✅ **Security Scan** - CodeQL, secret detection
-- ✅ **Dependency Review** - Block vulnerable deps
+**On Merge to Main:**
+- Production build creation
+- Deployment to Vercel (frontend)
+- Health check verification
+- Automatic rollback on failure
 
-</td>
-<td width="50%">
+**Scheduled Tasks:**
+- Weekly dependency updates
+- Security audits
+- Performance monitoring
+- Backend health checks (every 6 hours)
 
-#### **Deployment & Monitoring**
-- ✅ **Auto-Deploy** - Vercel production deployment
-- ✅ **Auto-Rollback** - Revert on failure
-- ✅ **Auto-Merge** - Dependabot PRs
-- ✅ **Backend Health** - API checks every 6h
-- ✅ **Performance Monitor** - Bundle size tracking
-- ✅ **Dependency Updates** - Weekly checks
-- ✅ **Environment Validation** - .env file checks
-- ✅ **Backup Reminders** - Daily database checks
-- ✅ **Stale Issues** - Auto-close inactive issues
+---
 
-</td>
-</tr>
-</table>
+## Deployment
 
-### 📊 **Workflow Triggers**
+### Frontend (Vercel)
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| **PR Checks** | Pull Request | Validate code quality, run tests |
-| **Security Scan** | Push to main, Weekly | Detect vulnerabilities |
-| **Deploy** | Push to main | Deploy to production |
-| **Auto-Rollback** | Deploy failure | Revert to last stable version |
-| **Backend Health** | Every 6 hours | Monitor API health |
-| **Performance** | Weekly | Track bundle size, Lighthouse |
+The frontend is automatically deployed to Vercel on every push to main branch.
 
-### 🔄 **Deployment Flow**
-
-```
-┌─────────────┐
-│  Push Code  │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────────┐
-│  Run All Tests  │ ◄── 62 tests must pass
-└──────┬──────────┘
-       │
-       ▼
-┌─────────────────┐
-│ Security Scan   │ ◄── No vulnerabilities
-└──────┬──────────┘
-       │
-       ▼
-┌─────────────────┐
-│ Build Frontend  │ ◄── Production build
-└──────┬──────────┘
-       │
-       ▼
-┌─────────────────┐
-│ Deploy Vercel   │ ◄── With retry logic
-└──────┬──────────┘
-       │
-       ▼
-┌─────────────────┐
-│  Health Check   │ ◄── Verify deployment
-└──────┬──────────┘
-       │
-       ├─── ✅ Success → Post notification
-       │
-       └─── ❌ Failure → Auto-rollback
+Configuration is in `vercel.json`:
+```json
+{
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "framework": "vite"
+}
 ```
 
----
+### Backend (Render)
 
-## 🔒 Security Features
-
-<table>
-<tr>
-<td width="50%">
-
-### **Authentication & Authorization**
-- ✅ JWT tokens in HttpOnly cookies
-- ✅ Bcrypt password hashing (10 rounds)
-- ✅ Google OAuth via Firebase
-- ✅ Role-based access control (RBAC)
-- ✅ Session management
-- ✅ OTP-based verification
-
-</td>
-<td width="50%">
-
-### **API Security**
-- ✅ Rate limiting (100 req/15min)
-- ✅ CORS configuration
-- ✅ Helmet security headers
-- ✅ Input sanitization (XSS prevention)
-- ✅ SQL injection protection
-- ✅ Request validation
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### **Data Security**
-- ✅ MongoDB connection encryption
-- ✅ Environment variable protection
-- ✅ Secure file uploads
-- ✅ Payment data encryption (Stripe)
-- ✅ No sensitive data in logs
-
-</td>
-<td width="50%">
-
-### **Automated Security**
-- ✅ CodeQL security scanning
-- ✅ Dependabot vulnerability alerts
-- ✅ Secret detection (TruffleHog)
-- ✅ Dependency review on PRs
-- ✅ Weekly security audits
-
-</td>
-</tr>
-</table>
-
-### 🛡️ **Security Score: A+**
+The backend is deployed on Render with the following setup:
+- Build Command: `npm install`
+- Start Command: `node cluster.js`
+- Environment: Node.js 20
+- Auto-deploy: Enabled on main branch
 
 ---
 
-## 📈 Performance
+## Performance Considerations
 
-### ⚡ **Metrics**
+**Frontend Optimizations:**
+- Code splitting with React.lazy
+- Image optimization via Cloudinary
+- API response caching
+- Lazy loading for routes
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| **Lighthouse Performance** | 92/100 | 🟢 Excellent |
-| **Lighthouse Accessibility** | 95/100 | 🟢 Excellent |
-| **Lighthouse Best Practices** | 100/100 | 🟢 Perfect |
-| **Lighthouse SEO** | 90/100 | 🟢 Excellent |
-| **Bundle Size (gzipped)** | ~350 KB | 🟢 Optimal |
-| **Build Time** | ~7 seconds | 🟢 Fast |
-| **API Response Time** | <200ms | 🟢 Excellent |
-| **MongoDB Pool** | 100 connections | 🟢 Scalable |
+**Backend Optimizations:**
+- Database connection pooling
+- In-memory caching for frequent queries
+- Cluster mode for CPU utilization
+- Geospatial indexes for location queries
 
-### 🚀 **Optimizations**
-
-- ✅ Code splitting & lazy loading
-- ✅ Image optimization (Cloudinary)
-- ✅ API response caching
-- ✅ Database query optimization
-- ✅ Geospatial indexing
-- ✅ Cluster mode for multi-core CPUs
-- ✅ CDN for static assets (Vercel)
-- ✅ Compression middleware
+**Monitoring:**
+- Automated performance tracking
+- Bundle size monitoring
+- API response time tracking
+- Error logging and alerts
 
 ---
 
-## 🗺️ Roadmap
+## Security
 
-### 🎯 **Planned Features**
+**Authentication & Authorization:**
+- JWT tokens stored in httpOnly cookies
+- Password hashing with bcrypt
+- Role-based access control
+- Session management
 
-- [ ] **Redis Cache** - Replace in-memory cache for distributed caching
-- [ ] **Stripe Webhooks** - Server-side payment verification
-- [ ] **Push Notifications** - Firebase Cloud Messaging
-- [ ] **Advanced Analytics** - Revenue forecasting, customer insights
-- [ ] **Multi-Language Support** - i18n implementation
-- [ ] **Dark Mode** - Theme switcher
-- [ ] **Progressive Web App** - Offline support, installable
-- [ ] **Admin Dashboard** - Platform-wide analytics
-- [ ] **Referral System** - Invite friends, earn rewards
-- [ ] **Loyalty Program** - Points & rewards
-- [ ] **AI Recommendations** - Personalized food suggestions
-- [ ] **Voice Search** - Voice-based restaurant search
+**API Security:**
+- Rate limiting on all endpoints
+- Input validation and sanitization
+- CORS configuration
+- Security headers via Helmet
 
-### 🔧 **Technical Improvements**
-
-- [ ] **MongoDB Transactions** - Atomic multi-document operations
-- [ ] **GraphQL API** - Alternative to REST
-- [ ] **Microservices** - Service-oriented architecture
-- [ ] **Docker** - Containerization
-- [ ] **Kubernetes** - Orchestration
-- [ ] **Load Balancer** - Nginx/HAProxy
-- [ ] **Message Queue** - RabbitMQ/Kafka for async tasks
+**Data Protection:**
+- Environment variables for sensitive data
+- Encrypted database connections
+- Secure file upload handling
+- Payment data handled by Stripe (PCI compliant)
 
 ---
 
-## 🤝 Contributing
+## Known Limitations
 
-We welcome contributions! Here's how you can help:
-
-### 📝 **Contribution Guidelines**
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### ✅ **PR Checklist**
-
-- [ ] Code follows project style guidelines
-- [ ] Tests added for new features
-- [ ] All tests passing (`npm test`)
-- [ ] Documentation updated
-- [ ] No console errors/warnings
-- [ ] Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
-
-### 🐛 **Bug Reports**
-
-Found a bug? [Open an issue](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/issues) with:
-- Clear title and description
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots (if applicable)
-- Environment details
+- In-memory cache doesn't persist across server restarts (Redis recommended for production)
+- Payment verification relies on client redirect (webhook implementation recommended)
+- No offline support currently
+- Limited to single currency (INR)
 
 ---
 
-## 📞 Contact
+## Future Improvements
 
-<div align="center">
-
-**Adarsh Priydarshi**
-
-[![GitHub](https://img.shields.io/badge/GitHub-adarsh--priydarshi--5646-181717?style=for-the-badge&logo=github)](https://github.com/adarsh-priydarshi-5646)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/adarsh-priydarshi)
-[![Email](https://img.shields.io/badge/Email-priydarshiadarsh3%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:priydarshiadarsh3@gmail.com)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://your-portfolio.com)
-
-**Project Link**: [https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App)
-
-</div>
+- Implement Redis for distributed caching
+- Add Stripe webhook for server-side payment verification
+- Implement MongoDB transactions for atomic operations
+- Add push notifications for mobile devices
+- Implement advanced analytics dashboard
+- Add multi-language support
+- Create admin panel for platform management
 
 ---
 
-## 📜 License
+## Contributing
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Contributions are welcome. Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Make your changes
+4. Write or update tests as needed
+5. Commit your changes (`git commit -m 'Add new feature'`)
+6. Push to your branch (`git push origin feature/new-feature`)
+7. Open a Pull Request
+
+Please ensure:
+- Code follows existing style conventions
+- All tests pass
+- New features include appropriate tests
+- Documentation is updated if needed
 
 ---
 
-<div align="center">
+## License
 
-### ⭐ **Star this repo if you find it helpful!**
-
-### 🙏 **Acknowledgments**
-
-- [React](https://reactjs.org/) - UI Library
-- [Node.js](https://nodejs.org/) - Runtime Environment
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Socket.IO](https://socket.io/) - Real-time Engine
-- [Stripe](https://stripe.com/) - Payment Processing
-- [Vercel](https://vercel.com/) - Hosting Platform
+This project is licensed under the MIT License. See LICENSE file for details.
 
 ---
 
-**Made with ❤️ and ☕ by Adarsh Priydarshi**
+## Contact
 
-*If this project helped you, consider giving it a ⭐!*
+**Developer**: Adarsh Priydarshi  
+**Email**: priydarshiadarsh3@gmail.com  
+**GitHub**: [@adarsh-priydarshi-5646](https://github.com/adarsh-priydarshi-5646)
 
-[![GitHub stars](https://img.shields.io/github/stars/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App?style=social)](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App?style=social)](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/network/members)
+**Project Repository**: [github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App)
 
-</div>
+---
+
+## Acknowledgments
+
+This project was built using various open-source libraries and services:
+- React and Redux teams for the frontend framework
+- Express.js for the backend framework
+- MongoDB for the database
+- Socket.IO for real-time functionality
+- Stripe for payment processing
+- Cloudinary for image management
+- Vercel and Render for hosting
+
+---
+
+*Built as a learning project to demonstrate full-stack development skills with modern web technologies.*
