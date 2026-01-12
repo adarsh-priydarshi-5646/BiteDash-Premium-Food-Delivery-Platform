@@ -24,80 +24,111 @@
   <link rel="dns-prefetch" href="https://accounts.google.com" />
 
   <!-- SEO Meta Tags -->
-  <title>BiteDash - Premium Food Delivery & Developer Portal</title>
+  <title>BiteDash - Fast Food Delivery | Order Online from Top Restaurants</title>
   <meta name="description"
-    content="BiteDash: The ultra-fast food delivery platform and comprehensive developer portal. Order food online or explore our technical documentation for integration." />
+    content="Order food online from top restaurants with BiteDash. Fast delivery, real-time tracking, secure payments. Get your favorite meals delivered in 30 minutes. Available in Delhi, Mumbai, Bangalore." />
   <meta name="keywords"
-    content="food delivery, BiteDash docs, developer portal, API documentation, fast food, order food online" />
-  <meta name="author" content="BiteDash Team" />
-  <meta name="robots" content="index, follow" />
+    content="food delivery, order food online, BiteDash, fast food delivery, restaurant delivery, online food order, food delivery app, pizza delivery, burger delivery, Indian food delivery, Delhi food delivery, Mumbai food delivery, Bangalore food delivery" />
+  <meta name="author" content="BiteDash - Adarsh Priydarshi" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bitedash-food.vercel.app/" />
-  <meta property="og:title" content="BiteDash - Premium Food Delivery" />
+  <meta property="og:title" content="BiteDash - Fast Food Delivery | Order Online from Top Restaurants" />
   <meta property="og:description"
-    content="Experience the fastest food delivery with BiteDash. Explore our elite developer portal for technical deep-dives." />
-  <meta property="og:image" content="https://bitedash-food.vercel.app/branding-logo.png" />
+    content="Order food online from top restaurants with BiteDash. Fast delivery, real-time tracking, secure payments. Get your favorite meals delivered in 30 minutes." />
+  <meta property="og:image" content="https://bitedash-food.vercel.app/BiteDash.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BiteDash - Food Delivery Platform" />
   <meta property="og:site_name" content="BiteDash" />
+  <meta property="og:locale" content="en_IN" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://bitedash-food.vercel.app/" />
-  <meta property="twitter:title" content="BiteDash - Premium Food Delivery" />
+  <meta property="twitter:title" content="BiteDash - Fast Food Delivery | Order Online" />
   <meta property="twitter:description"
-    content="Experience the fastest food delivery with BiteDash. Explore our elite developer portal for technical deep-dives." />
-  <meta property="twitter:image" content="https://bitedash-food.vercel.app/branding-logo.png" />
+    content="Order food online from top restaurants. Fast delivery, real-time tracking, secure payments. Get your favorite meals delivered in 30 minutes." />
+  <meta property="twitter:image" content="https://bitedash-food.vercel.app/BiteDash.png" />
+  <meta property="twitter:image:alt" content="BiteDash - Food Delivery Platform" />
+  <meta name="twitter:creator" content="@BiteDash" />
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://bitedash-food.vercel.app/" />
 
-  <!-- JSON-LD Structured Data for Logo & Branding -->
+  <!-- JSON-LD Structured Data for Logo & Organization -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "BiteDash",
+      "alternateName": "BiteDash Food Delivery",
       "url": "https://bitedash-food.vercel.app/",
-      "logo": "https://bitedash-food.vercel.app/branding-logo.png",
+      "logo": "https://bitedash-food.vercel.app/BiteDash.png",
+      "image": "https://bitedash-food.vercel.app/BiteDash.png",
+      "description": "Fast food delivery platform with real-time tracking and secure payments",
+      "foundingDate": "2024",
+      "founder": {
+        "@type": "Person",
+        "name": "Adarsh Priydarshi"
+      },
       "sameAs": [
+        "https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App",
         "https://bitedash-food.vercel.app/"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91-1234567890",
+        "telephone": "+91-9876543210",
         "contactType": "customer service",
         "areaServed": "IN",
-        "availableLanguage": "en"
+        "availableLanguage": ["en", "hi"]
       }
     }
   </script>
+  
+  <!-- WebSite Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "BiteDash",
+      "alternateName": "BiteDash Food Delivery",
       "url": "https://bitedash-food.vercel.app/",
+      "description": "Order food online from top restaurants with fast delivery",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://bitedash-food.vercel.app/search?q={search_term_string}",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://bitedash-food.vercel.app/restaurants?search={search_term_string}"
+        },
         "query-input": "required name=search_term_string"
       }
     }
   </script>
+  
+  <!-- FoodEstablishment Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
+      "@type": "FoodEstablishment",
       "name": "BiteDash",
-      "image": "https://bitedash-food.vercel.app/branding-logo.png",
+      "image": "https://bitedash-food.vercel.app/BiteDash.png",
       "@id": "https://bitedash-food.vercel.app/",
       "url": "https://bitedash-food.vercel.app/",
-      "telephone": "+91-1234567890",
+      "telephone": "+91-9876543210",
       "priceRange": "₹₹",
+      "servesCuisine": ["Indian", "Chinese", "Italian", "Fast Food", "Pizza", "Burger"],
       "address": {
         "@type": "PostalAddress",
-        "addressCountry": "IN"
+        "addressCountry": "IN",
+        "addressRegion": "Delhi NCR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 28.6139,
+        "longitude": 77.2090
       },
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",
@@ -105,11 +136,15 @@
         "opens": "00:00",
         "closes": "23:59"
       },
-      "sameAs": [
-        "https://bitedash-food.vercel.app/"
-      ]
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "reviewCount": "500"
+      }
     }
   </script>
+  
+  <!-- BreadcrumbList Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -124,10 +159,37 @@
         {
           "@type": "ListItem",
           "position": 2,
+          "name": "Restaurants",
+          "item": "https://bitedash-food.vercel.app/restaurants"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
           "name": "Documentation",
           "item": "https://bitedash-food.vercel.app/docs"
         }
       ]
+    }
+  </script>
+  
+  <!-- SoftwareApplication Schema for Developer Portal -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BiteDash Food Delivery Platform",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "ratingCount": "500"
+      }
     }
   </script>
 </head>
