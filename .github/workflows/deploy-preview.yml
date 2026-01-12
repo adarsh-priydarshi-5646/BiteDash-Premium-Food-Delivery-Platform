@@ -48,8 +48,7 @@ jobs:
       - name: Deploy Preview
         id: deploy
         run: |
-          cd frontend
-          URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes)
+          URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes --cwd ./frontend)
           echo "preview-url=$URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
