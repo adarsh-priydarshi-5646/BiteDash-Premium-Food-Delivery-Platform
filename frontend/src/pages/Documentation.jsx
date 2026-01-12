@@ -168,7 +168,7 @@ const DeveloperInfo = () => (
     <h3 className="dev-section-title"><FaUsers /> Connect With Me</h3>
     <div className="link-buttons">
       <a href="https://github.com/adarsh-priydarshi-5646" target="_blank" rel="noopener noreferrer" className="dev-link github"><FaGithub /> GitHub</a>
-      <a href="https://linkedin.com/in/adarsh-priydarshi" target="_blank" rel="noopener noreferrer" className="dev-link linkedin"><FaLinkedin /> LinkedIn</a>
+      <a href="https://www.linkedin.com/in/adarsh-p1/" target="_blank" rel="noopener noreferrer" className="dev-link linkedin"><FaLinkedin /> LinkedIn</a>
       <a href="mailto:priydarshiadarsh3@gmail.com" className="dev-link email"><FaEnvelope /> Email</a>
     </div>
 
