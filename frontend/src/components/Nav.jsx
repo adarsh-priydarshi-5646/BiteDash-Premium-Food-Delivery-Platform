@@ -94,11 +94,13 @@ function Nav() {
         className="flex items-center gap-2 cursor-pointer"
         onClick={() => navigate('/')}
       >
-        <img
-          src="/branding-logo.png"
-          alt="BiteDash Logo"
-          className="w-16 h-16 md:w-18 md:h-18 object-contain rounded-full"
-        />
+        <div className="w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
+          <img
+            src="/BiteDash.png"
+            alt="BiteDash Logo"
+            className="w-full h-full object-contain"
+          />
+        </div>
         <h1 className="text-3xl font-bold text-[#E23744]">BiteDash</h1>
       </div>
 

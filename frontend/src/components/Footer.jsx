@@ -25,7 +25,16 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-white text-xl font-bold mb-4">BiteDash</h3>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-16 h-16 rounded-full shadow-md overflow-hidden bg-white">
+                <img
+                  src="/BiteDash.png"
+                  alt="BiteDash Logo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-white text-xl font-bold">BiteDash</h3>
+            </div>
             <p className="text-sm mb-4">
               Your favorite food delivered fast and fresh. Order from the best
               restaurants in your city.
