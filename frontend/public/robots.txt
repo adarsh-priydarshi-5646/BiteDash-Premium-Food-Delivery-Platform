@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Allow: /docs
+Allow: /signin
+Allow: /signup
+Allow: /restaurants
+
+Disallow: /profile
+Disallow: /checkout
+Disallow: /orders
+Disallow: /dashboard
 
 Sitemap: https://bitedash-food.vercel.app/sitemap.xml
