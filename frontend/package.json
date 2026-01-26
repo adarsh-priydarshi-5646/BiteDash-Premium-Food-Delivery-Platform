@@ -13,7 +13,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "@stripe/react-stripe-js": "^5.4.1",
-    "@stripe/stripe-js": "^8.6.1",
+    "@stripe/stripe-js": "^8.6.4",
     "@tailwindcss/vite": "^4.1.18",
     "@vercel/analytics": "^1.6.1",
     "axios": "^1.13.2",
