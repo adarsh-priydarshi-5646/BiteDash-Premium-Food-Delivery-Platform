@@ -97,6 +97,8 @@ function SignIn() {
         <form onSubmit={(e) => { e.preventDefault(); handleSignIn(); }} className="space-y-4">
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all">
             <input
+              id="email"
+              name="email"
               type="email"
               className="w-full px-4 py-3 outline-none text-gray-700 placeholder-gray-400"
               placeholder="Email"
@@ -109,6 +111,8 @@ function SignIn() {
 
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all relative">
             <input
+              id="password"
+              name="password"
               type={showPassword ? 'text' : 'password'}
               className="w-full px-4 py-3 outline-none text-gray-700 placeholder-gray-400 pr-12"
               placeholder="Password"
