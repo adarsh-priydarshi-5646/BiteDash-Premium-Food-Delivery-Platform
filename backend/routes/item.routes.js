@@ -2,7 +2,7 @@
  * Item Routes - Food menu item CRUD, search & rating endpoints
  *
  * Endpoints: /add, /edit/:itemId, /delete/:itemId, /:itemId, /city/:city, /search, /rating
- * Features: In-memory caching for city items, rate-limited search, Multer file upload
+ * Features: In-memory caching for city items (10 min TTL), rate-limited search, Multer file upload
  * Protected routes require JWT auth, search supports query + city filtering
  */
 import express from 'express';
@@ -34,13 +34,13 @@ itemRouter.get('/get-by-id/:itemId', isAuth, cacheMiddleware(120), getItemById);
 itemRouter.get(
   '/get-by-city/:city',
   isAuth,
-  cacheMiddleware(60),
+  cacheMiddleware(600),
   getItemByCity,
 );
 itemRouter.get(
   '/get-by-shop/:shopId',
   isAuth,
-  cacheMiddleware(60),
+  cacheMiddleware(600),
   getItemsByShop,
 );
 itemRouter.get(

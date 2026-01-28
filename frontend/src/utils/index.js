@@ -227,6 +227,37 @@ export const groupBy = (array, key) => {
   }, {});
 };
 
+/**
+ * Request deduplication - prevents duplicate API calls within a time window
+ * Useful for preventing rate limit issues on shared IPs (Render free tier)
+ */
+const requestCache = new Map();
+
+export const dedupedRequest = async (key, requestFn, cacheDuration = 5000) => {
+  const now = Date.now();
+  
+  if (requestCache.has(key)) {
+    const cached = requestCache.get(key);
+    if (now - cached.timestamp < cacheDuration) {
+      return cached.promise;
+    }
+  }
+
+  const promise = requestFn();
+  requestCache.set(key, { promise, timestamp: now });
+
+  // Clean up old cache entries
+  if (requestCache.size > 100) {
+    for (const [k, v] of requestCache.entries()) {
+      if (now - v.timestamp > 60000) {
+        requestCache.delete(k);
+      }
+    }
+  }
+
+  return promise;
+};
+
 export default {
   formatCurrency,
   formatDate,

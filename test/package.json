@@ -1,0 +1,20 @@
+{
+  "name": "bitedash-tests",
+  "version": "1.0.0",
+  "description": "Production testing suite for BiteDash",
+  "type": "module",
+  "scripts": {
+    "test": "node src/index.js",
+    "test:backend": "node src/tests/backend-analysis.test.js",
+    "test:frontend": "node src/tests/frontend-analysis.test.js",
+    "test:api": "node src/tests/api.test.js",
+    "test:performance": "node src/tests/performance.test.js",
+    "test:database": "node src/tests/database.test.js",
+    "test:load": "node src/tests/autocannon-load.test.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "autocannon": "^7.10.0",
+    "dotenv": "^16.0.0"
+  }
+}

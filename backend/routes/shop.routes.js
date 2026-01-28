@@ -2,7 +2,7 @@
  * Shop Routes - Restaurant/Shop CRUD with city-based filtering
  *
  * Endpoints: /create-edit, /my-shop, /city/:city
- * Features: In-memory caching for city shops (5 min TTL), Multer image upload
+ * Features: In-memory caching for city shops (10 min TTL), Multer image upload
  * Protected routes for create/edit, public city endpoint with cache
  */
 import express from 'express';
@@ -22,7 +22,7 @@ shopRouter.get('/get-my', isAuth, getMyShop);
 shopRouter.get(
   '/get-by-city/:city',
   isAuth,
-  cacheMiddleware(60),
+  cacheMiddleware(600),
   getShopByCity,
 );
 

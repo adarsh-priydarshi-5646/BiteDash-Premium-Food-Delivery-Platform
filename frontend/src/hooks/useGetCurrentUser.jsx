@@ -4,12 +4,31 @@
  * Makes GET /user/me request with credentials
  * Updates Redux userSlice with user data or null
  * Sets authLoading state for loading UI
+ * Deduplicates requests within 5 seconds to prevent rate limiting
  */
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { serverUrl } from '../App';
 import { useDispatch } from 'react-redux';
 import { setUserData, setAuthLoading } from '../redux/userSlice';
+
+// Request deduplication cache
+const requestCache = new Map();
+
+const dedupedFetch = async (key, fetchFn, cacheDuration = 5000) => {
+  const now = Date.now();
+
+  if (requestCache.has(key)) {
+    const cached = requestCache.get(key);
+    if (now - cached.timestamp < cacheDuration) {
+      return cached.promise;
+    }
+  }
+
+  const promise = fetchFn();
+  requestCache.set(key, { promise, timestamp: now });
+  return promise;
+};
 
 function useGetCurrentUser() {
   const dispatch = useDispatch();
@@ -20,9 +39,11 @@ function useGetCurrentUser() {
 
       try {
         dispatch(setAuthLoading(true));
-        const result = await axios.get(`${serverUrl}/api/user/current`, {
-          withCredentials: true,
-          signal: controller.signal,
+        const result = await dedupedFetch('user:current', async () => {
+          return axios.get(`${serverUrl}/api/user/current`, {
+            withCredentials: true,
+            signal: controller.signal,
+          });
         });
         dispatch(setUserData(result.data));
         clearTimeout(timeoutId);
@@ -32,6 +53,7 @@ function useGetCurrentUser() {
             'Authentication request timed out - backend may be unavailable',
           );
         } else if (error.response?.status === 401) {
+          // Unauthorized - user not logged in
         } else {
           console.error('Error fetching current user:', error.message);
         }
@@ -41,7 +63,7 @@ function useGetCurrentUser() {
       }
     };
     fetchUser();
-  }, []);
+  }, [dispatch]);
 }
 
 export default useGetCurrentUser;

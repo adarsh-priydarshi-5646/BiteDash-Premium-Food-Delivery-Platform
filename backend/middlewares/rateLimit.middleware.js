@@ -56,7 +56,8 @@ const limiter = new RateLimiter();
 export const rateLimiter = (req, res, next) => {
   const ip =
     req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  const result = limiter.isAllowed(`api:${ip}`, 200);
+  // Increased to 1000 req/min for production (Render free tier has shared IPs)
+  const result = limiter.isAllowed(`api:${ip}`, 1000);
 
   res.setHeader('X-RateLimit-Remaining', result.remaining);
 
