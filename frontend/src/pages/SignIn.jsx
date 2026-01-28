@@ -94,7 +94,7 @@ function SignIn() {
           </h2>
         </div>
 
-        <div className="space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); handleSignIn(); }} className="space-y-4">
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all">
             <input
               type="email"
@@ -118,6 +118,7 @@ function SignIn() {
               required
             />
             <button
+              type="button"
               className="absolute right-4 top-1/2 -translate-y-1/2 text-[#E23744] text-sm font-medium"
               onClick={() => setShowPassword((prev) => !prev)}
             >
@@ -126,8 +127,8 @@ function SignIn() {
           </div>
 
           <button
+            type="submit"
             className="w-full bg-[#E23744] hover:bg-[#d02433] text-white font-medium py-3 rounded-lg shadow-sm transition-all flex justify-center items-center gap-2 mt-4"
-            onClick={handleSignIn}
             disabled={loading}
           >
             {loading ? <ClipLoader size={20} color="white" /> : 'Login'}
@@ -147,13 +148,14 @@ function SignIn() {
           </div>
 
           <button
+            type="button"
             className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
             onClick={handleGoogleAuth}
           >
             <FcGoogle size={22} />
             <span>Continue with Google</span>
           </button>
-        </div>
+        </form>
 
         <div className="mt-8 text-center text-gray-600">
           New to BiteDash?{' '}

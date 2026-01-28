@@ -33,7 +33,6 @@ itemRouter.post('/rating', isAuth, rating);
 itemRouter.get('/get-by-id/:itemId', isAuth, cacheMiddleware(120), getItemById);
 itemRouter.get(
   '/get-by-city/:city',
-  isAuth,
   cacheMiddleware(600),
   getItemByCity,
 );

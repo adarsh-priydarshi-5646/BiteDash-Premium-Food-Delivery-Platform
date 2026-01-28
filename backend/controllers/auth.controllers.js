@@ -52,6 +52,7 @@ export const signUp = async (req, res) => {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      path: '/',
     });
 
     return res.status(201).json(user);
@@ -86,6 +87,7 @@ export const signIn = async (req, res) => {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      path: '/',
     });
 
     return res.status(200).json(user);
@@ -212,6 +214,7 @@ export const googleAuth = async (req, res) => {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      path: '/',
     });
 
     return res.status(200).json(user);

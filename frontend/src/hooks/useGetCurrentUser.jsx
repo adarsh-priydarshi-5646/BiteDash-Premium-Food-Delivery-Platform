@@ -22,11 +22,20 @@ const dedupedFetch = async (key, fetchFn, cacheDuration = 5000) => {
     const cached = requestCache.get(key);
     if (now - cached.timestamp < cacheDuration) {
       return cached.promise;
+    } else {
+      // Clean up expired cache
+      requestCache.delete(key);
     }
   }
 
   const promise = fetchFn();
   requestCache.set(key, { promise, timestamp: now });
+
+  // Auto cleanup after cache duration
+  setTimeout(() => {
+    requestCache.delete(key);
+  }, cacheDuration);
+
   return promise;
 };
 
