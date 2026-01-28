@@ -115,6 +115,7 @@ function useGetCity(auto = false) {
 
                 const result = await axios.get(
                   `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=${apiKey}`,
+                  { withCredentials: false },
                 );
 
                 if (result.data?.results?.length > 0) {

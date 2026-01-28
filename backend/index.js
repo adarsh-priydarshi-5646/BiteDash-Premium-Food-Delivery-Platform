@@ -75,6 +75,10 @@ const io = new Server(server, {
   pingInterval: 25000,
   transports: ['websocket', 'polling'],
   allowUpgrades: true,
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 5,
 });
 
 app.set('io', io);
