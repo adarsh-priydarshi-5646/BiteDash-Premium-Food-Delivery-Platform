@@ -61,6 +61,8 @@ const corsOptions = {
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type', 'X-RateLimit-Remaining'],
+  maxAge: 86400,
 };
 
 const io = new Server(server, {
