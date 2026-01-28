@@ -101,7 +101,12 @@ export const signIn = async (req, res) => {
 
 export const signOut = async (req, res) => {
   try {
-    res.clearCookie('token');
+    res.clearCookie('token', {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      path: '/',
+      httpOnly: true,
+    });
     return res.status(200).json({ message: 'log out successfully' });
   } catch (error) {
     console.error('Sign out error:', error);
