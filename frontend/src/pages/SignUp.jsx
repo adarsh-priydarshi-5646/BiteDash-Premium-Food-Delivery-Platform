@@ -100,7 +100,7 @@ function SignUp() {
           <p className="text-gray-500 text-sm">to continue to BiteDash</p>
         </div>
 
-        <div className="space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); handleSignUp(); }} className="space-y-4">
           <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-[#E23744] focus-within:ring-1 focus-within:ring-[#E23744] transition-all">
             <input
               type="text"
@@ -150,6 +150,7 @@ function SignUp() {
               required
             />
             <button
+              type="button"
               className="absolute right-4 top-1/2 -translate-y-1/2 text-[#E23744] text-sm font-medium"
               onClick={() => setShowPassword((prev) => !prev)}
             >
@@ -165,6 +166,7 @@ function SignUp() {
               {['user', 'owner', 'deliveryBoy'].map((r) => (
                 <button
                   key={r}
+                  type="button"
                   className={`flex-1 rounded-lg px-2 py-2 text-center text-sm font-medium transition-all border ${
                     role === r
                       ? 'bg-[#E23744] text-white border-[#E23744]'
@@ -181,8 +183,8 @@ function SignUp() {
           </div>
 
           <button
+            type="submit"
             className="w-full bg-[#E23744] hover:bg-[#d02433] text-white font-medium py-3 rounded-lg shadow-sm transition-all flex justify-center items-center gap-2 mt-4"
-            onClick={handleSignUp}
             disabled={loading}
           >
             {loading ? (
@@ -206,13 +208,14 @@ function SignUp() {
           </div>
 
           <button
+            type="button"
             className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
             onClick={handleGoogleAuth}
           >
             <FcGoogle size={22} />
             <span>Continue with Google</span>
           </button>
-        </div>
+        </form>
 
         <div className="mt-8 text-center text-gray-600">
           Already have an account?{' '}
