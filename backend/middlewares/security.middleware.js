@@ -5,6 +5,7 @@
  * Features: Removes X-Powered-By, limits request body size, sanitizes input
  * Protects against clickjacking, MIME sniffing, XSS attacks
  */
+
 export const securityHeaders = (req, res, next) => {
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -14,10 +15,6 @@ export const securityHeaders = (req, res, next) => {
   next();
 };
 
-/**
- * Sanitizes input to prevent NoSQL injection
- * Note: In Express 5.x, req.query is read-only, so we sanitize in-place
- */
 export const sanitizeRequest = (req, res, next) => {
   const sanitize = (obj) => {
     if (typeof obj !== 'object' || obj === null) return obj;
@@ -32,12 +29,10 @@ export const sanitizeRequest = (req, res, next) => {
     return obj;
   };
 
-  // Sanitize body (mutable)
   if (req.body) {
     sanitize(req.body);
   }
 
-  // Sanitize query params in-place (Express 5.x: req.query is read-only)
   if (req.query && typeof req.query === 'object') {
     for (const key in req.query) {
       if (key.startsWith('$') || key.includes('.')) {
@@ -46,7 +41,6 @@ export const sanitizeRequest = (req, res, next) => {
     }
   }
 
-  // Sanitize params in-place
   if (req.params && typeof req.params === 'object') {
     for (const key in req.params) {
       if (key.startsWith('$') || key.includes('.')) {

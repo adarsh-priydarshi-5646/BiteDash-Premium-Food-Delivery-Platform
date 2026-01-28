@@ -1,10 +1,12 @@
 /**
  * Rate Limiter - Sliding window algorithm for API protection
  *
- * In-memory storage with auto-cleanup every 30 seconds
- * Configurable limits: auth (5/min), search (30/min), orders (10/min), general (100/min)
- * Replace with Redis for distributed/multi-instance deployments
+ * Algorithm: Sliding window tracks request timestamps within 60-second window
+ * Auto-cleanup: Removes expired entries every 30 seconds to prevent memory leaks
+ * Limits: General (1000/min), Auth (20/min), Orders (30/min), Search (60/min)
+ * Storage: In-memory Map (suitable for single instance; use Redis for distributed)
  */
+
 class RateLimiter {
   constructor() {
     this.requests = new Map();
@@ -56,7 +58,6 @@ const limiter = new RateLimiter();
 export const rateLimiter = (req, res, next) => {
   const ip =
     req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  // Increased to 1000 req/min for production (Render free tier has shared IPs)
   const result = limiter.isAllowed(`api:${ip}`, 1000);
 
   res.setHeader('X-RateLimit-Remaining', result.remaining);

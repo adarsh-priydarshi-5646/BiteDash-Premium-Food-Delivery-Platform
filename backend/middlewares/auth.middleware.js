@@ -6,6 +6,7 @@
  * Returns 401 if token missing or invalid
  */
 import jwt from 'jsonwebtoken';
+
 const isAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token;

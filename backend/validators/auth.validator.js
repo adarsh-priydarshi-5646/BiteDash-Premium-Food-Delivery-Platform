@@ -6,6 +6,11 @@
  * Returns array of error messages, empty if valid
  */
 
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 export const validateSignUp = (data) => {
   const errors = [];
 
@@ -62,12 +67,6 @@ export const validateEmail = (email) => {
 
 export const validatePassword = (password) => {
   return password && password.length >= 6;
-};
-
-// Helper function
-const isValidEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
 };
 
 export default {
