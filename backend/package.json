@@ -34,6 +34,6 @@
     "stripe": "^20.4.1"
   },
   "devDependencies": {
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.2"
   }
 }
