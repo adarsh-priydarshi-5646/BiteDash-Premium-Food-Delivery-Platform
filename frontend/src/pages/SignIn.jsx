@@ -53,8 +53,14 @@ function SignIn() {
     }
   };
   const handleGoogleAuth = () => {
-    const googleAuthUrl = `${serverUrl}/api/auth/google`;
-    window.location.href = googleAuthUrl;
+    try {
+      const googleAuthUrl = `${serverUrl}/api/auth/google`;
+      console.log('Redirecting to Google OAuth:', googleAuthUrl);
+      window.location.href = googleAuthUrl;
+    } catch (error) {
+      console.error('Google auth error:', error);
+      setErr('Failed to initiate Google sign-in');
+    }
   };
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">
