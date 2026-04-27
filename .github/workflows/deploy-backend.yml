@@ -66,6 +66,18 @@ jobs:
             --task-definition ${{ env.ECS_TASK_DEFINITION }} \
             --query taskDefinition > task-definition.json
 
+      - name: Update environment variables with correct URLs
+        run: |
+          echo "🔧 Setting correct BACKEND_URL and FRONTEND_URL..."
+          cat task-definition.json | jq \
+            '.containerDefinitions[0].environment |= map(
+              if .name == "BACKEND_URL" then .value = "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com"
+              elif .name == "FRONTEND_URL" then .value = "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com"
+              else . end
+            )' > task-definition-updated.json
+          mv task-definition-updated.json task-definition.json
+          echo "✅ Environment variables updated"
+
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
