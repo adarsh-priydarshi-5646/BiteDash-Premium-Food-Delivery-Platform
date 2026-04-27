@@ -54,8 +54,14 @@ function SignIn() {
     }
   };
   const handleGoogleAuth = async () => {
-    const provider = new GoogleAuthProvider();
     const { auth } = await import('../firebase');
+    
+    if (!auth) {
+      setErr('Google Sign-in is currently unavailable. Please use email/password.');
+      return;
+    }
+    
+    const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     try {
       const { data } = await axios.post(

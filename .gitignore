@@ -27,3 +27,17 @@ yarn-debug.log*
 
 # OS files
 Thumbs.db
+
+# AWS Deployment (contains secrets)
+*-task-definition-prod.json
+backend-task-definition.json
+frontend-task-definition.json
+.aws/
+~/.aws/
+*.pem
+
+# Temporary files
+trust-policy.json
+.env.docker
+scripts/
+test/
