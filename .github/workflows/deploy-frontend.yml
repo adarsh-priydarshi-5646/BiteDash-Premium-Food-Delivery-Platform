@@ -22,7 +22,8 @@ jobs:
     name: Deploy Frontend
     runs-on: ubuntu-latest
     environment: production
-
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

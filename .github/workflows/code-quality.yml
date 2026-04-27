@@ -19,6 +19,8 @@ jobs:
   # Check for duplicate code
   duplicate-code:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
@@ -37,6 +39,8 @@ jobs:
   # Bundle size analysis - informational
   bundle-analysis:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
@@ -96,6 +100,8 @@ jobs:
     strategy:
       matrix:
         directory: [frontend, backend]
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
 
@@ -122,6 +128,7 @@ jobs:
     needs: [duplicate-code, bundle-analysis, dependency-check]
     runs-on: ubuntu-latest
     if: always()
+    permissions: {}
     steps:
       - name: Check quality status
         run: |
