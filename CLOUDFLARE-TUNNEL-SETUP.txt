@@ -1,0 +1,264 @@
+🚀 CLOUDFLARE TUNNEL SETUP GUIDE - Complete Steps
+================================================
+
+⏱️ Total Time: 15 minutes
+💰 Cost: $0 (100% Free)
+🔒 HTTPS: Automatic
+
+================================================
+STEP 1: CREATE CLOUDFLARE ACCOUNT (2 minutes)
+================================================
+
+1. Go to: https://dash.cloudflare.com/sign-up
+2. Enter your email and create password
+3. Verify email
+4. Login to dashboard
+
+✅ Done! Account created.
+
+================================================
+STEP 2: CREATE CLOUDFLARE TUNNEL (5 minutes)
+================================================
+
+1. Go to: https://one.dash.cloudflare.com/
+
+2. Click "Zero Trust" in left sidebar
+
+3. Click "Networks" → "Tunnels"
+
+4. Click "Create a tunnel" button
+
+5. Choose "Cloudflared" (default option)
+
+6. Name your tunnel: bitedash-tunnel
+
+7. Click "Save tunnel"
+
+8. **IMPORTANT:** Copy the tunnel token
+   - It looks like: eyJhIjoixxxxxxxxxxxxxxx...
+   - Save it somewhere safe (you'll need it in Step 4)
+
+9. Click "Next"
+
+10. Configure Public Hostname:
+    - Public hostname: bitedash (or any name you want)
+    - Domain: Select from dropdown (Cloudflare provides free domains)
+      OR use your own domain if you have one
+    - Service Type: HTTP
+    - URL: bitedash-alb-443240071.us-east-1.elb.amazonaws.com
+
+11. Click "Save tunnel"
+
+✅ Done! Tunnel created.
+
+Your URL will be something like:
+https://bitedash.your-subdomain.workers.dev
+OR
+https://bitedash-random.trycloudflare.com
+
+================================================
+STEP 3: ADD TUNNEL TOKEN TO GITHUB SECRETS (2 minutes)
+================================================
+
+1. Go to your GitHub repository:
+   https://github.com/adarsh-priydarshi-5646/BiteDash-Premium-Food-Delivery-Platform
+
+2. Click "Settings" tab
+
+3. Click "Secrets and variables" → "Actions"
+
+4. Click "New repository secret"
+
+5. Name: CLOUDFLARE_TUNNEL_TOKEN
+   Value: [Paste the token you copied in Step 2]
+
+6. Click "Add secret"
+
+✅ Done! Token saved securely.
+
+================================================
+STEP 4: RUN GITHUB ACTIONS WORKFLOW (3 minutes)
+================================================
+
+1. Go to: https://github.com/adarsh-priydarshi-5646/BiteDash-Premium-Food-Delivery-Platform/actions
+
+2. Click "Setup Cloudflare Tunnel" workflow (left sidebar)
+
+3. Click "Run workflow" button (right side)
+
+4. Enter the tunnel token (same one from Step 2)
+
+5. Click "Run workflow" (green button)
+
+6. Wait 3-5 minutes for deployment to complete
+
+7. Check the workflow logs for success message
+
+✅ Done! Tunnel deployed to ECS.
+
+================================================
+STEP 5: UPDATE ENVIRONMENT VARIABLES (3 minutes)
+================================================
+
+Now you need to update your app to use the new HTTPS URL.
+
+1. Get your Cloudflare Tunnel URL from Step 2
+   Example: https://bitedash.your-subdomain.workers.dev
+
+2. Update ECS Task Definition with new URLs:
+
+Run these commands (replace YOUR_URL with your actual URL):
+
+# Update backend task definition
+aws ecs describe-task-definition \
+  --task-definition bitedash-backend-task \
+  --region us-east-1 \
+  --query 'taskDefinition' > backend-task.json
+
+# Edit the environment variables in backend-task.json
+# Change FRONTEND_URL and BACKEND_URL to your new HTTPS URL
+
+# Register updated task definition
+aws ecs register-task-definition \
+  --cli-input-json file://backend-task.json \
+  --region us-east-1
+
+# Update service
+aws ecs update-service \
+  --cluster bitedash-cluster \
+  --service bitedash-backend-service \
+  --task-definition bitedash-backend-task \
+  --force-new-deployment \
+  --region us-east-1
+
+3. Update frontend build with new API URL:
+   - Update VITE_API_BASE in frontend Dockerfile
+   - Rebuild and deploy frontend
+
+✅ Done! Environment variables updated.
+
+================================================
+STEP 6: UPDATE GOOGLE OAUTH URLS (2 minutes)
+================================================
+
+1. Go to: https://console.cloud.google.com/apis/credentials
+
+2. Click on your OAuth client ID
+
+3. Update Authorized JavaScript origins:
+   - Remove: http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com
+   - Add: https://your-cloudflare-url.workers.dev
+
+4. Update Authorized redirect URIs:
+   - Remove: http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com/api/auth/google/callback
+   - Add: https://your-cloudflare-url.workers.dev/api/auth/google/callback
+
+5. Click "Save"
+
+6. Wait 5 minutes for changes to propagate
+
+✅ Done! Google OAuth updated.
+
+================================================
+STEP 7: TEST YOUR APPLICATION (2 minutes)
+================================================
+
+1. Open your new HTTPS URL in browser:
+   https://your-cloudflare-url.workers.dev
+
+2. Check for:
+   ✅ HTTPS padlock icon in browser
+   ✅ No security warnings
+   ✅ Application loads correctly
+   ✅ Google sign-in works
+   ✅ All features working
+
+3. Test on mobile device too
+
+✅ Done! Application is live with HTTPS! 🎉
+
+================================================
+TROUBLESHOOTING
+================================================
+
+Problem: Tunnel not connecting
+Solution: Check CloudWatch logs at /ecs/bitedash-cloudflared
+
+Problem: 502 Bad Gateway
+Solution: Verify ALB URL in Cloudflare tunnel configuration
+
+Problem: Google OAuth not working
+Solution: Wait 5-10 minutes after updating OAuth URLs
+
+Problem: Application not loading
+Solution: Check ECS service is running and healthy
+
+================================================
+BENEFITS YOU NOW HAVE
+================================================
+
+✅ HTTPS enabled (SSL certificate automatic)
+✅ DDoS protection (Cloudflare's network)
+✅ Global CDN (faster loading worldwide)
+✅ Free domain (no cost)
+✅ No certificate renewal needed (automatic)
+✅ Better SEO (HTTPS is ranking factor)
+✅ Secure cookies (can use secure flag)
+✅ Professional URL
+✅ 100% Production ready
+
+================================================
+COST BREAKDOWN
+================================================
+
+Cloudflare Tunnel: $0/month
+Domain: $0/month (Cloudflare subdomain)
+SSL Certificate: $0/month (automatic)
+DDoS Protection: $0/month (included)
+CDN: $0/month (included)
+
+TOTAL: $0/month 🎉
+
+================================================
+NEXT STEPS (OPTIONAL)
+================================================
+
+1. Custom Domain (if you want):
+   - Buy domain from Namecheap ($1-10/year)
+   - Add to Cloudflare
+   - Update tunnel configuration
+
+2. Cloudflare Analytics:
+   - View traffic stats
+   - Monitor performance
+   - See visitor locations
+
+3. Cloudflare WAF:
+   - Enable firewall rules
+   - Block malicious traffic
+   - Rate limiting
+
+================================================
+SUPPORT
+================================================
+
+If you face any issues:
+1. Check CloudWatch logs: /ecs/bitedash-cloudflared
+2. Check Cloudflare tunnel status in dashboard
+3. Verify ECS service is running
+4. Check GitHub Actions workflow logs
+
+================================================
+
+🎉 CONGRATULATIONS! 🎉
+
+Your application is now:
+- ✅ 100% Production Ready
+- ✅ HTTPS Enabled
+- ✅ Globally Accessible
+- ✅ DDoS Protected
+- ✅ Free Forever
+
+Share your app: https://your-cloudflare-url.workers.dev
+
+================================================
