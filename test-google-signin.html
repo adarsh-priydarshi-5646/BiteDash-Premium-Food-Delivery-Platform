@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Google Sign-In - BiteDash</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #E23744;
+        }
+        button {
+            background: #E23744;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #d02433;
+        }
+        .log {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .info {
+            color: blue;
+        }
+        .step {
+            background: #e8f4f8;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Google Sign-In Debugger</h1>
+        <p>This page helps you debug Google Sign-in issues with Firebase.</p>
+        
+        <div class="step">
+            <strong>Step 1:</strong> Check if Firebase is loaded
+        </div>
+        <button onclick="checkFirebase()">Check Firebase</button>
+        
+        <div class="step">
+            <strong>Step 2:</strong> Test Google Sign-in Popup
+        </div>
+        <button onclick="testGoogleSignIn()">Test Google Sign-In</button>
+        
+        <div class="step">
+            <strong>Step 3:</strong> Test Backend API
+        </div>
+        <button onclick="testBackendAPI()">Test Backend</button>
+        
+        <div class="step">
+            <strong>Step 4:</strong> Check Current Configuration
+        </div>
+        <button onclick="checkConfig()">Check Config</button>
+        
+        <button onclick="clearLog()" style="background: #666;">Clear Log</button>
+        
+        <div class="log" id="log">
+            <div class="info">Click buttons above to start debugging...</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCiUyRYcPsxy2dpUogBifjfoh3duzTLtso",
+            authDomain: "vingo-b3fd6.firebaseapp.com",
+            projectId: "vingo-b3fd6",
+            storageBucket: "vingo-b3fd6.firebasestorage.app",
+            messagingSenderId: "750640341001",
+            appId: "1:750640341001:web:84e89d28e63ba5015818d8"
+        };
+
+        // Initialize Firebase
+        let app, auth;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            log('✅ Firebase initialized successfully', 'success');
+        } catch (error) {
+            log('❌ Firebase initialization failed: ' + error.message, 'error');
+        }
+
+        // Make functions globally available
+        window.checkFirebase = function() {
+            log('🔍 Checking Firebase...', 'info');
+            if (app && auth) {
+                log('✅ Firebase App: Initialized', 'success');
+                log('✅ Firebase Auth: Ready', 'success');
+                log('📋 Auth Domain: ' + firebaseConfig.authDomain, 'info');
+                log('📋 Project ID: ' + firebaseConfig.projectId, 'info');
+                log('📋 Current URL: ' + window.location.href, 'info');
+            } else {
+                log('❌ Firebase not initialized', 'error');
+            }
+        };
+
+        window.testGoogleSignIn = async function() {
+            log('🔍 Testing Google Sign-In...', 'info');
+            
+            if (!auth) {
+                log('❌ Firebase Auth not initialized', 'error');
+                return;
+            }
+
+            try {
+                log('📱 Opening Google Sign-In popup...', 'info');
+                const provider = new GoogleAuthProvider();
+                const result = await signInWithPopup(auth, provider);
+                
+                log('✅ Google Sign-In successful!', 'success');
+                log('👤 User: ' + result.user.displayName, 'success');
+                log('📧 Email: ' + result.user.email, 'success');
+                log('🆔 UID: ' + result.user.uid, 'success');
+                
+                // Now test backend
+                log('🔄 Sending to backend...', 'info');
+                await sendToBackend(result.user);
+                
+            } catch (error) {
+                log('❌ Google Sign-In failed!', 'error');
+                log('Error Code: ' + error.code, 'error');
+                log('Error Message: ' + error.message, 'error');
+                
+                // Provide specific guidance based on error
+                if (error.code === 'auth/unauthorized-domain') {
+                    log('', 'error');
+                    log('🔧 FIX: Add this domain to Firebase Console:', 'error');
+                    log('   ' + window.location.hostname, 'error');
+                    log('   Go to: Firebase Console → Authentication → Settings → Authorized domains', 'error');
+                } else if (error.code === 'auth/popup-blocked') {
+                    log('', 'error');
+                    log('🔧 FIX: Allow popups for this site', 'error');
+                    log('   Click the popup icon in your browser address bar', 'error');
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    log('', 'error');
+                    log('ℹ️  You closed the popup. Try again and complete the sign-in.', 'info');
+                }
+            }
+        };
+
+        async function sendToBackend(user) {
+            const backendUrl = 'http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com';
+            
+            try {
+                const response = await fetch(`${backendUrl}/api/auth/google-auth`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fullName: user.displayName || user.email.split('@')[0],
+                        email: user.email,
+                        mobile: user.phoneNumber || '0000000000',
+                        role: 'user'
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Backend authentication successful!', 'success');
+                    log('👤 User created/logged in: ' + data.fullName, 'success');
+                    log('🆔 User ID: ' + data._id, 'success');
+                } else {
+                    const error = await response.json();
+                    log('❌ Backend error: ' + (error.message || response.statusText), 'error');
+                }
+            } catch (error) {
+                log('❌ Backend request failed: ' + error.message, 'error');
+            }
+        }
+
+        window.testBackendAPI = async function() {
+            log('🔍 Testing Backend API...', 'info');
+            const backendUrl = 'http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com';
+            
+            try {
+                // Test health endpoint
+                log('📡 Testing /api/health...', 'info');
+                const healthResponse = await fetch(`${backendUrl}/api/health`);
+                const healthData = await healthResponse.json();
+                
+                if (healthResponse.ok) {
+                    log('✅ Backend is healthy!', 'success');
+                    log('⏱️  Uptime: ' + Math.floor(healthData.uptime) + ' seconds', 'info');
+                    log('🆔 PID: ' + healthData.pid, 'info');
+                } else {
+                    log('❌ Backend health check failed', 'error');
+                }
+                
+                // Test CORS
+                log('📡 Testing CORS...', 'info');
+                const corsResponse = await fetch(`${backendUrl}/api/auth/google-auth`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+                
+                if (corsResponse.ok) {
+                    log('✅ CORS is configured correctly', 'success');
+                } else {
+                    log('⚠️  CORS might have issues', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ Backend test failed: ' + error.message, 'error');
+            }
+        };
+
+        window.checkConfig = function() {
+            log('🔍 Checking Configuration...', 'info');
+            log('', 'info');
+            log('📋 Firebase Configuration:', 'info');
+            log('   API Key: ' + firebaseConfig.apiKey.substring(0, 20) + '...', 'info');
+            log('   Auth Domain: ' + firebaseConfig.authDomain, 'info');
+            log('   Project ID: ' + firebaseConfig.projectId, 'info');
+            log('', 'info');
+            log('📋 Current Environment:', 'info');
+            log('   Current URL: ' + window.location.href, 'info');
+            log('   Hostname: ' + window.location.hostname, 'info');
+            log('   Protocol: ' + window.location.protocol, 'info');
+            log('', 'info');
+            log('📋 Backend Configuration:', 'info');
+            log('   Backend URL: http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com', 'info');
+            log('', 'info');
+            log('✅ Required Firebase Authorized Domains:', 'info');
+            log('   1. vingo-b3fd6.firebaseapp.com (default)', 'info');
+            log('   2. localhost (for development)', 'info');
+            log('   3. bitedash-alb-443240071.us-east-1.elb.amazonaws.com (production)', 'info');
+            log('   4. ' + window.location.hostname + ' (current)', 'info');
+        };
+
+        window.clearLog = function() {
+            document.getElementById('log').innerHTML = '<div class="info">Log cleared. Click buttons above to start debugging...</div>';
+        };
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = new Date().toLocaleTimeString() + ' - ' + message;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Auto-check on load
+        setTimeout(() => {
+            log('🚀 Page loaded. Ready to debug!', 'success');
+            checkFirebase();
+        }, 500);
+    </script>
+</body>
+</html>

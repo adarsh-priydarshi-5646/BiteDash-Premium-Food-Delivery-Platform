@@ -1,10 +1,3 @@
-/**
- * Firebase Configuration - BiteDash Google OAuth Setup
- *
- * Initializes Firebase app with environment variables for authentication
- * Exports auth instance for Google sign-in functionality
- * TODO: Create new Firebase project named "bitedash" to replace legacy config
- */
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
@@ -17,6 +10,16 @@ const firebaseConfig = {
   appId: '1:750640341001:web:84e89d28e63ba5015818d8',
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+let app = null;
+let auth = null;
+
+try {
+  if (import.meta.env.VITE_FIREBASE_APIKEY && import.meta.env.VITE_FIREBASE_APIKEY !== 'your_firebase_api_key') {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+  }
+} catch (error) {
+  console.warn('Firebase initialization failed. Google Sign-in will be disabled.');
+}
+
 export { app, auth };

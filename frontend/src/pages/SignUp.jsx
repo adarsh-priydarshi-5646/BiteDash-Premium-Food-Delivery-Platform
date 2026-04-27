@@ -59,8 +59,15 @@ function SignUp() {
     if (!mobile) {
       return setErr('Please enter your mobile number first');
     }
-    const provider = new GoogleAuthProvider();
+    
     const { auth } = await import('../firebase');
+    
+    if (!auth) {
+      setErr('Google Sign-in is currently unavailable. Please use email/password.');
+      return;
+    }
+    
+    const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       const { data } = await axios.post(
