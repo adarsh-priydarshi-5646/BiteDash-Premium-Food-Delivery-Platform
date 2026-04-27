@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - aws-ecs-deployment
     paths:
       - 'backend/**'
       - '.github/workflows/deploy-backend.yml'
