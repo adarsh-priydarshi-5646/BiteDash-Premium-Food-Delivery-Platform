@@ -36,25 +36,18 @@ jobs:
 
       - name: Update environment variables
         run: |
-          echo "🔧 Updating environment variables..."
+          echo "🔧 Removing ngrok URLs and setting AWS URLs..."
           
           # Read current task definition
           TASK_DEF=$(cat task-definition.json)
           
-          # Extract container definitions and update environment variables
-          UPDATED_TASK_DEF=$(echo $TASK_DEF | jq --arg BACKEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
-            --arg FRONTEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
-            '.containerDefinitions[0].environment |= 
-            map(if .name == "BACKEND_URL" then .value = $BACKEND_URL 
-                elif .name == "FRONTEND_URL" then .value = $FRONTEND_URL 
-                else . end)')
-          
-          # Create new task definition JSON
+          # Create new task definition with updated environment variables
+          # Remove any ngrok URLs and set correct AWS URLs
           echo $TASK_DEF | jq --arg BACKEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
             --arg FRONTEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
             '.containerDefinitions[0].environment = (
               .containerDefinitions[0].environment // [] | 
-              map(select(.name != "BACKEND_URL" and .name != "FRONTEND_URL")) + 
+              map(select(.name != "BACKEND_URL" and .name != "FRONTEND_URL" and (.value | contains("ngrok") | not))) + 
               [{"name": "BACKEND_URL", "value": $BACKEND_URL}, {"name": "FRONTEND_URL", "value": $FRONTEND_URL}]
             ) | 
             {
@@ -68,9 +61,9 @@ jobs:
               memory: .memory
             }' > new-task-definition.json
           
-          echo "✅ Environment variables updated"
+          echo "✅ Environment variables updated (ngrok URLs removed)"
           echo "📋 New environment variables:"
-          cat new-task-definition.json | jq '.containerDefinitions[0].environment[] | select(.name == "BACKEND_URL" or .name == "FRONTEND_URL")'
+          cat new-task-definition.json | jq '.containerDefinitions[0].environment[]'
 
       - name: Register new task definition
         run: |
