@@ -27,6 +27,7 @@ import userRouter from './routes/user.routes.js';
 import itemRouter from './routes/item.routes.js';
 import shopRouter from './routes/shop.routes.js';
 import orderRouter from './routes/order.routes.js';
+import passport from './config/passport.js';
 
 import { rateLimiter } from './middlewares/rateLimit.middleware.js';
 import {
@@ -93,6 +94,7 @@ app.use(rateLimiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+app.use(passport.initialize());
 
 app.use(sanitizeRequest);
 app.use(express.static(path.join(__dirname, 'public')));

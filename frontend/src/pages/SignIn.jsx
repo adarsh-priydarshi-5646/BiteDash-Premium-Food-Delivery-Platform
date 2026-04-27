@@ -13,7 +13,6 @@ import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { serverUrl } from '../App';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { ClipLoader } from 'react-spinners';
 import { setUserData } from '../redux/userSlice';
 import { useDispatch } from 'react-redux';
@@ -53,34 +52,9 @@ function SignIn() {
       setLoading(false);
     }
   };
-  const handleGoogleAuth = async () => {
-    const { auth } = await import('../firebase');
-    
-    if (!auth) {
-      setErr('Google Sign-in is currently unavailable. Please use email/password.');
-      return;
-    }
-    
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    try {
-      const { data } = await axios.post(
-        `${serverUrl}/api/auth/google-auth`,
-        {
-          fullName: result.user.displayName || result.user.email.split('@')[0],
-          email: result.user.email,
-          mobile: result.user.phoneNumber || '0000000000',
-          role: 'user',
-        },
-        { withCredentials: true },
-      );
-      dispatch(setUserData(data));
-      getCity().catch((e) => console.error('Initial city fetch failed:', e));
-      navigate('/');
-    } catch (error) {
-      console.error(error);
-      setErr(error?.response?.data?.message || 'Google sign in failed');
-    }
+  const handleGoogleAuth = () => {
+    const googleAuthUrl = `${serverUrl}/api/auth/google`;
+    window.location.href = googleAuthUrl;
   };
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">

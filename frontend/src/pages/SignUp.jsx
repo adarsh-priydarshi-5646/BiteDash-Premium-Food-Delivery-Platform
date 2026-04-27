@@ -13,7 +13,6 @@ import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { serverUrl } from '../App';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { ClipLoader } from 'react-spinners';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
@@ -55,38 +54,13 @@ function SignUp() {
     }
   };
 
-  const handleGoogleAuth = async () => {
+  const handleGoogleAuth = () => {
     if (!mobile) {
       return setErr('Please enter your mobile number first');
     }
     
-    const { auth } = await import('../firebase');
-    
-    if (!auth) {
-      setErr('Google Sign-in is currently unavailable. Please use email/password.');
-      return;
-    }
-    
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const { data } = await axios.post(
-        `${serverUrl}/api/auth/google-auth`,
-        {
-          fullName: result.user.displayName || result.user.email.split('@')[0],
-          email: result.user.email,
-          role,
-          mobile,
-        },
-        { withCredentials: true },
-      );
-      dispatch(setUserData(data));
-      setErr('');
-      navigate('/');
-    } catch (error) {
-      console.error(error);
-      setErr(error?.response?.data?.message || 'Google sign up failed');
-    }
+    const googleAuthUrl = `${serverUrl}/api/auth/google?mobile=${mobile}&role=${role}`;
+    window.location.href = googleAuthUrl;
   };
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-white relative">
