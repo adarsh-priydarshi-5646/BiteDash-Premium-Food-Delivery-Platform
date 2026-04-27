@@ -1,5 +1,20 @@
+/**
+ * Footer Component - Site-wide footer with branding & links
+ *
+ * Sections: About, Quick Links, Contact Info, Social Media
+ * Responsive grid layout, dynamic copyright year
+ * Links to docs, profile, orders pages
+ */
 import React from 'react';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function Footer() {
@@ -9,11 +24,20 @@ function Footer() {
     <footer className="bg-gray-900 text-gray-300 mt-auto">
       <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
           <div>
-            <h3 className="text-white text-xl font-bold mb-4">Vingo</h3>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-16 h-16 rounded-full shadow-md overflow-hidden bg-white">
+                <img
+                  src="/BiteDash.png"
+                  alt="BiteDash Logo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-white text-xl font-bold">BiteDash</h3>
+            </div>
             <p className="text-sm mb-4">
-              Your favorite food delivered fast and fresh. Order from the best restaurants in your city.
+              Your favorite food delivered fast and fresh. Order from the best
+              restaurants in your city.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-[#ff4d2d] transition">
@@ -32,25 +56,39 @@ function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-white text-lg font-semibold mb-4">
+              Quick Links
+            </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/my-orders" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/my-orders"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   My Orders
                 </Link>
               </li>
               <li>
-                <Link to="/cart" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/cart"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   Cart
                 </Link>
               </li>
               <li>
-                <Link to="/docs" className="hover:text-[#ff4d2d] transition text-sm">
+                <Link
+                  to="/docs"
+                  className="hover:text-[#ff4d2d] transition text-sm"
+                >
                   Technical Docs
                 </Link>
               </li>
@@ -84,7 +122,9 @@ function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Contact Us</h3>
+            <h3 className="text-white text-lg font-semibold mb-4">
+              Contact Us
+            </h3>
             <ul className="space-y-3">
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="text-[#ff4d2d] mt-1 flex-shrink-0" />
@@ -96,7 +136,7 @@ function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <FaEnvelope className="text-[#ff4d2d] flex-shrink-0" />
-                <span className="text-sm break-all">support@vingo.com</span>
+                <span className="text-sm break-all">support@bitedash.com</span>
               </li>
             </ul>
           </div>
@@ -107,7 +147,7 @@ function Footer() {
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <p className="text-sm text-center sm:text-left">
-              © {currentYear} Vingo. All rights reserved.
+              © {currentYear} BiteDash. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
               <a href="#" className="hover:text-[#ff4d2d] transition">

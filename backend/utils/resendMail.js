@@ -1,3 +1,10 @@
+/**
+ * Resend Mail Utils - Alternative email provider via Resend API
+ *
+ * Functions: sendOtpMailResend for OTP delivery
+ * Uses Resend API key from environment variables
+ * Alternative to SendGrid for email delivery
+ */
 import { Resend } from 'resend';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -7,15 +14,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export const sendOtpMailResend = async (to, otp) => {
   try {
     console.log(`Sending OTP email via Resend to ${to}`);
-    
-    
-    
-    const recipientEmail = process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
-    
+
+    const recipientEmail =
+      process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
+
     const { data, error } = await resend.emails.send({
-      from: 'Vingo Food Delivery <onboarding@resend.dev>', 
-      to: [recipientEmail], 
-      subject: `Reset Your Password - Vingo (OTP for ${to})`,
+      from: 'BiteDash Food Delivery <onboarding@resend.dev>',
+      to: [recipientEmail],
+      subject: `Reset Your Password - BiteDash (OTP for ${to})`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #ff4d2d;">Password Reset OTP</h2>
@@ -45,14 +51,14 @@ export const sendOtpMailResend = async (to, otp) => {
 export const sendDeliveryOtpMailResend = async (user, otp) => {
   try {
     console.log(`Sending delivery OTP email via Resend to ${user.email}`);
-    
-    
-    const recipientEmail = process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
-    
+
+    const recipientEmail =
+      process.env.EMAIL || 'adarshpriydarshi5646@gmail.com';
+
     const { data, error } = await resend.emails.send({
-      from: 'Vingo Food Delivery <onboarding@resend.dev>',
-      to: [recipientEmail], 
-      subject: `Delivery OTP - Vingo (for ${user.fullName})`,
+      from: 'BiteDash Food Delivery <onboarding@resend.dev>',
+      to: [recipientEmail],
+      subject: `Delivery OTP - BiteDash (for ${user.fullName})`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #ff4d2d;">Delivery Verification OTP</h2>
@@ -62,7 +68,7 @@ export const sendDeliveryOtpMailResend = async (user, otp) => {
             ${otp}
           </h1>
           <p style="color: #666;">This OTP will expire in <strong>5 minutes</strong>.</p>
-          <p style="color: #999; font-size: 12px;">Thank you for ordering with Vingo!</p>
+          <p style="color: #999; font-size: 12px;">Thank you for ordering with BiteDash!</p>
         </div>
       `,
     });

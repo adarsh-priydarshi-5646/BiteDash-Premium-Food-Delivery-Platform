@@ -1,4 +1,15 @@
-import mongoose from "mongoose";
+/**
+ * Shop Model - Restaurant/Shop schema with owner & menu items
+ *
+ * Fields: name, image (Cloudinary URL), city, state, address, 
+ * owner (User ref), items[] (Item refs), isDefault (demo flag)
+ * 
+ * Libraries: mongoose
+ * Relationships: One-to-one with User (owner), one-to-many with Items
+ * Features: City-based filtering, Cloudinary image storage, demo shop support
+ * Indexes: owner (unique), city (for fast city queries)
+ */
+import mongoose from 'mongoose';
 
 const shopSchema = new mongoose.Schema(
   {
@@ -12,7 +23,7 @@ const shopSchema = new mongoose.Schema(
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     city: {
@@ -30,7 +41,7 @@ const shopSchema = new mongoose.Schema(
     items: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Item",
+        ref: 'Item',
       },
     ],
     isDefault: {
@@ -38,8 +49,8 @@ const shopSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Shop = mongoose.model("Shop", shopSchema);
+const Shop = mongoose.model('Shop', shopSchema);
 export default Shop;

@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Allow: /docs
+Allow: /signin
+Allow: /signup
+Allow: /restaurants
 
-Sitemap: https://food-delivery-full-stack-app-me1o.vercel.app/sitemap.xml
+Disallow: /profile
+Disallow: /checkout
+Disallow: /orders
+Disallow: /dashboard
+
+Sitemap: https://bitedash-food.vercel.app/sitemap.xml

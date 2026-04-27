@@ -1,5 +1,17 @@
-import mongoose from "mongoose";
-import { type } from "os";
+/**
+ * User Model - Multi-role user schema with geospatial location
+ *
+ * Roles: user (customer), owner (restaurant), deliveryBoy (delivery partner)
+ * Fields: fullName, email, password (hashed), mobile, role, addresses[], 
+ * bankDetails, location (2dsphere index), socketId, otp, otpExpiry
+ * 
+ * Libraries: mongoose
+ * Indexes: email (unique), location (2dsphere for geo queries)
+ * Features: Multiple addresses, bank details for owners/delivery, OTP reset
+ * Geospatial: Find nearby delivery boys within 10km radius
+ */
+import mongoose from 'mongoose';
+import { type } from 'os';
 
 const userSchema = new mongoose.Schema(
   {
@@ -21,7 +33,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "owner", "deliveryBoy"],
+      enum: ['user', 'owner', 'deliveryBoy'],
       required: true,
     },
     resetOtp: {
@@ -42,34 +54,34 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     location: {
-      type: { type: String, enum: ["Point"], default: "Point" },
+      type: { type: String, enum: ['Point'], default: 'Point' },
       coordinates: { type: [Number], default: [0, 0] },
     },
     bankDetails: {
       accountHolderName: {
         type: String,
-        default: "",
+        default: '',
       },
       accountNumber: {
         type: String,
-        default: "",
+        default: '',
       },
       ifscCode: {
         type: String,
-        default: "",
+        default: '',
       },
       bankName: {
         type: String,
-        default: "",
+        default: '',
       },
       upiId: {
         type: String,
-        default: "",
+        default: '',
       },
     },
     addresses: [
       {
-        label: { type: String, default: "Home" },
+        label: { type: String, default: 'Home' },
         flatNo: { type: String, required: true },
         area: { type: String, required: true },
         landmark: { type: String },
@@ -90,10 +102,10 @@ const userSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-userSchema.index({ location: "2dsphere" });
+userSchema.index({ location: '2dsphere' });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 export default User;

@@ -1,55 +1,84 @@
-import User from "./models/user.model.js";
-
+/**
+ * Socket.IO Handler - Real-time bidirectional communication
+ *
+ * Events: identity (user connection), updateLocation (delivery tracking),
+ * disconnect. Emits: orderStatusUpdate, newOrder, deliveryAssigned
+ * 
+ * Libraries: socket.io, mongoose (User model)
+ * Storage: Saves socket.id in User.socketId for targeted messaging
+ * Use cases: Order status updates, delivery tracking, new order notifications
+ */
+import User from './models/user.model.js';
 export const socketHandler = (io) => {
-  io.on("connection", (socket) => {
-    socket.on("identity", async ({ userId }) => {
+  io.on('connection', (socket) => {
+    socket.on('identity', async ({ userId }) => {
       try {
+        if (!userId) {
+          console.error('Identity error: userId is required');
+          return;
+        }
+        
         const user = await User.findByIdAndUpdate(
           userId,
           {
             socketId: socket.id,
             isOnline: true,
           },
-          { new: true }
+          { new: true },
         );
-        
+
+        if (!user) {
+          console.error('Identity error: User not found');
+          return;
+        }
+
         socket.join(userId);
       } catch (error) {
-        console.error("Identity error:", error);
+        console.error('Identity error:', error);
       }
     });
 
-    socket.on("updateLocation", async ({ latitude, longitude, userId }) => {
+    socket.on('updateLocation', async ({ latitude, longitude, userId }) => {
       try {
+        if (!userId || !latitude || !longitude) {
+          console.error('updateLocation error: Missing required fields');
+          return;
+        }
+        
         const user = await User.findByIdAndUpdate(userId, {
           location: {
-            type: "Point",
+            type: 'Point',
             coordinates: [longitude, latitude],
           },
           isOnline: true,
           socketId: socket.id,
         });
 
-        if (user) {
-          io.emit("updateDeliveryLocation", {
+        if (!user) {
+          console.error('updateLocation error: User not found');
+          return;
+        }
+
+        if (userId) {
+          io.emit('updateDeliveryLocation', {
             deliveryBoyId: userId,
             latitude,
             longitude,
           });
         }
       } catch (error) {
-        console.error("updateDeliveryLocation error", error);
+        console.error('updateDeliveryLocation error', error);
       }
     });
 
-    socket.on("disconnect", async () => {
+    socket.on('disconnect', async () => {
       try {
         await User.findOneAndUpdate(
           { socketId: socket.id },
           {
             socketId: null,
             isOnline: false,
-          }
+          },
         );
       } catch (error) {
         console.error(error);

@@ -1,3 +1,9 @@
+/**
+ * LandingPage Tests - Public homepage for unauthenticated users
+ *
+ * Tests: Hero section, city search, food collections, CTA buttons
+ * Mocks: Redux store, React Router navigation
+ */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import LandingPage from '../LandingPage';
@@ -5,7 +11,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 
-// Mock hooks
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
@@ -31,7 +36,6 @@ vi.mock('../../hooks/useGetCity', () => ({
   }),
 }));
 
-// Mock react-icons
 vi.mock('react-icons/fa', () => {
   const Icon = (props) => <span {...props} data-testid="icon" />;
   return {
@@ -46,52 +50,177 @@ vi.mock('react-icons/fa', () => {
     FaStore: Icon,
     FaLink: Icon,
     FaCity: Icon,
+    FaBars: Icon,
+    FaTimes: Icon,
+    FaGithub: Icon,
+    FaLinkedin: Icon,
+    FaCode: Icon,
+    FaCloud: Icon,
+    FaTools: Icon,
+    FaRocket: Icon,
+    FaShieldAlt: Icon,
+    FaCogs: Icon,
+    FaChartLine: Icon,
+    FaUsers: Icon,
+    FaGlobe: Icon,
+    FaMobile: Icon,
+    FaDatabase: Icon,
+    FaServer: Icon,
+    FaPlug: Icon,
+    FaBolt: Icon,
+    FaClipboardList: Icon,
+    FaLock: Icon,
+    FaSave: Icon,
+    FaBuilding: Icon,
+    FaCube: Icon,
+    FaBan: Icon,
+    FaCheckCircle: Icon,
+    FaLayerGroup: Icon,
+    FaNetworkWired: Icon,
+    FaMemory: Icon,
+    FaPaintBrush: Icon,
+    FaExchangeAlt: Icon,
+    FaFileCode: Icon,
+    FaBook: Icon,
+    FaLightbulb: Icon,
+    FaWrench: Icon,
+    FaBoxOpen: Icon,
+    FaTachometerAlt: Icon,
+    FaUserShield: Icon,
+    FaCreditCard: Icon,
+    FaBell: Icon,
+    FaFilter: Icon,
+    FaStar: Icon,
+    FaHeart: Icon,
+    FaExternalLinkAlt: Icon,
+    FaAws: Icon,
   };
 });
 
-// Mock framer-motion to avoid animation issues in tests
+vi.mock('react-icons/si', () => {
+  const Icon = (props) => <span {...props} data-testid="si-icon" />;
+  return {
+    SiReact: Icon,
+    SiNodedotjs: Icon,
+    SiMongodb: Icon,
+    SiExpress: Icon,
+    SiRedux: Icon,
+    SiSocketdotio: Icon,
+    SiTailwindcss: Icon,
+    SiFirebase: Icon,
+    SiStripe: Icon,
+    SiGit: Icon,
+    SiVercel: Icon,
+    SiRender: Icon,
+    SiVite: Icon,
+    SiJsonwebtokens: Icon,
+    SiPython: Icon,
+    SiJavascript: Icon,
+    SiTypescript: Icon,
+    SiDocker: Icon,
+    SiKubernetes: Icon,
+    SiGooglecloud: Icon,
+    SiTensorflow: Icon,
+    SiPytorch: Icon,
+    SiNumpy: Icon,
+    SiPandas: Icon,
+    SiJenkins: Icon,
+    SiGithubactions: Icon,
+    SiLinux: Icon,
+    SiNginx: Icon,
+    SiRedis: Icon,
+    SiPostgresql: Icon,
+    SiMysql: Icon,
+    SiGraphql: Icon,
+    SiNextdotjs: Icon,
+    SiJest: Icon,
+    SiFigma: Icon,
+    SiPostman: Icon,
+  };
+});
+
+vi.mock('react-icons/vsc', () => {
+  const Icon = (props) => <span {...props} data-testid="vsc-icon" />;
+  return { VscCode: Icon };
+});
+
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, whileHover, whileInView, initial, animate, transition, variants, viewport, ...props }) => <div {...props}>{children}</div>,
-    h1: ({ children, initial, animate, transition, ...props }) => <h1 {...props}>{children}</h1>,
-    p: ({ children, initial, animate, transition, ...props }) => <p {...props}>{children}</p>,
-    span: ({ children, initial, animate, transition, whileInView, ...props }) => <span {...props}>{children}</span>,
-    button: ({ children, initial, animate, transition, whileHover, whileTap, ...props }) => <button {...props}>{children}</button>,
+    div: ({
+      children,
+      whileHover,
+      whileInView,
+      initial,
+      animate,
+      transition,
+      variants,
+      viewport,
+      ...props
+    }) => <div {...props}>{children}</div>,
+    h1: ({ children, initial, animate, transition, ...props }) => (
+      <h1 {...props}>{children}</h1>
+    ),
+    p: ({ children, initial, animate, transition, ...props }) => (
+      <p {...props}>{children}</p>
+    ),
+    span: ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileInView,
+      ...props
+    }) => <span {...props}>{children}</span>,
+    button: ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileHover,
+      whileTap,
+      ...props
+    }) => <button {...props}>{children}</button>,
   },
   AnimatePresence: ({ children }) => <>{children}</>,
 }));
 
 describe('LandingPage Component', () => {
-  it('renders Vingo title correctly', () => {
+  it('renders BiteDash title correctly', () => {
     render(
       <BrowserRouter>
         <LandingPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
-    expect(screen.getByRole('heading', { name: 'Vingo', level: 1 })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'BiteDash', level: 1 }),
+    ).toBeInTheDocument();
   });
 
   it('renders subtitle with city', () => {
     render(
       <BrowserRouter>
         <LandingPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
-    expect(screen.getByText((content, node) => {
-      const hasText = (node) => node.textContent === "Find the best restaurants, cafés and bars in Delhi NCR";
-      const nodeHasText = hasText(node);
-      const childrenDontHaveText = Array.from(node.children).every(
-        (child) => !hasText(child)
-      );
-      return nodeHasText && childrenDontHaveText;
-    })).toBeInTheDocument();
+    expect(
+      screen.getByText((content, node) => {
+        const hasText = (node) =>
+          node.textContent ===
+          'Find the best restaurants, cafés and bars in Delhi NCR';
+        const nodeHasText = hasText(node);
+        const childrenDontHaveText = Array.from(node.children).every(
+          (child) => !hasText(child),
+        );
+        return nodeHasText && childrenDontHaveText;
+      }),
+    ).toBeInTheDocument();
   });
 
   it('renders Get the App button', () => {
     render(
       <BrowserRouter>
         <LandingPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(screen.getByText('Get the App')).toBeInTheDocument();
   });

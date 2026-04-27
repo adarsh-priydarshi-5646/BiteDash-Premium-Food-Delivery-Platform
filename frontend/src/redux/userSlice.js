@@ -1,5 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+/**
+ * User Redux Slice - Central state management for user data
+ *
+ * State: userData, cartItems, totalAmount, myOrders, searchItems, currentCity,
+ * selectedCategory, priceRange, sortBy
+ * 
+ * Actions: setUserData, addToCart, removeCartItem, updateQuantity, clearCart,
+ * setMyOrders, setSearchItems, setCurrentCity, setSelectedCategory, setPriceRange, setSortBy
+ * 
+ * Libraries: @reduxjs/toolkit
+ * Features: Cart persistence in localStorage, real-time order updates via Socket.IO,
+ * automatic total calculation, category/price filtering, city-based search
+ * 
+ * LocalStorage: Syncs cartItems & totalAmount on every cart action
+ */
+import { createSlice } from '@reduxjs/toolkit';
 
 const saveCartToLocalStorage = (cartItems, totalAmount) => {
   try {
@@ -25,7 +39,7 @@ const loadCartFromLocalStorage = () => {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     userData: null,
     authLoading: true,
@@ -40,7 +54,7 @@ const userSlice = createSlice({
     searchItems: null,
     socket: null,
     selectedAddressId: null,
-    
+
     selectedCategories: [],
     priceRange: { min: 0, max: 1000 },
     sortBy: 'popularity',
@@ -87,7 +101,7 @@ const userSlice = createSlice({
 
       state.totalAmount = state.cartItems.reduce(
         (sum, i) => sum + i.price * i.quantity,
-        0
+        0,
       );
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
@@ -104,7 +118,7 @@ const userSlice = createSlice({
       }
       state.totalAmount = state.cartItems.reduce(
         (sum, i) => sum + i.price * i.quantity,
-        0
+        0,
       );
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
@@ -113,7 +127,7 @@ const userSlice = createSlice({
       state.cartItems = state.cartItems.filter((i) => i.id !== action.payload);
       state.totalAmount = state.cartItems.reduce(
         (sum, i) => sum + i.price * i.quantity,
-        0
+        0,
       );
       saveCartToLocalStorage(state.cartItems, state.totalAmount);
     },
@@ -156,14 +170,15 @@ const userSlice = createSlice({
       saveCartToLocalStorage([], 0);
     },
 
-    
     setSelectedCategories: (state, action) => {
       state.selectedCategories = action.payload;
     },
     toggleCategory: (state, action) => {
       const category = action.payload;
       if (state.selectedCategories.includes(category)) {
-        state.selectedCategories = state.selectedCategories.filter(c => c !== category);
+        state.selectedCategories = state.selectedCategories.filter(
+          (c) => c !== category,
+        );
       } else {
         state.selectedCategories.push(category);
       }

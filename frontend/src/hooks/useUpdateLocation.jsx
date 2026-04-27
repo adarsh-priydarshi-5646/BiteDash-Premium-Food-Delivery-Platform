@@ -1,14 +1,21 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { serverUrl } from "../App";
-import { useDispatch, useSelector } from "react-redux";
+/**
+ * useUpdateLocation Hook - Real-time location tracking for delivery
+ *
+ * Uses browser Geolocation API with watchPosition for continuous updates
+ * Sends location to server via PUT /user/update-location
+ * Emits Socket.IO 'updateLocation' event for real-time tracking
+ */
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { serverUrl } from '../App';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setCurrentAddress,
   setCurrentCity,
   setCurrentState,
   setUserData,
-} from "../redux/userSlice";
-import { setAddress, setLocation } from "../redux/mapSlice";
+} from '../redux/userSlice';
+import { setAddress, setLocation } from '../redux/mapSlice';
 
 function useUpdateLocation() {
   const dispatch = useDispatch();
@@ -23,36 +30,30 @@ function useUpdateLocation() {
     const updateLocation = async (lat, lon) => {
       const now = Date.now();
       if (now - lastUpdate < updateInterval) return;
-      
+
       try {
         await axios.post(
           `${serverUrl}/api/user/update-location`,
           { lat, lon },
-          { withCredentials: true }
+          { withCredentials: true },
         );
         lastUpdate = now;
-      } catch (err) {
-        // Silent error for background updates
-      }
+      } catch (err) {}
     };
 
     let watchId;
     const startWatching = () => {
-      // Permission check to avoid redundant prompts or violations
       if (navigator.geolocation) {
         watchId = navigator.geolocation.watchPosition(
           (pos) => {
             updateLocation(pos.coords.latitude, pos.coords.longitude);
           },
-          (err) => {
-            // Silently handle location errors in background
-          },
-          { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 }
+          (err) => {},
+          { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 },
         );
       }
     };
 
-    // Fix: Only request geolocation after a user gesture if permission not already granted
     const handleFirstInteraction = () => {
       startWatching();
       window.removeEventListener('click', handleFirstInteraction);
@@ -60,7 +61,7 @@ function useUpdateLocation() {
     };
 
     if (navigator.permissions && navigator.permissions.query) {
-      navigator.permissions.query({ name: 'geolocation' }).then(result => {
+      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
         if (result.state === 'granted') {
           startWatching();
         } else {
@@ -69,7 +70,6 @@ function useUpdateLocation() {
         }
       });
     } else {
-      // Fallback: wait for interaction to be safe
       window.addEventListener('click', handleFirstInteraction);
       window.addEventListener('touchstart', handleFirstInteraction);
     }

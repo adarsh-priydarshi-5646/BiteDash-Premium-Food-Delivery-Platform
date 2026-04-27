@@ -1,0 +1,26 @@
+# =============================================================================
+# Preview Deploy - Vercel Preview Deployments for PRs
+# =============================================================================
+#
+# DISABLED: To prevent Vercel rate limits
+# Deployments only happen on main branch merges
+# =============================================================================
+
+name: Preview Deploy
+
+on:
+  workflow_dispatch: # Manual trigger only
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  preview:
+    name: Deploy Preview (Disabled)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Info
+        run: |
+          echo "Preview deployments are disabled to prevent rate limits"
+          echo "Deployments only happen on main branch"

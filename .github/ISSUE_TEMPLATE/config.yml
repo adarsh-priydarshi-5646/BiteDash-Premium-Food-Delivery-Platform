@@ -1,0 +1,19 @@
+# =============================================================================
+# Issue Template Config - GitHub Issue Form Configuration
+# =============================================================================
+#
+# Purpose: Configures issue creation behavior and external links
+# Features: Disables blank issues, provides documentation & discussion links
+# Links: Documentation site, GitHub Discussions for Q&A
+# 
+# Docs: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests
+# =============================================================================
+
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://bitedash-food.vercel.app/docs
+    about: Check the documentation before opening an issue
+  - name: 💬 Discussions
+    url: https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App/discussions
+    about: Ask questions and discuss ideas

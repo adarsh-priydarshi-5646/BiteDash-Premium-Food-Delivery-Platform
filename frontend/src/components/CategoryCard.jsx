@@ -1,4 +1,11 @@
-import React from "react";
+/**
+ * CategoryCard Component - Food category card with image
+ *
+ * Props: name, image, onClick handler
+ * Displays category image with name overlay
+ * Used in home page category carousel
+ */
+import React from 'react';
 
 function CategoryCard({ name, image, onClick }) {
   return (

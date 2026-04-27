@@ -1,0 +1,174 @@
+# =============================================================================
+# Auto-Merge - Automatic PR Merging
+# =============================================================================
+#
+# Triggers: When 'auto-merge' label is added to PR
+# Conditions: All checks must pass, not a fork PR
+# Method: Squash merge
+# =============================================================================
+
+name: Auto-Merge
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  auto-merge:
+    name: Auto Merge PR
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'auto-merge'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check and Merge
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            
+            console.log('🔍 Checking PR #' + pr.number);
+            console.log('📝 Title:', pr.title);
+            console.log('👤 Author:', pr.user.login);
+            
+            // Security: Don't auto-merge fork PRs
+            if (pr.head.repo.full_name !== pr.base.repo.full_name) {
+              console.log('⚠️ Fork PR - manual review required');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ⚠️ Auto-Merge Not Available\n\nFork PRs require manual review and merge for security reasons.\n\nPlease wait for a maintainer to review and merge your PR. Thank you! 🙏`
+              });
+              return;
+            }
+            
+            // Wait a bit for checks to register
+            console.log('⏳ Waiting for checks to complete...');
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            
+            // Get all check runs for this PR
+            const { data: checkRuns } = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: pr.head.sha,
+              per_page: 100
+            });
+            
+            console.log(`📊 Found ${checkRuns.check_runs.length} check runs`);
+            
+            // Get all status checks
+            const { data: statuses } = await github.rest.repos.getCombinedStatusForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: pr.head.sha
+            });
+            
+            console.log(`📊 Combined status: ${statuses.state}`);
+            
+            // Check if all checks passed (excluding this workflow itself)
+            const failedChecks = [];
+            const pendingChecks = [];
+            const thisWorkflowName = 'Auto Merge PR';
+            
+            for (const check of checkRuns.check_runs) {
+              // Skip this workflow to avoid circular dependency
+              if (check.name === thisWorkflowName) {
+                console.log(`  - ${check.name}: SKIPPED (self)`);
+                continue;
+              }
+              
+              console.log(`  - ${check.name}: ${check.status} (${check.conclusion})`);
+              
+              if (check.status !== 'completed') {
+                pendingChecks.push(check.name);
+              } else if (check.conclusion !== 'success' && check.conclusion !== 'skipped' && check.conclusion !== 'neutral') {
+                failedChecks.push(check.name);
+              }
+            }
+            
+            // Check status checks
+            for (const status of statuses.statuses) {
+              console.log(`  - ${status.context}: ${status.state}`);
+              
+              if (status.state === 'pending') {
+                pendingChecks.push(status.context);
+              } else if (status.state !== 'success') {
+                failedChecks.push(status.context);
+              }
+            }
+            
+            // If checks are still pending
+            if (pendingChecks.length > 0) {
+              console.log('⏳ Checks still running:', pendingChecks.join(', '));
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ⏳ Auto-Merge Pending\n\nWaiting for the following checks to complete:\n${pendingChecks.map(c => `- ⏳ ${c}`).join('\n')}\n\nThe PR will be automatically merged once all checks pass. ✅`
+              });
+              return;
+            }
+            
+            // If any checks failed
+            if (failedChecks.length > 0) {
+              console.log('❌ Failed checks:', failedChecks.join(', '));
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ❌ Auto-Merge Blocked\n\nThe following checks failed:\n${failedChecks.map(c => `- ❌ ${c}`).join('\n')}\n\nPlease fix the issues and push again. The PR will be automatically merged once all checks pass. 🔧`
+              });
+              return;
+            }
+            
+            // Check for merge conflicts
+            if (pr.mergeable === false) {
+              console.log('⚠️ PR has merge conflicts');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ⚠️ Auto-Merge Blocked\n\nThis PR has merge conflicts that must be resolved.\n\nPlease resolve the conflicts and push again. 🔧`
+              });
+              return;
+            }
+            
+            // All checks passed - merge the PR!
+            console.log('✅ All checks passed - merging PR');
+            
+            try {
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                merge_method: 'squash',
+                commit_title: `${pr.title} (#${pr.number})`,
+                commit_message: `${pr.body || ''}\n\n✅ All checks passed\n🚀 Deployment ready\n🤖 Auto-merged by GitHub Actions`
+              });
+              
+              console.log('✅ Auto-merged successfully!');
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ✅ Auto-Merged Successfully!\n\n🎉 This PR has been automatically merged into \`main\`.\n\n**Next Steps:**\n- 🚀 Deployment pipeline will start automatically\n- 📊 Monitor the [workflow run](${context.payload.repository.html_url}/actions) for deployment status\n- 🎊 Success notification will be posted once deployed\n\nThank you for your contribution! 🙏`
+              });
+              
+            } catch (e) {
+              console.error('❌ Merge failed:', e.message);
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `## ⚠️ Auto-Merge Failed\n\n**Error:** ${e.message}\n\nPlease merge manually or contact the maintainers.\n\nIf the issue persists, try:\n1. Rebasing your branch\n2. Resolving any conflicts\n3. Re-running the checks`
+              });
+            }

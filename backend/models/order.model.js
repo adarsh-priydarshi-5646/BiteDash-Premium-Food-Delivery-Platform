@@ -1,44 +1,56 @@
-import mongoose from "mongoose";
+/**
+ * Order Model - Multi-shop order with delivery tracking & payment
+ *
+ * Structure: Main order → shopOrders[] (one per restaurant) → items[]
+ * Fields: user, totalAmount, paymentMethod (COD/Stripe), deliveryAddress,
+ * shopOrders[] {shop, items[], deliveryBoy, status, otp, rating}
+ * 
+ * Libraries: mongoose
+ * Status flow: pending → accepted → preparing → ready → out for delivery → delivered
+ * Features: Multi-shop orders, delivery OTP verification, per-shop ratings
+ * Payment: COD or Stripe checkout session
+ */
+import mongoose from 'mongoose';
 
 const shopOrderItemSchema = new mongoose.Schema(
   {
     item: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Item",
+      ref: 'Item',
       required: true,
     },
     name: String,
     price: Number,
     quantity: Number,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const shopOrderSchema = new mongoose.Schema(
   {
     shop: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Shop",
+      ref: 'Shop',
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     subtotal: Number,
     shopOrderItems: [shopOrderItemSchema],
     status: {
       type: String,
-      enum: ["pending", "preparing", "out of delivery", "delivered"],
-      default: "pending",
+      enum: ['pending', 'preparing', 'out of delivery', 'delivered'],
+      default: 'pending',
     },
     assignment: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "DeliveryAssignment",
+      ref: 'DeliveryAssignment',
       default: null,
     },
     assignedDeliveryBoy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     deliveryOtp: {
       type: String,
@@ -53,18 +65,18 @@ const shopOrderSchema = new mongoose.Schema(
       default: null,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     paymentMethod: {
       type: String,
-      enum: ["cod", "online"],
+      enum: ['cod', 'online'],
       required: true,
     },
     deliveryAddress: {
@@ -82,19 +94,19 @@ const orderSchema = new mongoose.Schema(
     },
     razorpayOrderId: {
       type: String,
-      default: "",
+      default: '',
     },
     razorpayPaymentId: {
       type: String,
-      default: "",
+      default: '',
     },
     stripeSessionId: {
       type: String,
-      default: "",
+      default: '',
     },
     stripePaymentIntentId: {
       type: String,
-      default: "",
+      default: '',
     },
     orderRating: {
       rating: {
@@ -105,7 +117,7 @@ const orderSchema = new mongoose.Schema(
       },
       review: {
         type: String,
-        default: "",
+        default: '',
       },
       ratedAt: {
         type: Date,
@@ -113,8 +125,8 @@ const orderSchema = new mongoose.Schema(
       },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Order = mongoose.model("Order", orderSchema);
+const Order = mongoose.model('Order', orderSchema);
 export default Order;

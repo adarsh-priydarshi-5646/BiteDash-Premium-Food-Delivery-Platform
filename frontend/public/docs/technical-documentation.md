@@ -1,1693 +1,742 @@
-# Vingo Food Delivery Platform
-## Complete Technical Documentation
+# BiteDash - Technical Documentation
 
-**Version**: 1.0.0  
-**Last Updated**: December 21, 2025  
-**Author**: Development Team  
-**Status**: Production Ready
+<div align="center">
 
----
+![Version](https://img.shields.io/badge/Version-1.0.0-blue)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-green)
+![Tests](https://img.shields.io/badge/Tests-62%20Passing-brightgreen)
+![Last Updated](https://img.shields.io/badge/Updated-January%202026-orange)
 
-# Introduction
+**A Modern Full-Stack Food Delivery Platform**
 
-Welcome to the technical portal for the **Vingo Food Delivery Platform**. This documentation is designed to provide developers, architects, and stakeholders with a deep understanding of the system's internals.
+[Overview](#-overview) • [Architecture](#-architecture) • [Frontend](#-frontend-guide) • [Backend](#-backend-guide) • [API Reference](#-api-reference) • [Deployment](#-deployment)
 
-### What is Vingo?
-Vingo is a hyper-local food delivery ecosystem that bridges the gap between artisanal restaurants and hungry customers. Built with a focus on speed, reliability, and modularity, Vingo leverages the full power of the MERN stack to deliver a 60FPS mobile-first experience.
+</div>
 
 ---
 
-# Overview
+### Welcome to BiteDash
 
-**Vingo** is a full-stack platform integrated with real-time tracking, secure payments, and a three-way marketplace (User, Owner, Delivery).
+BiteDash is a **production-ready, full-stack food delivery platform** designed and developed to showcase modern web development practices. This project demonstrates how to build a scalable, secure, and feature-rich application using the MERN stack (MongoDB, Express.js, React, Node.js).
+
+### Why BiteDash Was Built
+
+This project was created to:
+
+- **Demonstrate Full-Stack Expertise**: Showcase end-to-end development skills from database design to frontend UI
+- **Implement Real-World Features**: Build features that actual food delivery apps use (real-time tracking, payments, multi-role auth)
+- **Follow Industry Best Practices**: Apply security measures, testing, CI/CD, and clean code principles
+- **Create Portfolio Project**: Serve as a comprehensive portfolio piece for job applications
+
+### What Makes BiteDash Special
+
+- **Complete Solution**: Not just a demo - it's a fully functional platform with 17+ pages and 30+ API endpoints
+- **Real-Time Features**: Live order tracking with Socket.IO, instant notifications
+- **Multi-Role System**: Separate dashboards for customers, restaurant owners, and delivery partners
+- **Production Deployed**: Live on Vercel (frontend) and Render (backend)
+- **Well Documented**: Comprehensive documentation for every component and API
+- **Tested**: 62+ passing tests with Vitest
+
+### Live Demo
+
+- **Frontend**: [https://bitedash-food.vercel.app](https://bitedash-food.vercel.app)
+- **Backend API**: [https://food-delivery-full-stack-app-3.onrender.com](https://food-delivery-full-stack-app-3.onrender.com)
+- **GitHub**: [https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App](https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App)
+
+---
+
+## Table of Contents
+
+1. [Overview](#-overview)
+2. [Architecture](#-architecture)
+3. [Frontend Guide](#-frontend-guide)
+4. [Backend Guide](#-backend-guide)
+5. [Database Models](#-database-models)
+6. [API Reference](#-api-reference)
+7. [Real-Time Events](#-real-time-events)
+8. [State Management](#-state-management)
+9. [Performance](#-performance)
+10. [Deployment](#-deployment)
+
+---
+
+## Overview
+
+### What is BiteDash?
+
+BiteDash is a **hyper-local food delivery ecosystem** that connects restaurants with customers through a seamless digital experience. Built with the MERN stack, it delivers a 60FPS mobile-first experience with real-time tracking.
 
 ### Key Features
 
 | Feature | Description | Technology |
-|---------|-------------|------------|
-| **Multi-Role** | Distinct dashboards for Users, Owners, and Riders | React 19 + Redux |
-| **Live Tracking** | Real-time map movement with < 1s latency | Socket.IO + Leaflet |
-| **Secure Pay** | PCI-compliant Stripe & COD support | Stripe API |
-| **Auto-Locate** | Zero-input city detection & address suggestions | Geoapify API |
-| **Analytics** | Revenue & order heatmaps for restauranteurs | Recharts |
+|:--------|:------------|:-----------|
+| 🎭 **Multi-Role** | Distinct dashboards for Users, Owners, Riders | React 19 + Redux |
+| 📍 **Live Tracking** | Real-time map with < 1s latency | Socket.IO + Leaflet |
+| 💳 **Secure Pay** | PCI-compliant Stripe & COD | Stripe API |
+| 🌍 **Auto-Locate** | Zero-input city detection | Geoapify API |
+| 📊 **Analytics** | Revenue & order heatmaps | Recharts |
 
-### Technology Stack
+### Tech Stack
 
-```mermaid
-graph TB
-    A[Frontend - React 19] --> B[Backend - Node.js/Express]
-    B --> C[Database - MongoDB]
-    B --> D[Real-Time - Socket.IO]
-    A --> E[State - Redux Toolkit]
-    A --> F[UI - TailwindCSS]
-    B --> G[Payment - Stripe]
-    B --> H[Storage - Cloudinary]
-    B --> I[Email - SendGrid]
-    A --> J[Maps - Leaflet]
-    A --> K[Location - Geoapify]
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        FRONTEND                              │
+├─────────────────────────────────────────────────────────────┤
+│  React 19  │  Redux Toolkit  │  TailwindCSS  │  Framer Motion│
+│  React Router 7  │  Leaflet Maps  │  Recharts  │  Axios      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                        BACKEND                               │
+├─────────────────────────────────────────────────────────────┤
+│  Node.js  │  Express.js  │  Socket.IO  │  JWT Auth          │
+│  Mongoose  │  Multer  │  Bcrypt  │  Rate Limiting           │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                       SERVICES                               │
+├─────────────────────────────────────────────────────────────┤
+│  MongoDB Atlas  │  Cloudinary  │  Stripe  │  SendGrid       │
+│  Geoapify  │  Firebase Auth  │  Vercel  │  Render           │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-# Architecture
+## Architecture
 
-## System Architecture
+### System Design
 
-### High-Level Architecture
-
-The platform follows a **decoupled MERN architecture** with real-time bidirectional communication via Socket.IO.
-
-```mermaid
-graph LR
-    A[Client Browser] --> B[Vercel CDN]
-    B --> C[React App]
-    C --> D[Redux Store]
-    C --> E[Socket.IO Client]
-    E --> F[Backend Server]
-    D --> F
-    F --> G[MongoDB Atlas]
-    F --> H[Cloudinary]
-    F --> I[Stripe API]
-    F --> J[SendGrid API]
-    C --> K[Geoapify API]
+```
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   Browser    │────▶│  Vercel CDN  │────▶│  React App   │
+└──────────────┘     └──────────────┘     └──────┬───────┘
+                                                  │
+                     ┌────────────────────────────┼────────────────────────────┐
+                     │                            │                            │
+                     ▼                            ▼                            ▼
+              ┌──────────────┐           ┌──────────────┐           ┌──────────────┐
+              │ Redux Store  │           │  Socket.IO   │           │  REST APIs   │
+              └──────────────┘           └──────┬───────┘           └──────┬───────┘
+                                                │                          │
+                                                └──────────┬───────────────┘
+                                                           │
+                                                           ▼
+                                                ┌──────────────────┐
+                                                │  Express Server  │
+                                                └────────┬─────────┘
+                                                         │
+                     ┌───────────────────────────────────┼───────────────────────────────────┐
+                     │                   │               │               │                   │
+                     ▼                   ▼               ▼               ▼                   ▼
+              ┌──────────┐       ┌──────────┐    ┌──────────┐    ┌──────────┐       ┌──────────┐
+              │ MongoDB  │       │Cloudinary│    │  Stripe  │    │ SendGrid │       │ Geoapify │
+              └──────────┘       └──────────┘    └──────────┘    └──────────┘       └──────────┘
 ```
 
-#### 1. Frontend Layer (Client-Side)
-- **Framework**: React 19 (using `create-vite`)
-- **State Management**: Redux Toolkit with `redux-persist` for session stability
-- **Styling**: TailwindCSS 4.0 for utility-first responsive design
-- **Animations**: Framer Motion for premium UI transitions
-- **Routing**: React Router 7 with route-based code splitting (`React.lazy`)
+### Application Layers
 
-#### 2. Backend Layer (Server-Side)
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Real-Time**: Socket.IO for live event broadcasting
-- **Auth**: JWT stored in HTTP-only, secure, SameSite cookies
-- **Validation**: Mongoose schemas with built-in and custom validators
-
-#### 3. Infrastructure & Services
-- **Database**: MongoDB Atlas (Cloud)
-- **Image Hosting**: Cloudinary (Automatic optimization)
-- **Payments**: Stripe (Elements & Webhooks)
-- **Location**: Geoapify (Reverse geocoding & Autocomplete)
-
-### Application Flow (Deep Dive)
-
-The system orchestrates complex interactions between three primary user roles:
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant F as Frontend
-    participant B as Backend
-    participant DB as Database
-    participant S as Socket.IO
-    
-    U->>F: Visit Website (Landing)
-    F->>B: Check Auth Status (GET /current-user)
-    B-->>F: User Object (Role: User/Owner/Delivery)
-    F->>S: Establish Socket Connection
-    S-->>F: Identity Registered (socket.id linked to user._id)
-    U->>F: Select Category (e.g., Pizza)
-    F->>B: GET /api/item/city/:city?category=Pizza
-    B->>DB: Query Items with filter
-    DB-->>B: Item List
-    B-->>F: Response (JSON)
-    F->>U: Render Grid
-```
+| Layer | Technology | Responsibility |
+|:------|:-----------|:---------------|
+| **Presentation** | React + TailwindCSS | UI rendering, user interactions |
+| **State** | Redux Toolkit | Global state, caching, persistence |
+| **Communication** | Axios + Socket.IO | REST calls, real-time events |
+| **Business Logic** | Express Controllers | Validation, processing, orchestration |
+| **Data Access** | Mongoose ODM | Database operations, schema enforcement |
+| **Infrastructure** | MongoDB + Cloud Services | Storage, payments, media, email |
 
 ---
 
-# Core Components
+## Frontend Guide
 
-# Frontend Guide
-
-### Repository Structure
+### Project Structure
 
 ```
 frontend/
 ├── src/
-│   ├── components/      # Stateless & Stateful UI units
-│   │   ├── Nav.jsx            # Dynamic navbar with role-based links
-│   │   ├── UserDashboard.jsx  # Customer view with advanced filters
-│   │   ├── OwnerDashboard.jsx # Business analytics & order manager
-│   │   └── DeliveryBoy.jsx    # Real-time task tracker for partners
-│   ├── pages/          # Full-page components (Route targets)
-│   │   ├── CheckOut.jsx       # Stripe & Leaflet integration
-│   │   └── TrackOrderPage.jsx # Real-time OSM tracking
-│   ├── redux/          # Global slice definitions
-│   │   ├── userSlice.js       # Customer & Auth state
-│   │   └── ownerSlice.js      # Business-specific data
-│   ├── hooks/          # Domain-specific logic reuse
-│   │   └── useUpdateLocation.jsx # Geolocation tracking (Background)
-│   └── App.jsx         # Router & Suspense root
+│   ├── components/          # Reusable UI components
+│   │   ├── Nav.jsx              # Navigation bar
+│   │   ├── Footer.jsx           # Footer component
+│   │   ├── FoodCard.jsx         # Item display card
+│   │   ├── UserDashboard.jsx    # Customer dashboard
+│   │   ├── OwnerDashboard.jsx   # Restaurant dashboard
+│   │   ├── DeliveryBoy.jsx      # Delivery partner view
+│   │   ├── AddressModal.jsx     # Address picker
+│   │   └── FilterSidebar.jsx    # Search filters
+│   │
+│   ├── pages/               # Route components
+│   │   ├── LandingPage.jsx      # Public homepage
+│   │   ├── Home.jsx             # Role-based dashboard
+│   │   ├── SignIn.jsx           # Login page
+│   │   ├── SignUp.jsx           # Registration
+│   │   ├── CheckOut.jsx         # Order checkout
+│   │   ├── MyOrders.jsx         # Order history
+│   │   ├── TrackOrderPage.jsx   # Live tracking
+│   │   ├── Profile.jsx          # User profile
+│   │   ├── Shop.jsx             # Restaurant page
+│   │   ├── CategoryPage.jsx     # Category listing
+│   │   ├── CartPage.jsx         # Shopping cart
+│   │   ├── AddItem.jsx          # Add menu item
+│   │   ├── EditItem.jsx         # Edit menu item
+│   │   └── CreateEditShop.jsx   # Shop management
+│   │
+│   ├── redux/               # State management
+│   │   ├── store.js             # Redux store config
+│   │   ├── userSlice.js         # User & cart state
+│   │   └── ownerSlice.js        # Owner state
+│   │
+│   ├── hooks/               # Custom React hooks
+│   │   ├── useGetCity.jsx       # Location detection
+│   │   ├── useGetCurrentUser.jsx# Auth state
+│   │   ├── useGetMyOrders.jsx   # Order fetching
+│   │   └── useUpdateLocation.jsx# GPS tracking
+│   │
+│   ├── constants/           # App constants
+│   │   └── index.js             # API URLs, configs
+│   │
+│   ├── utils/               # Helper functions
+│   │   └── index.js             # Formatters, validators
+│   │
+│   └── App.jsx              # Root component
+│
+├── public/                  # Static assets
+├── index.html               # Entry HTML
+└── vite.config.js           # Build config
 ```
 
-#### Core Design Principles
-- **Separation of Concerns**: Hooks handle side-effects and data fetching; Components handle rendering.
-- **Role-Based Access Control (RBAC)**: Protected routes redirect users based on `userData.role`.
-- **Performance First**: All major pages are `React.lazy` loaded to maintain a small initial bundle.
+### Page Documentation
 
----
+#### 1. Landing Page (`/`)
 
-## Page-by-Page Documentation
+**Purpose**: Public homepage showcasing the platform
 
-### 1. Landing Page
-**Route**: `/`  
-**Component**: [LandingPage.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/LandingPage.jsx)  
-**Access**: Public
+**Features**:
+- 🌍 Auto location detection via Geoapify
+- 🏙️ City selector dropdown
+- 🔥 Trending items carousel
+- 📱 Responsive hero section
+- ✨ Framer Motion animations
 
-#### Purpose
-First page users see when visiting the platform. Showcases the service, allows city selection, and provides authentication options.
-
-#### Key Features
-- **Auto Location Detection**: Uses Geoapify API
-- **City Selector**: Dropdown with major Indian cities
-- **Trending Items**: Fetches high-rated items from backend
-- **Collections Display**: Curated restaurant collections
-- **Responsive Hero**: Full-screen gradient background
-- **Smooth Animations**: Framer Motion transitions
-
-#### State Management
-```javascript
-const { currentCity } = useSelector(state => state.user);
-const { getCity } = useGetCity(true); // Auto-fetch on mount
+**User Flow**:
 ```
-
-#### API Calls
-```javascript
-GET /api/item/all-items  // Fetch trending items
-```
-
-#### User Flow (Deep Dive)
-Users land on the platform and are immediately greeted with a personalized experience based on their location.
-
-```mermaid
-graph TD
-    A[User Visits] --> B{Has Geolocation?}
-    B -->|Yes| C[Auto-detect City via Geoapify]
-    B -->|No| D[Show Default City (Delhi NCR)]
-    C --> E[Fetch Trending Items (GET /api/item/all-items)]
-    D --> E
-    E --> F{Authentication State}
-    F -->|Logged In| G[Role-Based Dashboard]
-    F -->|Logged Out| H[Browse Collections]
-    G --> I[User / Owner / Delivery View]
-    H --> J[Call to Action: Sign In/Up]
-```
-
-#### Implementation Details
-- **Dynamic Headers**: The Landing Page uses a transparent-to-opaque header transition on scroll.
-- **Image Optimization**: Hero images are loaded with high priority, while collection cards use lazy loading.
-- **Role Detection**: Redux `userSlice` is checked on mount to redirect active sessions away from the landing page.
-
----
-
-### 2. Sign In Page
-**Route**: `/signin`  
-**Component**: [SignIn.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/SignIn.jsx)  
-**Access**: Public (redirects if authenticated)
-
-#### Purpose
-Allows users to log into their accounts using email/password or Google OAuth.
-
-#### Features
-- **Email/Password Login**
-- **Google OAuth Integration** (Firebase)
-- **Password Visibility Toggle**
-- **Error Handling** with toast notifications
-- **Auto Location Detection** after login
-
-#### Form Fields
-```javascript
-{
-  email: String,      // Required, email format
-  password: String    // Required, min 6 characters
-}
-```
-
-#### Authentication Flow
-```javascript
-// POST /api/auth/signin
-const response = await axios.post('/api/auth/signin', {
-  email,
-  password
-}, { withCredentials: true });
-
-// Store user in Redux
-dispatch(setUserData(response.data.user));
-
-// Auto-detect location
-await getCity();
-
-// Redirect to home
-navigate('/');
-```
-
-#### Security Features
-- **Stateless Session**: JWT stored in `HttpOnly` cookies to prevent XSS-based token theft.
-- **CSRF Protection**: SameSite: 'None' (Production) and Strict (Local) cookie settings.
-- **Credential Hashing**: Argon2/Bcrypt hashing with individual salts.
-- **Login Rate Limiting**: Prevents brute-force attacks on common email patterns.
-
-#### Google OAuth Flow
-1. User clicks "Sign In with Google".
-2. Firebase Authentication handles the OAuth handshake.
-3. Frontend receives the Firebase token and sends it to `POST /api/auth/google`.
-4. Backend verifies the token, creates/updates the user, and sets the secure session cookie.
-
----
-
-### 3. Sign Up Page
-**Route**: `/signup`  
-**Component**: [SignUp.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/SignUp.jsx)  
-**Access**: Public
-
-#### Purpose
-User registration with role selection (User, Owner, Delivery Partner).
-
-#### Form Fields
-```javascript
-{
-  fullName: String,     // Required
-  email: String,        // Required, unique
-  mobile: String,       // Required, 10 digits
-  password: String,     // Required, min 6 chars
-  role: Enum           // 'user' | 'owner' | 'deliveryBoy'
-}
-```
-
-#### Role Selection
-```mermaid
-graph LR
-    A[Select Role] --> B[User]
-    A --> C[Owner]
-    A --> D[Delivery Partner]
-    B --> E[Browse & Order]
-    C --> F[Manage Restaurant]
-    D --> G[Deliver Orders]
-```
-
-#### Validation Rules
-- Email must be unique in database
-- Mobile must be exactly 10 digits
-- Password minimum 6 characters
-- All fields required
-
----
-
-### 4. Home Page
-**Route**: `/`  
-**Component**: [Home.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/Home.jsx)  
-**Access**: Protected (requires authentication)
-
-#### Purpose
-Role-based dashboard that renders different components based on user role.
-
-#### Component Routing
-```javascript
-function Home() {
-  const { userData } = useSelector(state => state.user);
-  
-  if (userData.role === 'user') return <UserDashboard />;
-  if (userData.role === 'owner') return <OwnerDashboard />;
-  if (userData.role === 'deliveryBoy') return <DeliveryBoyDashboard />;
-}
-```
-
-#### User Dashboard Features
-- **City-Based Item Display**: Shows items from selected city
-- **Advanced Filtering**: Category, price, veg/non-veg, rating
-- **Real-Time Search**: Instant filter results
-- **Restaurant Cards**: Browse shops in city
-- **Add to Cart**: One-click cart management
-- **Horizontal Scroll**: Category navigation
-
-#### Owner Dashboard Features
-- **Revenue Analytics**: Total earnings, order count
-- **Order Management**: Accept/reject orders
-- **Menu Management**: Add/edit/delete items
-- **Real-Time Orders**: Socket.IO integration
-- **Delivery Assignment**: Broadcast to delivery boys
-
-#### Delivery Boy Dashboard
-- **Available Orders**: Live order feed
-- **Accept/Reject Orders**: One-click actions
-- **OTP Verification**: Secure delivery confirmation
-- **Location Tracking**: Real-time GPS updates
-- **Earnings Tracker**: Daily/monthly earnings
-
----
-
-### 5. Shopping Cart
-**Route**: `/cart`  
-**Component**: [CartPage.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/CartPage.jsx)  
-**Access**: Protected
-
-#### Purpose
-Display cart items, allow quantity updates, and proceed to checkout.
-
-#### Cart Structure
-```javascript
-{
-  cartItems: [
-    {
-      id: String,
-      name: String,
-      price: Number,
-      quantity: Number,
-      image: String,
-      shop: Object,
-      foodType: 'veg' | 'non-veg'
-    }
-  ],
-  totalAmount: Number
-}
-```
-
-#### Features
-- **Quantity Management**: Increment/decrement/remove
-- **Price Calculation**: Auto-updates on quantity change
-- **Empty State**: Friendly message when cart is empty
-- **Bill Breakdown**: Item total, taxes, delivery fee
-- **Shop Grouping**: Items grouped by restaurant
-- **Proceed to Checkout**: Navigate with cart data
-
-#### Cart Logic
-- **Persistance**: Cart state is saved to `localStorage` via Redux Persist.
-- **Shop Consistency**: Users can only add items from one shop at a time to prevent logistical conflicts. If a new shop is selected, the cart is cleared with a confirmation prompt.
-- **Taxes & Fees**:
-    - **GST**: 5% of subtotal
-    - **Platform Fee**: Fixed ₹20
-    - **Delivery Fee**: Dynamic based on distance (calculated at checkout)
-
----
-
-### 6. Checkout Page
-**Route**: `/checkout`  
-**Component**: [CheckOut.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/CheckOut.jsx)  
-**Access**: Protected
-
-#### Purpose
-Complete order placement with address selection, payment method, and order confirmation.
-
-#### Key Features
-
-##### 1. Address Management
-```javascript
-// Interactive Map (Leaflet)
-<MapContainer center={[lat, lon]} zoom={15}>
-  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-  <Marker position={[lat, lon]} />
-</MapContainer>
-
-// Address Autocomplete (Geoapify)
-<AddressAutocomplete 
-  onSelect={handleAutocompleteSelect}
-  initialValue={address}
-/>
-```
-
-##### 2. Saved Addresses
-- Display user's saved addresses from profile
-- Click to select and fill form
-- Visual selection indicator
-
-##### 3. Payment Options
-```javascript
-paymentMethods = [
-  {
-    id: 'cod',
-    label: 'Cash on Delivery',
-    icon: <FaReceipt />,
-    action: 'Place Order'
-  },
-  {
-    id: 'online',
-    label: 'Cards / Wallet / UPI',
-    icon: <FaCreditCard />,
-    action: 'Pay & Place Order',
-    provider: 'Stripe'
-  }
-]
-```
-
-#### Order Placement Flow
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant F as Frontend
-    participant B as Backend
-    participant S as Stripe
-    participant DB as Database
-    participant SO as Socket.IO
-    
-    U->>F: Click Place Order
-    F->>F: Validate Address
-    alt Cash on Delivery
-        F->>B: POST /api/order/place-order
-        B->>DB: Create Order
-        B->>SO: Notify Owners
-        SO-->>F: Order Created
-        F->>U: Navigate to Success
-    else Online Payment
-        F->>B: POST /api/order/create-stripe-payment-intent
-        B->>S: Create Checkout Session
-        S-->>B: Session URL
-        B-->>F: Redirect URL
-        F->>U: Redirect to Stripe
-        U->>S: Complete Payment
-        S->>B: Webhook /verify-stripe-payment
-        B->>DB: Update Order
-        B->>SO: Notify Owners
-    end
-```
-
-#### Validation
-```javascript
-const isValidAddress = () => {
-  return address.trim().length > 10 && 
-         location.latitude && 
-         location.longitude;
-};
+Visit → Detect Location → Show Trending Items → Browse/Sign In
 ```
 
 ---
 
-### 7. My Orders
-**Route**: `/my-orders`  
-**Component**: [MyOrders.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/MyOrders.jsx)  
-**Access**: Protected
+#### 2. Authentication (`/signin`, `/signup`)
 
-#### Purpose
-Display user's order history with real-time status updates.
+**Sign In Features**:
+- Email/password login
+- Google OAuth (Firebase)
+- Password visibility toggle
+- Auto-redirect if authenticated
 
-#### Features
-- **Order List**: All orders sorted by date
-- **Status Badges**: Visual order status indicators
-- **Real-Time Updates**: Socket.IO status changes
-- **Order Details**: Expand to see items
-- **Track Order**: Navigate to tracking page
-- **Rate Order**: Submit rating after delivery
-- **Reorder**: Add items to cart again
+**Sign Up Features**:
+- Role selection (User/Owner/Delivery)
+- Form validation
+- OTP verification ready
 
-#### Order Status Flow
-```mermaid
-stateDiagram-v2
-    [*] --> Pending
-    Pending --> Preparing: Owner Accepts
-    Pending --> Cancelled: Owner/User Cancels
-    Preparing --> OutForDelivery: Delivery Boy Assigned
-    OutForDelivery --> Delivered: OTP Verified
-    Delivered --> [*]
-    Cancelled --> [*]
-```
-
-#### Real-Time Status Mapping
-The UI updates instantly when a status change is broadcast:
-
-| Status | Visual Indicator | User Notification |
-|--------|------------------|-------------------|
-| `pending` | Pulsing Yellow | "Waiting for restaurant..." |
-| `preparing` | Solid Blue | "Order is being prepared!" |
-| `out for delivery` | Animated Scooter | "Rider is heading your way!" |
-| `delivered` | Green Checkmark | "Order delivered. Enjoy your meal!" |
-| `cancelled` | Red Cross | "Order cancelled. Refund initiated." |
+**Security**:
+- JWT in HttpOnly cookies
+- CSRF protection
+- Rate limiting on attempts
 
 ---
 
-### 8. Order Tracking
-**Route**: `/track-order/:orderId`  
-**Component**: [TrackOrderPage.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/TrackOrderPage.jsx)  
-**Access**: Protected
+#### 3. Home Dashboard (`/home`)
 
-#### Purpose
-Real-time order tracking with delivery boy location on map.
+**Role-Based Rendering**:
 
-#### Features
+| Role | Component | Features |
+|:-----|:----------|:---------|
+| **User** | `UserDashboard` | Browse items, filters, cart |
+| **Owner** | `OwnerDashboard` | Orders, analytics, menu |
+| **Delivery** | `DeliveryBoy` | Assignments, tracking |
 
-##### 1. Live Map Tracking
-```javascript
-<MapContainer center={deliveryLocation} zoom={14}>
-  <Marker position={deliveryLocation} icon={scooterIcon}>
-    <Popup>Delivery Partner</Popup>
-  </Marker>
-  <Marker position={userLocation} icon={homeIcon}>
-    <Popup>Your Location</Popup>
-  </Marker>
-  <Polyline positions={[deliveryLocation, userLocation]} />
-</MapContainer>
+---
+
+#### 4. Checkout (`/checkout`)
+
+**Features**:
+- 📍 Interactive Leaflet map
+- 🏠 Saved addresses
+- 💳 Payment options (COD/Stripe)
+- 📝 Order summary
+
+**Payment Flow**:
+```
+Select Address → Choose Payment → Place Order → Confirmation
+       │                │
+       │                ├── COD: Direct order creation
+       │                └── Online: Stripe checkout → Webhook → Order
+       │
+       └── Geoapify autocomplete for new addresses
 ```
 
-##### 2. Status Timeline
-```javascript
-const statusSteps = [
-  { status: 'pending', label: 'Order Placed', icon: <FaCheck /> },
-  { status: 'preparing', label: 'Preparing', icon: <FaUtensils /> },
-  { status: 'out of delivery', label: 'On the Way', icon: <FaMotorcycle /> },
-  { status: 'delivered', label: 'Delivered', icon: <FaCheckCircle /> }
-];
-```
+---
 
-##### 3. Delivery Partner Info
-- Name and photo
-- Phone number
-- Vehicle details
-- Rating
-- Estimated arrival time
+#### 5. Order Tracking (`/track-order/:id`)
 
-#### Real-Time Updates
+**Real-Time Features**:
+- 🗺️ Live map with delivery location
+- 📍 Route polyline
+- 🛵 Animated delivery marker
+- 📊 Status timeline
+- 👤 Delivery partner info
+
+**Socket Events**:
 ```javascript
-socket.on('updateDeliveryLocation', ({ latitude, longitude }) => {
-  setDeliveryBoyLocation({ lat: latitude, lon: longitude });
-  map.panTo([latitude, longitude]);
+socket.on('updateDeliveryLocation', ({ lat, lon }) => {
+  // Update marker position
+  // Pan map to new location
 });
 ```
 
 ---
 
-### 9. Profile Page
-**Route**: `/profile`  
-**Component**: [Profile.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/Profile.jsx)  
-**Access**: Protected
-
-#### Purpose
-User profile management with stats, addresses, and account settings.
-
-#### Sections
-
-##### 1. Profile Header
-```javascript
-{
-  fullName: String,
-  email: String,
-  mobile: String,
-  role: String,
-  joinedDate: Date,
-  avatar: String // First letter of name
-}
-```
-
-##### 2. Statistics Dashboard
-```javascript
-// GET /api/user/profile-stats
-{
-  totalOrders: Number,
-  totalSpent: Number,
-  points: Number, // 1 point per ₹10 spent
-  favoriteRestaurants: Number
-}
-```
-
-##### 3. Saved Addresses
-```javascript
-{
-  addresses: [
-    {
-      type: 'home' | 'work' | 'other',
-      label: String,
-      fullAddress: String,
-      latitude: Number,
-      longitude: Number,
-      isDefault: Boolean
-    }
-  ]
-}
-```
-
-##### 4. Edit Profile
-- Update name, email, mobile
-- Change password
-- Upload profile picture (future)
-- Manage addresses
-
-#### API Integration
-```javascript
-// Update profile
-PUT /api/user/update-profile
-{
-  fullName, email, mobile, 
-  addresses: [...]
-}
-
-// Get stats
-GET /api/user/profile-stats
-Response: { totalOrders, totalSpent, points, ... }
-```
-
----
-
-### 10. Restaurant Owner Pages
-
-#### Create/Edit Shop
-**Route**: `/create-edit-shop`  
-**Component**: [CreateEditShop.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/CreateEditShop.jsx)  
-**Access**: Owner only
-
-**Purpose**: Register or update restaurant details.
-
-**Form Fields**:
-```javascript
-{
-  name: String,        // Restaurant name
-  city: String,        // Operating city
-  state: String,       // State
-  address: String,     // Full address
-  image: File          // Restaurant image (Cloudinary upload)
-}
-```
-
-**Flow**:
-1. Upload image → Cloudinary
-2. Submit form → Backend
-3. Create/Update shop in database
-4. Redirect to owner dashboard
-
----
-
-#### Add Item
-**Route**: `/add-item`  
-**Component**: [AddItem.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/AddItem.jsx)  
-**Access**: Owner only
-
-**Purpose**: Add new menu items to restaurant.
-
-**Form Structure**:
-```javascript
-{
-  name: String,
-  description: String,
-  price: Number,
-  category: Enum,      // 'Biryani', 'Pizza', 'Burger', etc.
-  foodType: Enum,      // 'veg' | 'non-veg'
-  image: File,         // Cloudinary upload
-  deliveryTime: Number // In minutes
-}
-```
-
-**Categories Available**:
-- Biryani, Pizza, Burger, Chinese
-- South Indian, North Indian, Desserts
-- Beverages, Fast Food, Healthy
-
----
-
-#### Edit Item
-**Route**: `/edit-item/:itemId`  
-**Component**: [EditItem.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/EditItem.jsx)  
-**Access**: Owner only
-
-**Purpose**: Update existing menu item.
-
-**Features**:
-- Pre-filled form with existing data
-- Image replacement option
-- Delete item functionality
-- Real-time preview
-
----
-
-### 11. Miscellaneous Pages
-
-#### Category Page
-**Route**: `/category/:categoryName`  
-**Component**: [CategoryPage.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/CategoryPage.jsx)
-
-**Purpose**: Display all items in a specific category.
-
-**Features**:
-- Filter by price, rating, delivery time
-- Sort options
-- Veg/non-veg toggle
-- Grid/list view
-
----
-
-#### Shop Page
-**Route**: `/shop/:shopId`  
-**Component**: [Shop.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/Shop.jsx)
-
-**Purpose**: Display single restaurant with all menu items.
+#### 6. Profile (`/profile`)
 
 **Sections**:
-- Restaurant header (name, image, rating)
-- Menu items grid
-- About section
-- Reviews (future)
+- Profile header with avatar
+- Statistics (orders, spent, points)
+- Saved addresses management
+- Edit profile form
 
 ---
 
-#### Order Placed Success
-**Route**: `/order-placed`  
-**Component**: [OrderPlaced.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/OrderPlaced.jsx)
+### Component Patterns
 
-**Purpose**: Order confirmation page with success animation.
+#### Protected Routes
+```jsx
+<Route element={<ProtectedRoute allowedRoles={['user', 'owner']} />}>
+  <Route path="/home" element={<Home />} />
+</Route>
+```
 
-**Features**:
-- Success animation
-- Order summary
-- Payment verification (for Stripe)
-- Navigate to track order
+#### Lazy Loading
+```jsx
+const CheckOut = lazy(() => import('./pages/CheckOut'));
 
----
+<Suspense fallback={<Loader />}>
+  <CheckOut />
+</Suspense>
+```
 
-#### Bank Details
-**Route**: `/bank-details`  
-**Component**: [BankDetails.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/BankDetails.jsx)  
-**Access**: Owner/Delivery Partner
+#### Redux Integration
+```jsx
+const { cartItems, userData } = useSelector(state => state.user);
+const dispatch = useDispatch();
 
-**Purpose**: Add bank details for payment settlement.
-
----
-
-#### Forgot Password
-**Route**: `/forgot-password`  
-**Component**: [ForgotPassword.jsx](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/src/pages/ForgotPassword.jsx)
-
-**Purpose**: Password reset flow with OTP verification.
-
-**Flow**:
-1. Enter email → Send OTP
-2. Verify OTP (MASTER_OTP: 5646)
-3. Set new password
-4. Auto-login
+dispatch(addToCart(item));
+```
 
 ---
 
-# Backend Guide
+## Backend Guide
 
-The backend is built as a **Stateless RESTful API** with an integrated Socket.IO server for real-time events.
+### Project Structure
 
-#### Core Directories
-- **`controllers/`**: House the core business logic. Each file corresponds to a domain (e.g., `auth.controllers.js` handle signin/signup).
-- **`models/`**: Define MongoDB schemas with Mongoose. Includes complex relations like Order → Shop → User.
-- **`routes/`**: Map HTTP methods and paths to controller functions, wrapping them in authentication middleware where necessary.
-- **`middleware/`**: Logic executed before controllers (e.g., `isAuth` for JWT verification, `upload` for Multer image handling).
-- **`socket.js`**: Centralized event hub for real-time notifications (New Order, Status Update, Location Update).
+```
+backend/
+├── controllers/             # Request handlers
+│   ├── auth.controllers.js      # Authentication
+│   ├── user.controllers.js      # User operations
+│   ├── shop.controllers.js      # Shop management
+│   ├── item.controllers.js      # Menu items
+│   └── order.controllers.js     # Order processing
+│
+├── models/                  # Database schemas
+│   ├── user.model.js            # User schema
+│   ├── shop.model.js            # Shop schema
+│   ├── item.model.js            # Item schema
+│   ├── order.model.js           # Order schema
+│   └── deliveryAssignment.model.js
+│
+├── routes/                  # API routes
+│   ├── auth.routes.js
+│   ├── user.routes.js
+│   ├── shop.routes.js
+│   ├── item.routes.js
+│   └── order.routes.js
+│
+├── middlewares/             # Express middlewares
+│   ├── isAuth.js                # JWT verification
+│   ├── rateLimiter.js           # Rate limiting
+│   ├── security.js              # Security headers
+│   └── upload.js                # File uploads
+│
+├── services/                # Business logic
+│   ├── auth.service.js          # Auth operations
+│   └── delivery.service.js      # Delivery logic
+│
+├── validators/              # Input validation
+│   ├── auth.validator.js
+│   ├── order.validator.js
+│   └── shop.validator.js
+│
+├── config/                  # Configuration
+│   ├── db.js                    # MongoDB connection
+│   ├── cache.js                 # In-memory cache
+│   └── stripe.js                # Stripe setup
+│
+├── utils/                   # Utilities
+│   ├── sendgridMail.js          # Email service
+│   ├── cloudinary.js            # Image uploads
+│   └── sanitize.js              # Input sanitization
+│
+├── socket.js                # Socket.IO setup
+├── cluster.js               # Cluster mode
+└── index.js                 # Entry point
+```
 
-#### Implementation Highlights
-- **Stateless Auth**: No server-side sessions; JWTs are verified on every protected request.
-- **Webhook Processing**: Dedicated routes for Stripe webhooks to ensure payment finality without client-side risk.
-- **Atomic Operations**: Using Mongoose transactions where critical (e.g., order sub-order creation) to maintain data integrity.
+### Middleware Pipeline
+
+```
+Request → Rate Limiter → Security Headers → Auth Check → Validation → Controller → Response
+```
+
+### Authentication Flow
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Sign Up   │────▶│ Hash Pass   │────▶│ Create User │
+└─────────────┘     └─────────────┘     └──────┬──────┘
+                                               │
+                                               ▼
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Sign In   │────▶│ Verify Pass │────▶│ Generate JWT│
+└─────────────┘     └─────────────┘     └──────┬──────┘
+                                               │
+                                               ▼
+                                        ┌─────────────┐
+                                        │ Set Cookie  │
+                                        │ (HttpOnly)  │
+                                        └─────────────┘
+```
 
 ---
 
-# Database Models
+## Database Models
 
-The platform uses **MongoDB** with Mongoose for schema enforcement and automated validations.
+### User Model
 
-### 1. User Model
 ```javascript
 {
-  fullName: { type: String, required: true },
-  email: { type: String, unique: true, required: true },
-  mobile: { type: String, required: true },
-  role: { 
-    type: String, 
-    enum: ['user', 'owner', 'deliveryBoy'],
-    default: 'user'
-  },
+  fullName: String,           // Required
+  email: String,              // Unique, indexed
+  mobile: String,             // 10 digits
+  password: String,           // Hashed
+  role: 'user' | 'owner' | 'deliveryBoy',
   addresses: [{
-    type: { type: String, enum: ['home', 'work', 'other'] },
+    type: 'home' | 'work' | 'other',
     label: String,
     fullAddress: String,
     latitude: Number,
     longitude: Number,
     isDefault: Boolean
   }],
-  location: {
-    type: { type: String, default: 'Point' },
-    coordinates: [Number] // [longitude, latitude]
+  location: {                 // GeoJSON for delivery boys
+    type: 'Point',
+    coordinates: [lon, lat]
   },
-  isOnline: { type: Boolean, default: false },
+  isOnline: Boolean,
   socketId: String,
-  totalEarnings: { type: Number, default: 0 },
-  points: { type: Number, default: 0 },
-  createdAt: { type: Date, default: Date.now }
+  totalEarnings: Number,
+  createdAt: Date
 }
 ```
-
-**Indexes**:
-```javascript
-user.index({ email: 1 }, { unique: true });
-user.index({ location: '2dsphere' });
-```
-
----
 
 ### Shop Model
 
 ```javascript
 {
-  name: { type: String, required: true },
+  name: String,               // Required
   city: String,
   state: String,
   address: String,
-  image: String, // Cloudinary URL
-  owner: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User',
-    required: true 
-  },
-  items: [{ 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Item' 
-  }],
-  isDefault: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
+  image: String,              // Cloudinary URL
+  owner: ObjectId,            // Ref: User
+  items: [ObjectId],          // Ref: Item[]
+  isDefault: Boolean,
+  createdAt: Date
 }
 ```
-
-**Business Logic**:
-- One shop per owner
-- Default shop visible in all cities
-- Items auto-populate on shop fetch
-
----
 
 ### Item Model
 
 ```javascript
 {
-  name: { type: String, required: true },
+  name: String,               // Required
   description: String,
-  price: { type: Number, required: true },
-  image: String, // Cloudinary URL
-  category: { 
-    type: String,
-    enum: ['Biryani', 'Pizza', 'Burger', ...]
-  },
-  foodType: {
-    type: String,
-    enum: ['veg', 'non-veg']
-  },
+  price: Number,              // Required
+  image: String,              // Cloudinary URL
+  category: String,           // Biryani, Pizza, etc.
+  foodType: 'veg' | 'non-veg',
   rating: {
-    average: { type: Number, default: 0 },
-    count: { type: Number, default: 0 }
+    average: Number,
+    count: Number
   },
-  deliveryTime: Number, // minutes
-  shop: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Shop',
-    required: true
-  },
-  createdAt: { type: Date, default: Date.now }
+  deliveryTime: Number,       // Minutes
+  shop: ObjectId,             // Ref: Shop
+  createdAt: Date
 }
 ```
-
----
 
 ### Order Model
 
 ```javascript
 {
-  user: { type: ObjectId, ref: 'User' },
-  paymentMethod: { type: String, enum: ['cod', 'online'] },
+  user: ObjectId,             // Ref: User
+  paymentMethod: 'cod' | 'online',
   deliveryAddress: {
     text: String,
     latitude: Number,
     longitude: Number
   },
   totalAmount: Number,
-  payment: { type: Boolean, default: false },
-  razorpayOrderId: String,
-  razorpayPaymentId: String,
+  payment: Boolean,
   stripeSessionId: String,
-  stripePaymentIntentId: String,
   orderRating: {
-    rating: { type: Number, min: 1, max: 5 },
+    rating: Number,           // 1-5
     review: String,
     ratedAt: Date
   },
-  shopOrders: [{
-    shop: { type: ObjectId, ref: 'Shop' },
-    owner: { type: ObjectId, ref: 'User' },
+  shopOrders: [{              // Multi-shop support
+    shop: ObjectId,
+    owner: ObjectId,
     subtotal: Number,
-    status: {
-      type: String,
-      enum: ['pending', 'preparing', 'out of delivery', 'delivered'],
-      default: 'pending'
-    },
+    status: 'pending' | 'preparing' | 'out of delivery' | 'delivered' | 'cancelled',
     shopOrderItems: [{
-      item: { type: ObjectId, ref: 'Item' },
+      item: ObjectId,
       name: String,
       price: Number,
       quantity: Number
     }],
-    assignedDeliveryBoy: { type: ObjectId, ref: 'User' },
+    assignedDeliveryBoy: ObjectId,
     deliveryOtp: String,
     otpExpires: Date,
     deliveredAt: Date
   }],
-  createdAt: { type: Date, default: Date.now }
-}
-```
-
-**Complex Nested Structure**:
-- One order can have items from multiple shops
-- Each shop has its own sub-order (shopOrder)
-- Each shopOrder has independent status tracking
-- Delivery boy assigned per shopOrder
-
----
-
-### Delivery Assignment Model
-
-```javascript
-{
-  order: { type: ObjectId, ref: 'Order' },
-  shopOrder: { type: ObjectId },
-  status: {
-    type: String,
-    enum: ['broadcasted', 'accepted', 'expired'],
-    default: 'broadcasted'
-  },
-  broadcastTo: [{ type: ObjectId, ref: 'User' }],
-  acceptedBy: { type: ObjectId, ref: 'User' },
-  expiresAt: Date,
-  createdAt: { type: Date, default: Date.now }
+  createdAt: Date
 }
 ```
 
 ---
 
-# Guides
+## API Reference
 
-### 1. Project Setup
-To run Vingo locally, follow these steps:
+### Authentication APIs
 
-1. **Clone the Repo**: `git clone vingo-repo-url`
-2. **Install Deps**: Run `npm install` in both `frontend` and `backend` directories.
-3. **Env Config**: Copy `.env.template` to `.env` and fill in keys for MongoDB, Stripe, Cloudinary, and Geoapify.
-4. **Dev Start**: `npm run dev` in both folders.
-
-### 2. Restaurant Onboarding Flow
-1. **SignUp**: Register as an "Owner".
-2. **Shop Profile**: Navigate to "/create-edit-shop" and upload your restaurant image and details.
-3. **Menu Items**: Use "/add-item" to populate your digital menu.
-4. **Activation**: Your shop is instantly live for the city you selected.
-
-### 3. Real-Time Order Processing
-Vingo uses a state-machine driven order flow:
-`Pending` -> `Accepted/Preparing` -> `Out for Delivery` -> `Delivered/Verified`.
-
----
-
-# API Reference
-
-#### POST /api/auth/signup
-**Purpose**: Register new user
-
-**Request**:
-```javascript
-{
-  fullName: "John Doe",
-  email: "john@example.com",
-  mobile: "9876543210",
-  password: "password123",
-  role: "user" // or "owner" or "deliveryBoy"
-}
-```
-
-**Response**:
-```javascript
-{
-  message: "User created successfully",
-  user: {
-    _id: "...",
-    fullName: "John Doe",
-    email: "john@example.com",
-    role: "user"
-  }
-}
-```
-
-**HTTP-only Cookie**: `token` (JWT)
-
----
-
-#### POST /api/auth/signin
-**Purpose**: Login user
-
-**Request**:
-```javascript
-{
-  email: "john@example.com",
-  password: "password123"
-}
-```
-
-**Response**:
-```javascript
-{
-  user: {
-    _id: "...",
-    fullName: "John Doe",
-    email: "john@example.com",
-    role: "user",
-    addresses: [...]
-  }
-}
-```
-
----
-
-#### GET /api/auth/current
-**Purpose**: Get current authenticated user  
-**Headers**: Cookie with JWT token
-
-**Response**:
-```javascript
-{
-  user: { ...userData }
-}
-```
-
----
-
-#### POST /api/auth/logout
-**Purpose**: Logout user (clear cookie)
-
-**Response**:
-```javascript
-{
-  message: "Logout successfully"
-}
-```
-
----
+| Method | Endpoint | Description | Auth |
+|:-------|:---------|:------------|:-----|
+| `POST` | `/api/auth/signup` | Register new user | ❌ |
+| `POST` | `/api/auth/signin` | Login user | ❌ |
+| `POST` | `/api/auth/google` | Google OAuth | ❌ |
+| `GET` | `/api/auth/current` | Get current user | ✅ |
+| `POST` | `/api/auth/logout` | Logout user | ✅ |
+| `POST` | `/api/auth/forgot-password` | Send reset OTP | ❌ |
+| `POST` | `/api/auth/reset-password` | Reset password | ❌ |
 
 ### User APIs
 
-#### PUT /api/user/update-profile
-**Purpose**: Update user profile  
-**Auth**: Required
-
-**Request**:
-```javascript
-{
-  fullName: "Updated Name",
-  email: "new@email.com",
-  mobile: "9876543210",
-  addresses: [
-    {
-      type: "home",
-      label: "Home",
-      fullAddress: "123 Street, City",
-      latitude: 28.7041,
-      longitude: 77.1025,
-      isDefault: true
-    }
-  ]
-}
-```
-
----
-
-#### GET /api/user/profile-stats
-**Purpose**: Get user statistics  
-**Auth**: Required
-
-**Response**:
-```javascript
-{
-  totalOrders: 25,
-  totalSpent: 15000,
-  points: 1500, // ₹10 = 1 point
-  favoriteRestaurants: 5
-}
-```
-
----
+| Method | Endpoint | Description | Auth |
+|:-------|:---------|:------------|:-----|
+| `PUT` | `/api/user/update-profile` | Update profile | ✅ |
+| `PUT` | `/api/user/update-location` | Update GPS location | ✅ |
+| `GET` | `/api/user/profile-stats` | Get user statistics | ✅ |
 
 ### Shop APIs
 
-#### POST /api/shop/create-edit-shop
-**Purpose**: Create or update shop  
-**Auth**: Owner only  
-**Content-Type**: multipart/form-data
-
-**Request**:
-```javascript
-FormData {
-  name: "Restaurant Name",
-  city: "Delhi",
-  state: "Delhi",
-  address: "Full Address",
-  image: File
-}
-```
-
-**Response**:
-```javascript
-{
-  _id: "...",
-  name: "Restaurant Name",
-  image: "https://cloudinary.com/...",
-  owner: {...},
-  items: [...]
-}
-```
-
----
-
-#### GET /api/shop/my-shop
-**Purpose**: Get owner's shop  
-**Auth**: Owner only
-
----
-
-#### GET /api/shop/city/:city
-**Purpose**: Get all shops in a city
-
-**Response**:
-```javascript
-[
-  {
-    _id: "...",
-    name: "Shop 1",
-    items: [...],
-    isDefault: false
-  },
-  {
-    _id: "...",
-    name: "Default Shop",
-    items: [...],
-    isDefault: true
-  }
-]
-```
-
-**Logic**: Returns city-specific shops + one default shop
-
----
+| Method | Endpoint | Description | Auth |
+|:-------|:---------|:------------|:-----|
+| `POST` | `/api/shop/create-edit-shop` | Create/update shop | Owner |
+| `GET` | `/api/shop/my-shop` | Get owner's shop | Owner |
+| `GET` | `/api/shop/city/:city` | Get shops by city | ❌ |
+| `GET` | `/api/shop/:shopId` | Get shop details | ❌ |
 
 ### Item APIs
 
-#### POST /api/item/add-item
-**Purpose**: Add menu item  
-**Auth**: Owner only
-
-**Request**:
-```javascript
-FormData {
-  name: "Chicken Biryani",
-  description: "Delicious biryani",
-  price: 250,
-  category: "Biryani",
-  foodType: "non-veg",
-  deliveryTime: 30,
-  image: File
-}
-```
-
----
-
-#### PUT /api/item/:itemId
-**Purpose**: Update item  
-**Auth**: Owner only
-
----
-
-#### DELETE /api/item/:itemId
-**Purpose**: Delete item  
-**Auth**: Owner only
-
----
-
-#### GET /api/item/all-items
-**Purpose**: Get all items (for landing page trending)
-
----
-
-#### GET /api/item/city/:city
-**Purpose**: Get all items in a city
-
-**Response**:
-```javascript
-[
-  {
-    _id: "...",
-    name: "Item 1",
-    price: 200,
-    shop: { name: "Shop 1", ... },
-    rating: { average: 4.5, count: 100 }
-  },
-  ...
-]
-```
-
----
+| Method | Endpoint | Description | Auth |
+|:-------|:---------|:------------|:-----|
+| `POST` | `/api/item/add-item` | Add menu item | Owner |
+| `PUT` | `/api/item/:itemId` | Update item | Owner |
+| `DELETE` | `/api/item/:itemId` | Delete item | Owner |
+| `GET` | `/api/item/all-items` | Get all items | ❌ |
+| `GET` | `/api/item/city/:city` | Get items by city | ❌ |
 
 ### Order APIs
 
-#### POST /api/order/place-order
-**Purpose**: Place new order  
-**Auth**: Required
+| Method | Endpoint | Description | Auth |
+|:-------|:---------|:------------|:-----|
+| `POST` | `/api/order/place-order` | Place new order | ✅ |
+| `GET` | `/api/order/my-orders` | Get user's orders | ✅ |
+| `GET` | `/api/order/:orderId` | Get order details | ✅ |
+| `PUT` | `/api/order/status/:orderId/:shopId` | Update status | Owner |
+| `POST` | `/api/order/send-otp` | Send delivery OTP | Delivery |
+| `POST` | `/api/order/verify-otp` | Verify delivery OTP | Delivery |
+| `POST` | `/api/order/rate/:orderId` | Rate order | ✅ |
+| `POST` | `/api/order/create-stripe-payment-intent` | Create Stripe session | ✅ |
+| `POST` | `/api/order/verify-stripe-payment` | Verify payment | ✅ |
 
-**Request**:
-```javascript
-{
-  paymentMethod: "cod", // or "online"
-  deliveryAddress: {
-    text: "123 Street, City",
-    latitude: 28.7041,
-    longitude: 77.1025
-  },
-  cartItems: [
-    {
-      id: "itemId",
-      name: "Item 1",
-      price: 200,
-      quantity: 2,
-      shop: { _id: "shopId", name: "Shop 1", owner: "ownerId" }
-    }
-  ],
-  totalAmount: 400
-}
+### Delivery APIs
+
+| Method | Endpoint | Description | Auth |
+|:-------|:---------|:------------|:-----|
+| `GET` | `/api/order/assignments` | Get available orders | Delivery |
+| `POST` | `/api/order/accept/:assignmentId` | Accept delivery | Delivery |
+| `GET` | `/api/order/current-order` | Get active delivery | Delivery |
+| `GET` | `/api/order/today-deliveries` | Get today's stats | Delivery |
+
+---
+
+## Real-Time Events
+
+### Socket.IO Architecture
+
+```
+┌─────────────┐                    ┌─────────────┐
+│   Client    │◀──── Events ──────│   Server    │
+│  (Browser)  │────── Emit ──────▶│  (Node.js)  │
+└─────────────┘                    └─────────────┘
 ```
 
-**Backend Processing**:
-1. Group items by shop
-2. Create shopOrders for each shop
-3. Calculate subtotals
-4. Save order to database
-5. Emit Socket.IO event to shop owners
-6. If pending delivery boys exist, broadcast assignment
+### Client → Server Events
 
-**Response**:
-```javascript
-{
-  _id: "orderId",
-  shopOrders: [...],
-  totalAmount: 400,
-  payment: false,
-  createdAt: "..."
-}
-```
+| Event | Payload | Description |
+|:------|:--------|:------------|
+| `identity` | `{ userId }` | Register socket connection |
+| `updateLocation` | `{ userId, lat, lon }` | Update delivery location |
+| `disconnect` | - | Handle disconnection |
 
----
+### Server → Client Events
 
-#### GET /api/order/my-orders
-**Purpose**: Get user's orders  
-**Auth**: Required
-
-**Response**:
-```javascript
-[
-  {
-    _id: "...",
-    shopOrders: [
-      {
-        shop: { name: "..." },
-        status: "preparing",
-        shopOrderItems: [...]
-      }
-    ],
-    totalAmount: 500,
-    createdAt: "..."
-  }
-]
-```
+| Event | Payload | Description |
+|:------|:--------|:------------|
+| `newOrder` | `{ order, shopOrder }` | New order notification |
+| `update-status` | `{ orderId, status }` | Order status change |
+| `newAssignment` | `{ assignment }` | New delivery assignment |
+| `updateDeliveryLocation` | `{ lat, lon }` | Delivery boy location |
+| `orderDelivered` | `{ orderId }` | Delivery confirmation |
+| `orderCancelled` | `{ orderId, reason }` | Order cancellation |
 
 ---
 
-#### GET /api/order/owner-orders
-**Purpose**: Get owner's restaurant orders  
-**Auth**: Owner only
-
----
-
-#### PUT /api/order/accept-order/:orderId/:shopOrderId
-**Purpose**: Owner accepts order
-
-**Flow**:
-1. Update shopOrder status to "preparing"
-2. Generate 6-digit delivery OTP
-3. Find available delivery boys (online, in city)
-4. Create delivery assignment
-5. Broadcast to delivery boys via Socket.IO
-
----
-
-#### PUT /api/order/reject-order/:orderId/:shopOrderId
-**Purpose**: Owner rejects order
-
----
-
-#### PUT /api/order/accept-delivery/:assignmentId
-**Purpose**: Delivery boy accepts delivery
-
-**Flow**:
-1. Update assignment status to "accepted"
-2. Assign delivery boy to shopOrder
-3. Update shopOrder status to "out of delivery"
-4. Notify owner and user via Socket.IO
-
----
-
-#### POST /api/order/verify-otp/:orderId/:shopOrderId
-**Purpose**: Verify delivery OTP
-
-**Request**:
-```javascript
-{
-  otp: "123456"
-}
-```
-
-**Flow**:
-1. Verify OTP matches
-2. Check OTP not expired
-3. Update shopOrder status to "delivered"
-4. Set deliveredAt timestamp
-5. Emit notification to user
-
----
-
-#### POST /api/order/rate-order/:orderId
-**Purpose**: Rate completed order
-
-**Request**:
-```javascript
-{
-  rating: 5,
-  review: "Excellent food!"
-}
-```
-
----
-
-#### POST /api/order/create-stripe-payment-intent
-**Purpose**: Create Stripe checkout session
-
-**Request**:
-```javascript
-{
-  amount: 500,
-  orderId: "..."
-}
-```
-
-**Response**:
-```javascript
-{
-  sessionId: "...",
-  url: "https://checkout.stripe.com/..."
-}
-```
-
----
-
-#### POST /api/order/verify-stripe-payment
-**Purpose**: Verify Stripe payment and finalize order
-
-**Request**:
-```javascript
-{
-  sessionId: "...",
-  orderId: "..."
-}
-```
-
-**Flow**:
-1. Retrieve Stripe session
-2. Verify payment_status === "paid"
-3. Update order payment: true
-4. Update owner earnings
-5. Notify owners via Socket.IO
-
----
-
-## State Management (Redux)
+## State Management
 
 ### Redux Store Structure
 
 ```javascript
 {
   user: {
-    userData: Object | null,
-    authLoading: Boolean,
-    currentCity: String,
-    cartItems: Array,
-    totalAmount: Number,
-    shopInMyCity: Array,
-    itemsInMyCity: Array,
-    searchItems: String,
-    myOrders: Array,
-    selectedCategories: Array,
-    priceRange: { min: Number, max: Number },
-    sortBy: String,
-    quickFilters: { veg: Boolean, fastDelivery: Boolean, topRated: Boolean },
-    socket: Object | null
+    userData: Object | null,      // Current user
+    authLoading: Boolean,         // Auth state loading
+    currentCity: String,          // Selected city
+    cartItems: Array,             // Shopping cart
+    totalAmount: Number,          // Cart total
+    shopInMyCity: Array,          // City shops
+    itemsInMyCity: Array,         // City items
+    searchItems: String,          // Search query
+    myOrders: Array,              // Order history
+    selectedCategories: Array,    // Active filters
+    priceRange: Object,           // Price filter
+    sortBy: String,               // Sort option
+    quickFilters: Object,         // Veg, fast delivery, etc.
+    socket: Object                // Socket.IO instance
   },
   owner: {
-    myShopData: Object | null
+    myShopData: Object | null     // Owner's shop
   },
   map: {
-    location: { lat: Number, lon: Number },
-    address: String
+    location: Object,             // Current location
+    address: String               // Current address
   }
 }
 ```
 
-### userSlice Actions
+### Key Actions
 
 ```javascript
-// Auth
+// Authentication
 setUserData(user)
-setAuthLoading(boolean)
 logout()
 
-// Location
-setCurrentCity(city)
-setLocation({ lat, lon, address })
-
-// Cart
+// Cart Management
 addToCart(item)
 updateQuantity({ id, quantity })
 removeCartItem(id)
 clearCart()
 
-// Data
-setShopInMyCity(shops)
-setItemsInMyCity(items)
+// Location
+setCurrentCity(city)
+setLocation({ lat, lon, address })
+
+// Orders
 setMyOrders(orders)
+updateRealtimeOrderStatus({ orderId, status })
 
 // Filters
 toggleCategory(category)
 setPriceRange({ min, max })
 setSortBy(option)
-setQuickFilters({ veg, fastDelivery, topRated })
-
-// Real-time
-updateRealtimeOrderStatus({ orderId, shopOrderId, status })
-setSocket(socket)
 ```
 
 ---
 
-## Socket.IO Events
+## Performance
 
-### Client → Server
+### Optimization Techniques
 
-#### `identity`
-**Purpose**: Register user with socket  
-**Payload**:
-```javascript
-{
-  userId: "..."
-}
+| Technique | Implementation | Impact |
+|:----------|:---------------|:-------|
+| **Code Splitting** | `React.lazy()` for routes | 70% smaller initial bundle |
+| **Memoization** | `React.memo`, `useMemo` | 50% fewer re-renders |
+| **Image Lazy Load** | `loading="lazy"` | 40% faster page load |
+| **Chunk Splitting** | Vite manual chunks | Better caching |
+| **Connection Pooling** | MongoDB 100 connections | Handle 5000+ req/s |
+| **Rate Limiting** | 100 req/15min per IP | DDoS protection |
+| **In-Memory Cache** | Node-cache for hot data | Reduced DB queries |
+
+### Bundle Analysis
+
 ```
-
-**Server Action**:
-- Update user.socketId in database
-- Set user.isOnline = true
-- Join user to room with their userId
-
----
-
-#### `updateLocation`
-**Purpose**: Update delivery boy location  
-**Payload**:
-```javascript
-{
-  userId: "...",
-  latitude: 28.7041,
-  longitude: 77.1025
-}
-```
-
-**Server Action**:
-- Update user.location in database
-- Emit `updateDeliveryLocation` to all clients
-
----
-
-### Server → Client
-
-#### `newOrder`
-**Purpose**: Notify owner of new order  
-**Payload**:
-```javascript
-{
-  _id: "orderId",
-  user: {...},
-  shopOrders: {...},
-  deliveryAddress: {...},
-  paymentMethod: "cod"
-}
-```
-
-**Trigger**: After order placement or payment verification
-
----
-
-#### `orderStatusUpdated`
-**Purpose**: Notify user of status change  
-**Payload**:
-```javascript
-{
-  orderId: "...",
-  shopOrderId: "...",
-  status: "preparing",
-  message: "Your order is being prepared"
-}
-```
-
-**Triggers**:
-- Owner accepts/rejects
-- Delivery boy accepts
-- OTP verified (delivered)
-
----
-
-#### `newDeliveryAssignment`
-**Purpose**: Broadcast order to delivery boys  
-**Payload**:
-```javascript
-{
-  assignmentId: "...",
-  order: {...},
-  shopOrder: {...},
-  pickupLocation: { lat, lon, address },
-  deliveryLocation: { lat, lon, address }
-}
+dist/
+├── index.html                    6.73 kB
+├── react-vendor.js              44.18 kB   (React core)
+├── redux-vendor.js              27.27 kB   (Redux)
+├── ui-libs.js                  130.31 kB   (Framer, Icons)
+├── map-libs.js                 153.28 kB   (Leaflet)
+├── chart-libs.js               275.71 kB   (Recharts)
+└── index.js                    291.08 kB   (App code)
 ```
 
 ---
 
-#### `updateDeliveryLocation`
-**Purpose**: Broadcast delivery boy location  
-**Payload**:
-```javascript
-{
-  deliveryBoyId: "...",
-  latitude: 28.7041,
-  longitude: 77.1025
-}
-```
+## Deployment
 
----
+### Frontend (Vercel)
 
-# Optimizations
-
-## Performance Optimizations
-```javascript
-// React.lazy for all routes
-const Home = React.lazy(() => import('./pages/Home'));
-const CheckOut = React.lazy(() => import('./pages/CheckOut'));
-
-// Suspense boundary
-<Suspense fallback={<LoadingFallback />}>
-  <Routes>...</Routes>
-</Suspense>
-```
-
-**Impact**: 70% bundle size reduction
-
----
-
-### 2. Component Memoization
-```javascript
-// React.memo for FoodCard
-export default memo(FoodCard, (prev, next) => {
-  return prev.data._id === next.data._id;
-});
-
-// useMemo for filtering
-const filteredItems = useMemo(() => {
-  // expensive filtering logic
-}, [items, filters]);
-```
-
-**Impact**: 50% reduction in re-renders
-
----
-
-### 3. Image Lazy Loading
-```html
-<img loading="lazy" src="..." alt="..." />
-```
-
-**Impact**: 40% faster page load
-
----
-
-### 4. Build Optimization (Vite)
-```javascript
-build: {
-  rollupOptions: {
-    output: {
-      manualChunks: {
-        'react-vendor': ['react', 'react-dom'],
-        'ui-libs': ['framer-motion', 'react-icons']
-      }
-    }
-  }
-}
-```
-
-**Impact**: Better caching, faster repeat visits
-
----
-
-# Deployment
-
-## Deployment Guide
-
-**Configuration**: [vercel.json](file:///Users/adarshpriydarshi/Desktop/Food-Delivery-Full-Stack-App/frontend/vercel.json)
-
+**Configuration** (`vercel.json`):
 ```json
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com; connect-src 'self' https://api.stripe.com https://api.geoapify.com wss://food-delivery-full-stack-app-3.onrender.com ws://localhost:8000; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline';"
-        }
-      ]
-    }
   ]
 }
 ```
 
 **Environment Variables**:
 ```env
-VITE_FIREBASE_APIKEY=...
-VITE_GEOAPIKEY=...
-VITE_STRIPE_PUBLISHABLE_KEY=...
-VITE_API_BASE=https://backend-url.com
+VITE_FIREBASE_APIKEY=xxx
+VITE_GEOAPIKEY=xxx
+VITE_STRIPE_PUBLISHABLE_KEY=pk_xxx
+VITE_API_BASE=https://api.bitedash.com
 ```
 
-**Build Command**: `npm run build`  
-**Output Directory**: `dist`
+**Build**: `npm run build`  
+**Output**: `dist/`
 
 ---
 
@@ -1696,49 +745,51 @@ VITE_API_BASE=https://backend-url.com
 **Environment Variables**:
 ```env
 PORT=8000
-MONGODB_URL=mongodb+srv://...
-JWT_SECRET=...
-STRIPE_SECRET_KEY=...
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-SENDGRID_API_KEY=...
-FRONTEND_URL=https://your-frontend.vercel.app
-MASTER_OTP=5646
+NODE_ENV=production
+MONGODB_URL=mongodb+srv://xxx
+JWT_SECRET=xxx
+STRIPE_SECRET_KEY=sk_xxx
+CLOUDINARY_CLOUD_NAME=xxx
+CLOUDINARY_API_KEY=xxx
+CLOUDINARY_API_SECRET=xxx
+SENDGRID_API_KEY=SG.xxx
+FRONTEND_URL=https://bitedash.vercel.app
 ```
 
-**Start Command**: `npm start`  
+**Start**: `npm start`  
 **Health Check**: `GET /`
 
 ---
 
 ### Database (MongoDB Atlas)
 
-**Connection String**:
-```
-mongodb+srv://username:password@cluster.mongodb.net/vingo?retryWrites=true&w=majority
-```
-
 **Indexes**:
-- `users.email` (unique)
-- `users.location` (2dsphere)
-- `orders.user` (ascending)
-- `items.shop` (ascending)
+```javascript
+users.createIndex({ email: 1 }, { unique: true })
+users.createIndex({ location: '2dsphere' })
+orders.createIndex({ user: 1 })
+items.createIndex({ shop: 1 })
+```
 
 ---
 
-## Conclusion
+## Summary
 
-This documentation provides a comprehensive overview of the **Vingo Food Delivery Platform**. The system is production-ready with:
+| Metric | Value |
+|:-------|:------|
+| **Frontend Pages** | 17 |
+| **Backend APIs** | 30+ |
+| **Database Models** | 5 |
+| **Test Coverage** | 62 tests passing |
+| **Build Time** | ~7 seconds |
+| **Bundle Size** | ~1.2 MB (gzipped: ~350 KB) |
 
-- ✅ **17 frontend pages** (all documented)
-- ✅ **30+ backend APIs** (all documented)
-- ✅ **5 database models** (fully explained)
-- ✅ **Real-time features** (Socket.IO)
-- ✅ **Payment integration** (Stripe + COD)
-- ✅ **Performance optimized** (70% faster)
-- ✅ **100% test coverage** (62 tests passing)
+---
 
-**For Support**: Contact development team  
-**Version**: 1.0.0  
-**Last Updated**: December 21, 2025
+<div align="center">
+
+**Built with ❤️ by BiteDash Team**
+
+[Report Bug](https://github.com/bitedash/issues) • [Request Feature](https://github.com/bitedash/issues)
+
+</div>

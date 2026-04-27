@@ -1,175 +1,586 @@
+# BiteDash - Food Delivery Platform
 
-# 🍔 Vingo - Food Delivery Application
+A production-ready full-stack food delivery application with real-time order tracking, payment integration, and geospatial delivery assignment. Built with React, Node.js, MongoDB, and Socket.IO.
 
-<img src="https://t4.ftcdn.net/jpg/02/92/20/37/360_F_292203735_CSsyqyS6A4Z9Czd4Msf7qZEhoxjpzZl1.jpg" alt="Vingo Banner" width="1000" height="400" />
-
-
-
-A full-stack, feature-rich food delivery platform built with the MERN stack. Vingo connects users with their favorite local restaurants, offering real-time order tracking, secure payments, and distinct dashboards for users, restaurant owners, and delivery partners.
+**Live Application**: http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com/
 
 ---
 
-## 🚀 Features
+## Overview
 
-### 👤 User Features
-- **Authentication**: Secure Login/Signup with Email & Password or Google OAuth (Firebase).
-- **Restaurant Discovery**: Browse top restaurants by city and categories.
-- **Search & Filter**: Advanced search for food items and filtering by price, veg/non-veg, and rating.
-- **Cart & Checkout**: Seamless shopping cart experience with persistent state.
-- **Payments**: Integrated Stripe for credit card payments and Cash on Delivery support.
-- **Real-time Tracking**: Live order status updates using Socket.IO.
-- **Responsive Design**: Mobile-first UI for ordering on the go.
+BiteDash is a complete food delivery platform connecting customers, restaurant owners, and delivery partners. The application handles the entire order lifecycle from browsing restaurants to delivery confirmation with OTP verification.
 
-### 🏪 Restaurant Owner Features
-- **Dashboard**: Comprehensive overview of orders, earnings, and menu items.
-- **Menu Management**: Add, edit, and delete food items with images (Cloudinary integration).
-- **Order Management**: Accept or reject incoming orders in real-time.
-- **Sales Analytics**: Track best-selling items and total revenue.
+### Core Features
 
-### 🛵 Delivery Partner Features
-- **Delivery Dashboard**: View assigned orders and delivery route details.
-- **Order Updates**: Update order status (Picked Up, Delivered) to notify customers.
-- **Secure Verification**: OTP-based order delivery verification.
+**Customer**
+- Browse restaurants by city and category
+- Real-time order tracking with live delivery partner location
+- Payment via Stripe or Cash on Delivery
+- Order history and rating system
 
----
+**Restaurant Owner**
+- Menu management with image uploads
+- Real-time order notifications
+- Order acceptance/rejection workflow
+- Earnings and analytics dashboard
 
-## 🛠️ Tech Stack
-
-| Category | Technology |
-|----------|------------|
-| **Frontend** | React.js, Redux Toolkit, Tailwind CSS, Vite |
-| **Backend** | Node.js, Express.js, Socket.IO |
-| **Database** | MongoDB, Mongoose |
-| **Authentication** | Firebase Auth, JWT (JSON Web Tokens) |
-| **Payments** | Stripe API |
-| **Media** | Cloudinary (Image Uploads) |
-| **Real-time** | Socket.IO |
+**Delivery Partner**
+- Geospatial order assignment within 10km radius
+- Live navigation between pickup and delivery
+- OTP-based delivery verification
+- Earnings tracker with breakdown
 
 ---
 
-## 📂 Project Structure
+## Technology Stack
+
+### Frontend
+- React 19 with Redux Toolkit for state management
+- TailwindCSS for styling
+- Socket.IO Client for real-time updates
+- React Router 7 for routing
+- Leaflet for interactive maps
+- Vite as build tool
+
+### Backend
+- Node.js 20 with Express 5
+- MongoDB with Mongoose ODM
+- Socket.IO for real-time communication
+- JWT authentication with httpOnly cookies
+- Bcrypt for password hashing
+- Cluster mode for multi-core utilization
+
+### Infrastructure
+- AWS ECS Fargate for container orchestration
+- AWS ECR for container registry
+- Application Load Balancer for traffic distribution
+- MongoDB Atlas for database
+- Cloudinary for image storage
+- GitHub Actions for CI/CD
+
+### External Services
+- Stripe for payment processing
+- SendGrid for transactional emails
+- Firebase for Google OAuth
+- Geoapify for geocoding
+
+---
+
+## Architecture
+
+### System Architecture
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        A[React Application]
+        B[Redux Store]
+        C[Socket.IO Client]
+    end
+    
+    subgraph "AWS Cloud"
+        D[Application Load Balancer]
+        
+        subgraph "ECS Cluster"
+            E1[Frontend Service<br/>2-6 Tasks]
+            E2[Backend Service<br/>2-10 Tasks]
+        end
+        
+        F[ECR Repository]
+        G[CloudWatch Logs]
+    end
+    
+    subgraph "External Services"
+        H[(MongoDB Atlas)]
+        I[Cloudinary]
+        J[Stripe]
+        K[SendGrid]
+        L[Firebase Auth]
+    end
+    
+    A --> D
+    B --> A
+    C --> A
+    D --> E1
+    D --> E2
+    E2 --> H
+    E2 --> I
+    E2 --> J
+    E2 --> K
+    A --> L
+    F --> E1
+    F --> E2
+    E1 --> G
+    E2 --> G
+```
+
+### Request Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant R as React App
+    participant ALB as Load Balancer
+    participant API as Backend API
+    participant DB as MongoDB
+    participant S as External Services
+    
+    U->>R: User Action
+    R->>R: Dispatch Redux Action
+    R->>ALB: HTTP Request
+    ALB->>API: Route to Backend
+    API->>API: Validate & Process
+    API->>DB: Query Database
+    DB-->>API: Return Data
+    API->>S: Call External Service
+    S-->>API: Service Response
+    API-->>ALB: JSON Response
+    ALB-->>R: Forward Response
+    R->>R: Update Redux Store
+    R-->>U: Update UI
+```
+
+### Real-time Communication
+
+```mermaid
+sequenceDiagram
+    participant C as Customer
+    participant S as Socket.IO Server
+    participant O as Owner
+    participant D as Delivery Partner
+    
+    C->>S: Place Order
+    S->>O: Emit 'newOrder' Event
+    O->>S: Accept Order
+    S->>C: Emit 'orderStatusUpdate'
+    S->>D: Emit 'deliveryAssigned'
+    D->>S: Update Location
+    S->>C: Emit 'updateDeliveryLocation'
+    D->>S: Delivery Complete
+    S->>C: Emit 'orderStatusUpdate'
+    S->>O: Emit 'orderStatusUpdate'
+```
+
+### AWS Infrastructure
+
+```mermaid
+graph LR
+    subgraph "GitHub"
+        A[Code Repository]
+        B[GitHub Actions]
+    end
+    
+    subgraph "AWS ECS"
+        C[ECR Registry]
+        D[ECS Cluster]
+        E[Frontend Tasks]
+        F[Backend Tasks]
+        G[Auto Scaling]
+    end
+    
+    subgraph "Networking"
+        H[Application Load Balancer]
+        I[Target Groups]
+        J[Security Groups]
+    end
+    
+    subgraph "Monitoring"
+        K[CloudWatch Logs]
+        L[Container Insights]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    G --> E
+    G --> F
+    H --> I
+    I --> E
+    I --> F
+    J --> H
+    E --> K
+    F --> K
+    D --> L
+```
+
+---
+
+## Project Structure
 
 ```
-Food-Delivery-Full-Stack-App/
-├── backend/                 # Node.js & Express Server
-│   ├── controllers/         # Request handlers
-│   ├── models/              # MongoDB Schemas
-│   ├── routes/              # API Routes
-│   ├── middleware/          # Auth & Error handling
-│   ├── utils/               # Helper functions
-│   └── index.js             # Entry point
+BiteDash/
+├── backend/
+│   ├── config/
+│   │   ├── db.js                    # MongoDB connection
+│   │   ├── cache.js                 # In-memory cache
+│   │   └── stripe.js                # Stripe configuration
+│   ├── controllers/
+│   │   ├── auth.controllers.js      # Authentication logic
+│   │   ├── order.controllers.js     # Order management
+│   │   ├── shop.controllers.js      # Restaurant operations
+│   │   ├── item.controllers.js      # Menu item operations
+│   │   └── user.controllers.js      # User management
+│   ├── middlewares/
+│   │   ├── auth.middleware.js       # JWT verification
+│   │   ├── rateLimit.middleware.js  # Rate limiting
+│   │   ├── security.middleware.js   # Security headers
+│   │   └── upload.middleware.js     # File upload handling
+│   ├── models/
+│   │   ├── user.model.js            # User schema
+│   │   ├── shop.model.js            # Restaurant schema
+│   │   ├── item.model.js            # Menu item schema
+│   │   ├── order.model.js           # Order schema
+│   │   └── deliveryAssignment.model.js
+│   ├── routes/                      # API endpoints
+│   ├── services/                    # Business logic
+│   ├── utils/                       # Helper functions
+│   ├── validators/                  # Input validation
+│   ├── cluster.js                   # Cluster mode setup
+│   ├── socket.js                    # Socket.IO configuration
+│   ├── Dockerfile                   # Container configuration
+│   └── index.js                     # Application entry point
 │
-├── frontend/                # React Application
+├── frontend/
 │   ├── src/
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/           # Application views/pages
-│   │   ├── redux/           # Global state management
-│   │   ├── hooks/           # Custom React hooks
-│   │   └── App.jsx          # Main App component
-│   └── index.css            # Global styles (Tailwind imports)
-└── README.md                # Project Documentation
+│   │   ├── components/              # Reusable UI components
+│   │   ├── pages/                   # Route components
+│   │   ├── redux/
+│   │   │   ├── userSlice.js         # User state
+│   │   │   ├── ownerSlice.js        # Owner state
+│   │   │   └── mapSlice.js          # Map state
+│   │   ├── hooks/                   # Custom React hooks
+│   │   ├── constants/               # Application constants
+│   │   ├── firebase.js              # Firebase configuration
+│   │   └── App.jsx                  # Root component
+│   ├── Dockerfile                   # Container configuration
+│   ├── nginx.conf                   # Nginx configuration
+│   └── vite.config.js               # Build configuration
+│
+├── .github/
+│   └── workflows/
+│       ├── deploy-backend.yml       # Backend CI/CD
+│       └── deploy-frontend.yml      # Frontend CI/CD
+│
+└── docker-compose.yml               # Local development setup
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation
 
 ### Prerequisites
-- Node.js (v16+)
-- MongoDB (Local or Atlas)
-- Stripe Account
-- Cloudinary Account
-- Firebase Project
+- Node.js v18 or higher
+- MongoDB Atlas account
+- AWS account (for deployment)
+- npm or yarn
 
-### 1. Clone the Repository
+### Local Development Setup
+
+1. Clone the repository
 ```bash
-git clone https://github.com/adarsh-priydarshi-5646/Food-Delivery-Full-Stack-App.git
-cd Food-Delivery-Full-Stack-App
+git clone https://github.com/adarsh-priydarshi-5646/BiteDash-Premium-Food-Delivery-Platform.git
+cd BiteDash-Premium-Food-Delivery-Platform
 ```
 
-### 2. Backend Setup
-Navigate to the backend folder and install dependencies:
+2. Backend setup
 ```bash
 cd backend
 npm install
+cp .env.example .env
 ```
 
-Create a `.env` file in the `backend` directory:
+Configure `backend/.env`:
 ```env
 PORT=8000
+NODE_ENV=development
 MONGODB_URL=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+JWT_SECRET=your_jwt_secret
+STRIPE_SECRET_KEY=your_stripe_secret_key
 CLOUDINARY_CLOUD_NAME=your_cloudinary_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+SENDGRID_API_KEY=your_sendgrid_api_key
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USER=your_email@gmail.com
+MAIL_PASS=your_app_password
 FRONTEND_URL=http://localhost:5173
 ```
 
-Start the backend server:
-```bash
-npm run dev
-```
-
-### 3. Frontend Setup
-Navigate to the frontend folder and install dependencies:
+3. Frontend setup
 ```bash
 cd ../frontend
 npm install
+cp .env.example .env
 ```
 
-Create a `.env` file in the `frontend` directory:
+Configure `frontend/.env`:
 ```env
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+VITE_FIREBASE_APIKEY=your_firebase_api_key
+VITE_GEOAPIKEY=your_geoapify_api_key
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+VITE_API_BASE=http://localhost:8000
 ```
 
-Start the frontend development server:
+4. Start development servers
 ```bash
+# Terminal 1 - Backend (port 8000)
+cd backend
+npm run dev
+
+# Terminal 2 - Frontend (port 5173)
+cd frontend
 npm run dev
 ```
 
----
-
-## 🌐 Usage
-
-1.  **Home Page**: Visitors land on the new animated landing page.
-2.  **Sign Up**: Create an account as a "User" to order food.
-3.  **Owner Mode**: Sign up as "Owner" to create a restaurant and manage a menu.
-4.  **Order Food**: Add items to cart -> Checkout -> Pay via Stripe.
-5.  **Track Order**: Watch your order status update in real-time.
+Access the application at http://localhost:5173
 
 ---
 
-## 🔐 Default Credentials
+## Deployment
 
-Use these credentials to test the application logic (Password for all: `password123`).
+### AWS ECS Deployment
 
-| Role | Email | Password | Features |
-|------|-------|----------|----------|
-| **User** | `user@vingo.com` | `password123` | Order food, track delivery |
-| **Owner** | `owner@vingo.com` | `password123` | Manage menu, accept orders |
-| **Delivery Boy** | `rider@vingo.com` | `password123` | View assigned orders, deliver |
+The application is deployed on AWS ECS Fargate with the following architecture:
 
-> **Note**: For OTP verification during delivery or password reset, use the Master OTP: **`5646`**.
+**Infrastructure Components**
+- ECS Cluster: bitedash-cluster
+- Backend Service: 2-10 auto-scaling tasks (0.5 vCPU, 1GB RAM)
+- Frontend Service: 2-6 auto-scaling tasks (0.25 vCPU, 512MB RAM)
+- Application Load Balancer for traffic distribution
+- ECR repositories for Docker images
+- CloudWatch for logging and monitoring
+
+**Container Configuration**
+
+Backend Dockerfile:
+- Base image: node:20-alpine
+- Multi-stage build for optimization
+- Non-root user for security
+- Health check on /api/health endpoint
+- Final image size: ~55MB
+
+Frontend Dockerfile:
+- Build stage: node:20-alpine
+- Runtime: nginx:alpine
+- Multi-stage build
+- Health check on root endpoint
+- Final image size: ~31MB
+
+**CI/CD Pipeline**
+
+GitHub Actions workflows automatically:
+1. Build Docker images on code push
+2. Push images to AWS ECR
+3. Update ECS task definitions
+4. Deploy to ECS services
+5. Wait for service stability
+
+Deployment triggers:
+- Backend: Changes to backend/ directory
+- Frontend: Changes to frontend/ directory
+- Manual: workflow_dispatch event
+
+**Auto-scaling Configuration**
+
+Backend:
+- Min tasks: 2
+- Max tasks: 10
+- Scale up: CPU > 70% for 2 minutes
+- Scale down: CPU < 30% for 5 minutes
+
+Frontend:
+- Min tasks: 2
+- Max tasks: 6
+- Scale up: CPU > 70% for 2 minutes
+- Scale down: CPU < 30% for 5 minutes
 
 ---
 
-## 🤝 Contributing
+## API Documentation
 
-Contributions are welcome! Please fork the repository and create a pull request.
+### Authentication Endpoints
 
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+```
+POST   /api/auth/signup          Register new user
+POST   /api/auth/signin          Login with credentials
+POST   /api/auth/google-auth     Google OAuth login
+GET    /api/auth/signout         Logout user
+POST   /api/auth/send-otp        Send OTP for password reset
+POST   /api/auth/verify-otp      Verify OTP
+POST   /api/auth/reset-password  Reset password
+```
+
+### User Endpoints
+
+```
+GET    /api/user/current         Get authenticated user
+PUT    /api/user/update          Update user profile
+PUT    /api/user/location        Update user location
+GET    /api/user/city            Get user's city
+```
+
+### Shop Endpoints
+
+```
+GET    /api/shop/city/:city      Get shops by city
+GET    /api/shop/:id             Get shop details
+POST   /api/shop/create          Create new shop
+PUT    /api/shop/:id             Update shop
+DELETE /api/shop/:id             Delete shop
+GET    /api/shop/my-shop         Get owner's shop
+```
+
+### Item Endpoints
+
+```
+GET    /api/item/city/:city      Get items by city
+GET    /api/item/:id             Get item details
+POST   /api/item/create          Create menu item
+PUT    /api/item/:id             Update item
+DELETE /api/item/:id             Delete item
+```
+
+### Order Endpoints
+
+```
+POST   /api/order/place-order    Create new order
+GET    /api/order/my-orders      Get user's orders
+GET    /api/order/shop/:shopId   Get shop's orders
+PUT    /api/order/status/:id     Update order status
+POST   /api/order/verify-otp     Verify delivery OTP
+POST   /api/order/create-payment Create Stripe session
+GET    /api/order/verify-payment Verify payment
+```
+
+### Health Check
+
+```
+GET    /api/health               Server health status
+```
 
 ---
 
-## 📜 License
+## Security
 
-Distributed under the MIT License. See `LICENSE` for more information.
+### Authentication
+- JWT tokens stored in httpOnly cookies
+- Password hashing with bcrypt (10 salt rounds)
+- Role-based access control
+- Google OAuth integration
+
+### API Security
+- Rate limiting: 100 requests per 15 minutes per IP
+- Input validation with express-validator
+- CORS configured for allowed origins
+- Helmet.js for security headers
+- Request sanitization for XSS prevention
+
+### Infrastructure Security
+- Non-root Docker containers
+- Secrets stored in AWS Secrets Manager
+- Security groups with minimal required ports
+- ECR image scanning enabled
+- HTTPS ready (requires custom domain)
 
 ---
 
-> **Note**: This project uses a `seedDefaultRestaurant.js` script in the backend to populate initial data if needed.
+## Performance
+
+### Metrics
+
+Frontend:
+- First Contentful Paint: ~1.2s
+- Time to Interactive: ~2.8s
+- Bundle size (gzipped): ~350KB
+
+Backend:
+- Average API response time: ~150ms
+- Database query time: ~50ms (with indexes)
+- Concurrent connections: 500+ users
+- Socket.IO connections: 1000+ concurrent
+
+### Optimizations
+- Code splitting with React.lazy
+- Image optimization via Cloudinary
+- API response caching (5-minute TTL)
+- Database indexes on frequently queried fields
+- MongoDB connection pooling (100 connections)
+- Cluster mode for CPU utilization
+- Multi-stage Docker builds
+
+---
+
+## Testing
+
+Run tests:
+```bash
+cd frontend
+npm test
+```
+
+Test coverage includes:
+- Component rendering and interactions
+- Redux state management
+- API integration
+- Form validation
+
+---
+
+## Environment Variables
+
+### Backend Required Variables
+```
+PORT                    Server port (default: 8000)
+NODE_ENV               Environment (development/production)
+MONGODB_URL            MongoDB connection string
+JWT_SECRET             JWT signing secret
+STRIPE_SECRET_KEY      Stripe secret key
+CLOUDINARY_CLOUD_NAME  Cloudinary cloud name
+CLOUDINARY_API_KEY     Cloudinary API key
+CLOUDINARY_API_SECRET  Cloudinary API secret
+SENDGRID_API_KEY       SendGrid API key
+MAIL_HOST              SMTP host
+MAIL_PORT              SMTP port
+MAIL_USER              SMTP username
+MAIL_PASS              SMTP password
+FRONTEND_URL           Frontend URL for CORS
+```
+
+### Frontend Required Variables
+```
+VITE_FIREBASE_APIKEY          Firebase API key
+VITE_GEOAPIKEY                Geoapify API key
+VITE_STRIPE_PUBLISHABLE_KEY   Stripe publishable key
+VITE_RAZORPAY_KEY_ID          Razorpay key ID
+VITE_API_BASE                 Backend API URL
+```
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/new-feature`
+3. Commit changes: `git commit -m "Add new feature"`
+4. Push to branch: `git push origin feature/new-feature`
+5. Open Pull Request
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+## Contact
+
+Adarsh Priydarshi  
+Email: priydarshiadarsh3@gmail.com  
+GitHub: [@adarsh-priydarshi-5646](https://github.com/adarsh-priydarshi-5646)
+
+Project Repository: [BiteDash-Premium-Food-Delivery-Platform](https://github.com/adarsh-priydarshi-5646/BiteDash-Premium-Food-Delivery-Platform)

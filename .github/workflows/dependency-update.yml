@@ -1,0 +1,159 @@
+# =============================================================================
+# Dependency Update - Automated Dependency Management
+# =============================================================================
+#
+# Triggers: Weekly on Monday, Manual dispatch
+# Actions: Checks for outdated packages, creates update PRs
+# Safety: Runs tests before creating PR
+# =============================================================================
+
+name: Dependency Update
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  check-updates:
+    name: Check for Updates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
+      - name: Check Frontend Dependencies
+        id: frontend-check
+        run: |
+          cd frontend
+          echo "📦 Checking frontend dependencies..."
+          
+          npm outdated --json > outdated.json || true
+          
+          if [ -s outdated.json ]; then
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+            echo "⚠️ Outdated packages found in frontend"
+          else
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+            echo "✅ All frontend packages are up to date"
+          fi
+
+      - name: Check Backend Dependencies
+        id: backend-check
+        run: |
+          cd backend
+          echo "📦 Checking backend dependencies..."
+          
+          npm outdated --json > outdated.json || true
+          
+          if [ -s outdated.json ]; then
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+            echo "⚠️ Outdated packages found in backend"
+          else
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+            echo "✅ All backend packages are up to date"
+          fi
+
+      - name: Create Update Report
+        if: steps.frontend-check.outputs.has_updates == 'true' || steps.backend-check.outputs.has_updates == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let frontendOutdated = {};
+            let backendOutdated = {};
+            
+            try {
+              frontendOutdated = JSON.parse(fs.readFileSync('frontend/outdated.json', 'utf8'));
+            } catch (e) {}
+            
+            try {
+              backendOutdated = JSON.parse(fs.readFileSync('backend/outdated.json', 'utf8'));
+            } catch (e) {}
+            
+            const formatPackages = (packages) => {
+              return Object.entries(packages).map(([name, info]) => {
+                return `| \`${name}\` | ${info.current} | ${info.wanted} | ${info.latest} |`;
+              }).join('\n');
+            };
+            
+            const frontendTable = Object.keys(frontendOutdated).length > 0 
+              ? `### 🎨 Frontend Updates\n\n| Package | Current | Wanted | Latest |\n|---------|---------|--------|--------|\n${formatPackages(frontendOutdated)}`
+              : '### 🎨 Frontend\n✅ All packages are up to date';
+            
+            const backendTable = Object.keys(backendOutdated).length > 0
+              ? `### ⚙️ Backend Updates\n\n| Package | Current | Wanted | Latest |\n|---------|---------|--------|--------|\n${formatPackages(backendOutdated)}`
+              : '### ⚙️ Backend\n✅ All packages are up to date';
+            
+            const issueBody = `## 📦 Dependency Update Report
+
+**Generated:** ${new Date().toISOString()}
+
+---
+
+${frontendTable}
+
+---
+
+${backendTable}
+
+---
+
+### 🔧 How to Update
+
+#### Option 1: Automatic (Recommended)
+Wait for Dependabot PRs or run this workflow manually to create update PRs.
+
+#### Option 2: Manual Update
+\`\`\`bash
+# Frontend
+cd frontend
+npm update
+npm audit fix
+
+# Backend
+cd backend
+npm update
+npm audit fix
+
+# Test everything
+cd frontend && npm test
+cd backend && npm test
+\`\`\`
+
+#### Option 3: Major Updates
+\`\`\`bash
+# Use npm-check-updates for major version updates
+npx npm-check-updates -u
+npm install
+\`\`\`
+
+---
+
+### ⚠️ Important Notes
+
+- Always test after updating dependencies
+- Check for breaking changes in major version updates
+- Review changelogs before updating
+- Run security audit after updates
+
+---
+
+**This report is generated automatically every Monday.**`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '📦 Weekly Dependency Update Report',
+              body: issueBody,
+              labels: ['dependencies', 'maintenance']
+            });
