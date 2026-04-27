@@ -1,0 +1,109 @@
+name: Setup Cloudflare Tunnel
+
+on:
+  workflow_dispatch:
+    inputs:
+      tunnel_token:
+        description: 'Cloudflare Tunnel Token (from Cloudflare Dashboard)'
+        required: true
+        type: string
+
+env:
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: bitedash-cluster
+
+jobs:
+  setup-tunnel:
+    name: Configure Cloudflare Tunnel
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create CloudWatch Log Group for Cloudflared
+        run: |
+          aws logs create-log-group \
+            --log-group-name /ecs/bitedash-cloudflared \
+            --region ${{ env.AWS_REGION }} || echo "Log group already exists"
+
+      - name: Get current backend task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition bitedash-backend-task \
+            --region ${{ env.AWS_REGION }} \
+            --query 'taskDefinition' > task-def.json
+
+      - name: Add Cloudflared sidecar container
+        run: |
+          cat task-def.json | jq --arg token "${{ inputs.tunnel_token }}" '
+            del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy) |
+            .containerDefinitions += [{
+              "name": "cloudflared",
+              "image": "cloudflare/cloudflared:latest",
+              "essential": false,
+              "command": [
+                "tunnel",
+                "--no-autoupdate",
+                "run",
+                "--token",
+                $token
+              ],
+              "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                  "awslogs-group": "/ecs/bitedash-cloudflared",
+                  "awslogs-region": "us-east-1",
+                  "awslogs-stream-prefix": "cloudflared"
+                }
+              },
+              "portMappings": [],
+              "environment": [],
+              "mountPoints": [],
+              "volumesFrom": []
+            }]
+          ' > task-def-updated.json
+
+      - name: Register new task definition
+        run: |
+          aws ecs register-task-definition \
+            --cli-input-json file://task-def-updated.json \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Update ECS service
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service bitedash-backend-service \
+            --task-definition bitedash-backend-task \
+            --force-new-deployment \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Wait for service to stabilize
+        run: |
+          echo "Waiting for service to stabilize..."
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services bitedash-backend-service \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Verify deployment
+        run: |
+          echo "✅ Cloudflare Tunnel deployed successfully!"
+          echo ""
+          echo "Your application is now accessible via HTTPS through Cloudflare Tunnel"
+          echo "Check your Cloudflare Dashboard for the public URL"
+          echo ""
+          echo "Next steps:"
+          echo "1. Go to Cloudflare Zero Trust Dashboard"
+          echo "2. Navigate to Networks → Tunnels"
+          echo "3. Find your tunnel and note the public hostname"
+          echo "4. Update FRONTEND_URL and BACKEND_URL environment variables with the new URL"
