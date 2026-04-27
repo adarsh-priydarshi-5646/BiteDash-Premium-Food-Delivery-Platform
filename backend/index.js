@@ -119,6 +119,7 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     pid: process.pid,
+    version: '1.0.0',
   });
 });
 
