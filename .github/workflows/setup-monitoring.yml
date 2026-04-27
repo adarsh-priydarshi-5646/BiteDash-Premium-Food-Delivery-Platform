@@ -1,0 +1,97 @@
+name: Setup CloudWatch Monitoring
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: bitedash-cluster
+
+jobs:
+  setup-alarms:
+    name: Configure CloudWatch Alarms
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create Backend CPU Alarm
+        run: |
+          aws cloudwatch put-metric-alarm \
+            --alarm-name bitedash-backend-high-cpu \
+            --alarm-description "Alert when backend CPU exceeds 80%" \
+            --metric-name CPUUtilization \
+            --namespace AWS/ECS \
+            --statistic Average \
+            --period 300 \
+            --evaluation-periods 2 \
+            --threshold 80 \
+            --comparison-operator GreaterThanThreshold \
+            --dimensions Name=ServiceName,Value=bitedash-backend-service Name=ClusterName,Value=bitedash-cluster
+
+      - name: Create Backend Memory Alarm
+        run: |
+          aws cloudwatch put-metric-alarm \
+            --alarm-name bitedash-backend-high-memory \
+            --alarm-description "Alert when backend memory exceeds 85%" \
+            --metric-name MemoryUtilization \
+            --namespace AWS/ECS \
+            --statistic Average \
+            --period 300 \
+            --evaluation-periods 2 \
+            --threshold 85 \
+            --comparison-operator GreaterThanThreshold \
+            --dimensions Name=ServiceName,Value=bitedash-backend-service Name=ClusterName,Value=bitedash-cluster
+
+      - name: Create Frontend CPU Alarm
+        run: |
+          aws cloudwatch put-metric-alarm \
+            --alarm-name bitedash-frontend-high-cpu \
+            --alarm-description "Alert when frontend CPU exceeds 80%" \
+            --metric-name CPUUtilization \
+            --namespace AWS/ECS \
+            --statistic Average \
+            --period 300 \
+            --evaluation-periods 2 \
+            --threshold 80 \
+            --comparison-operator GreaterThanThreshold \
+            --dimensions Name=ServiceName,Value=bitedash-frontend-service Name=ClusterName,Value=bitedash-cluster
+
+      - name: Create ALB Target Health Alarm
+        run: |
+          aws cloudwatch put-metric-alarm \
+            --alarm-name bitedash-unhealthy-targets \
+            --alarm-description "Alert when targets are unhealthy" \
+            --metric-name UnHealthyHostCount \
+            --namespace AWS/ApplicationELB \
+            --statistic Average \
+            --period 60 \
+            --evaluation-periods 2 \
+            --threshold 1 \
+            --comparison-operator GreaterThanOrEqualToThreshold \
+            --dimensions Name=LoadBalancer,Value=app/bitedash-alb/720d6a4a8170a7b8
+
+      - name: Create ALB 5XX Error Alarm
+        run: |
+          aws cloudwatch put-metric-alarm \
+            --alarm-name bitedash-alb-5xx-errors \
+            --alarm-description "Alert on high 5XX error rate" \
+            --metric-name HTTPCode_Target_5XX_Count \
+            --namespace AWS/ApplicationELB \
+            --statistic Sum \
+            --period 300 \
+            --evaluation-periods 1 \
+            --threshold 10 \
+            --comparison-operator GreaterThanThreshold \
+            --dimensions Name=LoadBalancer,Value=app/bitedash-alb/720d6a4a8170a7b8
+
+      - name: Verify Alarms Created
+        run: |
+          echo "CloudWatch Alarms configured successfully!"
+          aws cloudwatch describe-alarms --alarm-name-prefix bitedash --query 'MetricAlarms[*].[AlarmName,StateValue]' --output table

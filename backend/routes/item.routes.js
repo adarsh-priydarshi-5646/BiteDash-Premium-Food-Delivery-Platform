@@ -7,7 +7,7 @@
  */
 import express from 'express';
 import isAuth from '../middlewares/auth.middleware.js';
-import { cacheMiddleware } from '../config/cache.js';
+import { cacheMiddleware } from '../middlewares/cache.middleware.js';
 import { searchRateLimiter } from '../middlewares/rateLimit.middleware.js';
 import {
   addItem,
