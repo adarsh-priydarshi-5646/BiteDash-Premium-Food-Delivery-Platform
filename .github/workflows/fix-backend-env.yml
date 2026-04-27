@@ -1,0 +1,122 @@
+name: Fix Backend Environment Variables
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: bitedash-cluster
+  ECS_SERVICE: bitedash-backend-service
+  ECS_TASK_DEFINITION: bitedash-backend-task
+  CONTAINER_NAME: bitedash-backend
+
+jobs:
+  fix-env:
+    name: Update Backend Environment Variables
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Download current task definition
+        run: |
+          echo "📥 Downloading current task definition..."
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.ECS_TASK_DEFINITION }} \
+            --query taskDefinition > task-definition.json
+          
+          echo "✅ Current task definition downloaded"
+
+      - name: Update environment variables
+        run: |
+          echo "🔧 Updating environment variables..."
+          
+          # Read current task definition
+          TASK_DEF=$(cat task-definition.json)
+          
+          # Extract container definitions and update environment variables
+          UPDATED_TASK_DEF=$(echo $TASK_DEF | jq --arg BACKEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
+            --arg FRONTEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
+            '.containerDefinitions[0].environment |= 
+            map(if .name == "BACKEND_URL" then .value = $BACKEND_URL 
+                elif .name == "FRONTEND_URL" then .value = $FRONTEND_URL 
+                else . end)')
+          
+          # Create new task definition JSON
+          echo $TASK_DEF | jq --arg BACKEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
+            --arg FRONTEND_URL "http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com" \
+            '.containerDefinitions[0].environment = (
+              .containerDefinitions[0].environment // [] | 
+              map(select(.name != "BACKEND_URL" and .name != "FRONTEND_URL")) + 
+              [{"name": "BACKEND_URL", "value": $BACKEND_URL}, {"name": "FRONTEND_URL", "value": $FRONTEND_URL}]
+            ) | 
+            {
+              family: .family,
+              taskRoleArn: .taskRoleArn,
+              executionRoleArn: .executionRoleArn,
+              networkMode: .networkMode,
+              containerDefinitions: .containerDefinitions,
+              requiresCompatibilities: .requiresCompatibilities,
+              cpu: .cpu,
+              memory: .memory
+            }' > new-task-definition.json
+          
+          echo "✅ Environment variables updated"
+          echo "📋 New environment variables:"
+          cat new-task-definition.json | jq '.containerDefinitions[0].environment[] | select(.name == "BACKEND_URL" or .name == "FRONTEND_URL")'
+
+      - name: Register new task definition
+        run: |
+          echo "📝 Registering new task definition..."
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-task-definition.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          
+          echo "✅ New task definition registered: $NEW_TASK_DEF_ARN"
+          echo "TASK_DEF_ARN=$NEW_TASK_DEF_ARN" >> $GITHUB_ENV
+
+      - name: Update ECS service
+        run: |
+          echo "🔄 Updating ECS service with new task definition..."
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --task-definition ${{ env.TASK_DEF_ARN }} \
+            --force-new-deployment
+          
+          echo "✅ Service update initiated"
+
+      - name: Wait for service stability
+        run: |
+          echo "⏳ Waiting for service to stabilize (this may take 3-5 minutes)..."
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }}
+          
+          echo "✅ Service is stable!"
+
+      - name: Verify deployment
+        run: |
+          echo "╔══════════════════════════════════════════════════════════════╗"
+          echo "║           BACKEND ENVIRONMENT VARIABLES UPDATED              ║"
+          echo "╠══════════════════════════════════════════════════════════════╣"
+          echo "║ BACKEND_URL:  http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com"
+          echo "║ FRONTEND_URL: http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com"
+          echo "╚══════════════════════════════════════════════════════════════╝"
+          echo ""
+          echo "✅ Google OAuth should now work correctly!"
+          echo "🔗 Test at: http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Failed to update environment variables!"
+          echo "Please check the logs above for details."
