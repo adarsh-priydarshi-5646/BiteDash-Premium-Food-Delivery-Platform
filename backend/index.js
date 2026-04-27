@@ -15,6 +15,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import connectDb from './config/db.js';
+import { createIndexes } from './config/indexes.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
@@ -35,6 +36,7 @@ import {
   sanitizeRequest,
 } from './middlewares/security.middleware.js';
 import { socketHandler } from './socket.js';
+import logger from './utils/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -97,6 +99,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use(sanitizeRequest);
+app.use(logger.requestLogger());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
@@ -112,19 +115,41 @@ app.use('/api/shop', shopRouter);
 app.use('/api/item', itemRouter);
 app.use('/api/order', orderRouter);
 
-app.get('/api/health', (req, res) => {
-  res.json({
+app.get('/api/health', async (req, res) => {
+  const health = {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     pid: process.pid,
     version: '1.0.0',
-  });
+  };
+
+  // Check database connection
+  try {
+    const mongoose = await import('mongoose');
+    if (mongoose.default.connection.readyState === 1) {
+      health.database = 'connected';
+    } else {
+      health.database = 'disconnected';
+      health.status = 'degraded';
+    }
+  } catch (error) {
+    health.database = 'error';
+    health.status = 'unhealthy';
+  }
+
+  const statusCode = health.status === 'healthy' ? 200 : 503;
+  res.status(statusCode).json(health);
 });
 
 app.use((err, req, res, next) => {
-  console.error('Error:', err.message);
+  logger.error('Unhandled error', err, {
+    method: req.method,
+    url: req.originalUrl,
+    ip: req.ip,
+  });
+  
   res.status(err.status || 500).json({
     error:
       process.env.NODE_ENV === 'production'
@@ -141,9 +166,12 @@ socketHandler(io);
 
 server.listen(port, () => {
   connectDb();
-  console.log(
-    `Server started on port ${port} | Mode: ${process.env.NODE_ENV || 'development'} | PID: ${process.pid}`,
-  );
+  createIndexes(); // Create database indexes on startup
+  logger.info('Server started', {
+    port,
+    mode: process.env.NODE_ENV || 'development',
+    pid: process.pid,
+  });
 });
 
 const shutdown = async (signal) => {
