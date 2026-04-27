@@ -13,7 +13,7 @@ import {
 } from '../controllers/shop.controllers.js';
 import isAuth from '../middlewares/auth.middleware.js';
 import { upload } from '../middlewares/upload.middleware.js';
-import { cacheMiddleware } from '../config/cache.js';
+import { cacheMiddleware } from '../middlewares/cache.middleware.js';
 
 const shopRouter = express.Router();
 
