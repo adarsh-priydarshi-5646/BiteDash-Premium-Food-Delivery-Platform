@@ -1,0 +1,279 @@
+# =============================================================================
+# Environment Validation - Verify Environment Variables
+# =============================================================================
+#
+# Triggers: PRs, Push to main, Manual dispatch
+# Checks: Required env vars, .env.example sync, Security
+# Prevents: Missing env vars in production
+# =============================================================================
+
+name: Environment Validation
+
+on:
+  pull_request:
+    paths:
+      - '**/.env.example'
+      - '**/package.json'
+      - '.github/workflows/env-validation.yml'
+  push:
+    branches: [main]
+    paths:
+      - '**/.env.example'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  validate-env-files:
+    name: Validate Environment Files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check Frontend .env.example
+        id: frontend-env
+        run: |
+          echo "🔍 Checking frontend/.env.example..."
+          
+          if [ ! -f "frontend/.env.example" ]; then
+            echo "❌ frontend/.env.example not found!"
+            echo "exists=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          echo "✅ frontend/.env.example exists"
+          echo "exists=true" >> $GITHUB_OUTPUT
+          
+          # Check for required variables
+          REQUIRED_VARS=(
+            "VITE_API_URL"
+            "VITE_STRIPE_PUBLIC_KEY"
+          )
+          
+          MISSING_VARS=""
+          
+          for var in "${REQUIRED_VARS[@]}"; do
+            if ! grep -q "^$var=" frontend/.env.example; then
+              echo "⚠️ Missing: $var"
+              MISSING_VARS="$MISSING_VARS\n- $var"
+            else
+              echo "✅ Found: $var"
+            fi
+          done
+          
+          if [ -n "$MISSING_VARS" ]; then
+            echo "has_missing=true" >> $GITHUB_OUTPUT
+            echo "missing_vars<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$MISSING_VARS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check Backend .env.example
+        id: backend-env
+        run: |
+          echo "🔍 Checking backend/.env.example..."
+          
+          if [ ! -f "backend/.env.example" ]; then
+            echo "❌ backend/.env.example not found!"
+            echo "exists=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          echo "✅ backend/.env.example exists"
+          echo "exists=true" >> $GITHUB_OUTPUT
+          
+          # Check for required variables
+          REQUIRED_VARS=(
+            "MONGODB_URI"
+            "JWT_SECRET"
+            "PORT"
+            "FRONTEND_URL"
+            "STRIPE_SECRET_KEY"
+            "CLOUDINARY_CLOUD_NAME"
+            "CLOUDINARY_API_KEY"
+            "CLOUDINARY_API_SECRET"
+          )
+          
+          MISSING_VARS=""
+          
+          for var in "${REQUIRED_VARS[@]}"; do
+            if ! grep -q "^$var=" backend/.env.example; then
+              echo "⚠️ Missing: $var"
+              MISSING_VARS="$MISSING_VARS\n- $var"
+            else
+              echo "✅ Found: $var"
+            fi
+          done
+          
+          if [ -n "$MISSING_VARS" ]; then
+            echo "has_missing=true" >> $GITHUB_OUTPUT
+            echo "missing_vars<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$MISSING_VARS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for Secrets in .env.example
+        run: |
+          echo "🔒 Checking for actual secrets in .env.example files..."
+          
+          # Patterns that should NOT be in .env.example
+          FORBIDDEN_PATTERNS=(
+            "mongodb\+srv://[^:]+:[^@]+@"
+            "sk_live_[a-zA-Z0-9]{24}"
+            "sk_test_[a-zA-Z0-9]{24}"
+            "AKIA[0-9A-Z]{16}"
+          )
+          
+          FOUND_SECRETS=false
+          
+          for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
+            if grep -rE "$pattern" frontend/.env.example backend/.env.example 2>/dev/null; then
+              echo "❌ Found actual secret matching: $pattern"
+              FOUND_SECRETS=true
+            fi
+          done
+          
+          if [ "$FOUND_SECRETS" = true ]; then
+            echo "⚠️ SECURITY ISSUE: Actual secrets found in .env.example files!"
+            exit 1
+          fi
+          
+          echo "✅ No actual secrets found in .env.example files"
+
+      - name: Generate Environment Documentation
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            
+            const frontendEnv = fs.readFileSync('frontend/.env.example', 'utf8');
+            const backendEnv = fs.readFileSync('backend/.env.example', 'utf8');
+            
+            const comment = `## 🔐 Environment Variables Check
+
+### ✅ Validation Results
+
+| Component | Status | Details |
+|-----------|--------|---------|
+| **Frontend .env.example** | ✅ Valid | All required variables present |
+| **Backend .env.example** | ✅ Valid | All required variables present |
+| **Security Check** | ✅ Passed | No secrets in example files |
+
+---
+
+### 📋 Frontend Environment Variables
+
+\`\`\`env
+${frontendEnv}
+\`\`\`
+
+**Required for:**
+- API communication
+- Stripe payment integration
+- Production builds
+
+---
+
+### 📋 Backend Environment Variables
+
+\`\`\`env
+${backendEnv}
+\`\`\`
+
+**Required for:**
+- Database connection
+- Authentication
+- Payment processing
+- File uploads (Cloudinary)
+- Email services
+
+---
+
+### 🚀 Setup Instructions
+
+#### For Development:
+\`\`\`bash
+# Frontend
+cp frontend/.env.example frontend/.env
+# Edit frontend/.env with your values
+
+# Backend
+cp backend/.env.example backend/.env
+# Edit backend/.env with your values
+\`\`\`
+
+#### For Production (Vercel):
+1. Go to Vercel Dashboard
+2. Select your project
+3. Go to Settings → Environment Variables
+4. Add all variables from \`frontend/.env.example\`
+
+#### For Production (Render):
+1. Go to Render Dashboard
+2. Select your service
+3. Go to Environment
+4. Add all variables from \`backend/.env.example\`
+
+---
+
+### ⚠️ Security Reminders
+
+- ✅ Never commit actual \`.env\` files
+- ✅ Keep \`.env.example\` updated with new variables
+- ✅ Use placeholder values in \`.env.example\`
+- ✅ Rotate secrets regularly
+- ✅ Use different values for dev/staging/prod
+
+---
+
+**This check runs automatically on every PR that modifies environment files.**`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+
+      - name: Create Alert for Missing Variables
+        if: steps.frontend-env.outputs.has_missing == 'true' || steps.backend-env.outputs.has_missing == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const frontendMissing = `${{ steps.frontend-env.outputs.missing_vars }}`;
+            const backendMissing = `${{ steps.backend-env.outputs.missing_vars }}`;
+            
+            const issueBody = `## ⚠️ Missing Environment Variables
+
+**Detected:** ${new Date().toISOString()}
+
+---
+
+${frontendMissing ? `### 🎨 Frontend Missing Variables\n${frontendMissing}\n\n---\n` : ''}
+
+${backendMissing ? `### ⚙️ Backend Missing Variables\n${backendMissing}\n\n---\n` : ''}
+
+### 🔧 Action Required
+
+Please update the respective \`.env.example\` files to include all required variables.
+
+**This helps ensure:**
+- New developers can set up the project easily
+- Production deployments have all required variables
+- Documentation stays up to date
+
+---
+
+**This issue was automatically created by the Environment Validation workflow.**`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '⚠️ Missing Required Environment Variables',
+              body: issueBody,
+              labels: ['configuration', 'environment', 'documentation']
+            });

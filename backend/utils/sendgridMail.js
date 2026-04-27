@@ -1,3 +1,10 @@
+/**
+ * SendGrid Email Service - Primary email provider for OTP delivery
+ *
+ * Functions: sendOtpMailSendGrid (auth OTP), sendDeliveryOtpMailSendGrid (delivery OTP)
+ * Uses SendGrid API with verified sender email
+ * HTML email templates with BiteDash branding
+ */
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -7,11 +14,11 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 export const sendOtpMailSendGrid = async (to, otp) => {
   try {
     console.log(`Sending OTP email via SendGrid to ${to}`);
-    
+
     const msg = {
-      to: to, 
-      from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com', 
-      subject: 'Reset Your Password - Vingo',
+      to: to,
+      from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com',
+      subject: 'Reset Your Password - BiteDash',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #ff4d2d;">Password Reset OTP</h2>
@@ -26,7 +33,10 @@ export const sendOtpMailSendGrid = async (to, otp) => {
     };
 
     const response = await sgMail.send(msg);
-    console.log('OTP email sent successfully via SendGrid:', response[0].statusCode);
+    console.log(
+      'OTP email sent successfully via SendGrid:',
+      response[0].statusCode,
+    );
     return response;
   } catch (error) {
     console.error('SendGrid error:', error.response?.body || error.message);
@@ -37,11 +47,11 @@ export const sendOtpMailSendGrid = async (to, otp) => {
 export const sendDeliveryOtpMailSendGrid = async (user, otp) => {
   try {
     console.log(`Sending delivery OTP email via SendGrid to ${user.email}`);
-    
+
     const msg = {
-      to: user.email, 
+      to: user.email,
       from: process.env.EMAIL || 'priydarshiadarsh3@gmail.com',
-      subject: 'Delivery OTP - Vingo',
+      subject: 'Delivery OTP - BiteDash',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #ff4d2d;">Delivery Verification OTP</h2>
@@ -51,13 +61,16 @@ export const sendDeliveryOtpMailSendGrid = async (user, otp) => {
             ${otp}
           </h1>
           <p style="color: #666;">This OTP will expire in <strong>5 minutes</strong>.</p>
-          <p style="color: #999; font-size: 12px;">Thank you for ordering with Vingo!</p>
+          <p style="color: #999; font-size: 12px;">Thank you for ordering with BiteDash!</p>
         </div>
       `,
     };
 
     const response = await sgMail.send(msg);
-    console.log('Delivery OTP email sent successfully via SendGrid:', response[0].statusCode);
+    console.log(
+      'Delivery OTP email sent successfully via SendGrid:',
+      response[0].statusCode,
+    );
     return response;
   } catch (error) {
     console.error('SendGrid error:', error.response?.body || error.message);

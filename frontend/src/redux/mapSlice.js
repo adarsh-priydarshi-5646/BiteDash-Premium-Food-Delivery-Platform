@@ -1,7 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+/**
+ * Map Redux Slice - Geolocation & delivery address state
+ *
+ * State: location (lat/lon), currentCity, currentState, currentAddress
+ * Actions: setLocation, setCurrentCity, setCurrentAddress, setCurrentState
+ * Used for city-based filtering and delivery tracking
+ */
+import { createSlice } from '@reduxjs/toolkit';
 
 const mapSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     location: {
       lat: null,

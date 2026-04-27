@@ -1,9 +1,16 @@
-import React from "react";
-import { FaMinus } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";
-import { CiTrash } from "react-icons/ci";
-import { useDispatch } from "react-redux";
-import { removeCartItem, updateQuantity } from "../redux/userSlice";
+/**
+ * CartItemCard Component - Cart item with quantity controls
+ *
+ * Features: Item image, name, price, quantity +/- buttons, delete
+ * Calculates item subtotal (price × quantity)
+ * Dispatches Redux actions for quantity update & remove
+ */
+import React from 'react';
+import { FaMinus } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
+import { CiTrash } from 'react-icons/ci';
+import { useDispatch } from 'react-redux';
+import { removeCartItem, updateQuantity } from '../redux/userSlice';
 function CartItemCard({ data }) {
   const dispatch = useDispatch();
   const handleIncrease = (id, currentQty) => {

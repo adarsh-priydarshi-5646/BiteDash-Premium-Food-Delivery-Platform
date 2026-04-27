@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Nav from "../components/Nav";
-import FilterSidebar from "../components/FilterSidebar";
-import FoodCard from "../components/FoodCard";
-import { FaHome, FaChevronRight } from "react-icons/fa";
+/**
+ * Category Page - Food items filtered by category
+ *
+ * Features: Category header, price/sort filters, food items grid
+ * Filters items from Redux store by category name from URL
+ * Breadcrumb navigation, responsive grid layout
+ */
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Nav from '../components/Nav';
+import FilterSidebar from '../components/FilterSidebar';
+import FoodCard from '../components/FoodCard';
+import { FaHome, FaChevronRight } from 'react-icons/fa';
 
 function CategoryPage() {
   const { categoryName } = useParams();
   const navigate = useNavigate();
-  const { 
-    itemsInMyCity, 
+  const {
+    itemsInMyCity,
     selectedCategories,
     priceRange,
     sortBy,
-    quickFilters 
+    quickFilters,
   } = useSelector((state) => state.user);
-  
+
   const [filteredItems, setFilteredItems] = useState([]);
 
-  
   useEffect(() => {
     if (!itemsInMyCity) {
       setFilteredItems([]);
@@ -28,31 +34,28 @@ function CategoryPage() {
 
     let result = [...itemsInMyCity];
 
-    
-    result = result.filter(item => item.category === categoryName);
+    result = result.filter((item) => item.category === categoryName);
 
-    
     if (selectedCategories.length > 0) {
-      result = result.filter(item => selectedCategories.includes(item.category));
+      result = result.filter((item) =>
+        selectedCategories.includes(item.category),
+      );
     }
 
-    
-    result = result.filter(item => 
-      item.price >= priceRange.min && item.price <= priceRange.max
+    result = result.filter(
+      (item) => item.price >= priceRange.min && item.price <= priceRange.max,
     );
 
-    
     if (quickFilters.veg) {
-      result = result.filter(item => item.isVeg === true);
+      result = result.filter((item) => item.isVeg === true);
     }
     if (quickFilters.fastDelivery) {
-      result = result.filter(item => item.deliveryTime <= 30);
+      result = result.filter((item) => item.deliveryTime <= 30);
     }
     if (quickFilters.topRated) {
-      result = result.filter(item => item.rating >= 4.0);
+      result = result.filter((item) => item.rating >= 4.0);
     }
 
-    
     switch (sortBy) {
       case 'popularity':
         result.sort((a, b) => (b.orders || 0) - (a.orders || 0));
@@ -74,16 +77,23 @@ function CategoryPage() {
     }
 
     setFilteredItems(result);
-  }, [itemsInMyCity, categoryName, selectedCategories, priceRange, sortBy, quickFilters]);
+  }, [
+    itemsInMyCity,
+    categoryName,
+    selectedCategories,
+    priceRange,
+    sortBy,
+    quickFilters,
+  ]);
 
   return (
     <div className="w-full flex flex-col items-center bg-[#F8F8F8] min-h-screen pt-[84px]">
       <Nav />
-      
+
       <div className="w-full max-w-7xl px-4 mt-6">
         {}
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-          <button 
+          <button
             onClick={() => navigate('/')}
             className="flex items-center gap-1 hover:text-[#E23744] transition-colors"
           >
@@ -100,7 +110,8 @@ function CategoryPage() {
             {categoryName}
           </h1>
           <p className="text-gray-600">
-            Explore delicious {categoryName.toLowerCase()} available in your area
+            Explore delicious {categoryName.toLowerCase()} available in your
+            area
           </p>
         </div>
 
@@ -124,8 +135,12 @@ function CategoryPage() {
 
             {filteredItems.length === 0 ? (
               <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-100">
-                <p className="text-gray-500 text-lg">No {categoryName.toLowerCase()} items found</p>
-                <p className="text-gray-400 text-sm mt-2">Try adjusting your filters or explore other categories</p>
+                <p className="text-gray-500 text-lg">
+                  No {categoryName.toLowerCase()} items found
+                </p>
+                <p className="text-gray-400 text-sm mt-2">
+                  Try adjusting your filters or explore other categories
+                </p>
                 <button
                   onClick={() => navigate('/')}
                   className="mt-4 px-6 py-2 bg-[#E23744] text-white rounded-lg hover:bg-[#c02a35] transition-colors"

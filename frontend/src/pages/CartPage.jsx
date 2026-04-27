@@ -1,9 +1,16 @@
-import React from "react";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { FaShoppingCart, FaReceipt } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import CartItemCard from "../components/CartItemCard";
+/**
+ * Cart Page - Shopping cart with order summary
+ *
+ * Features: Cart items list, quantity controls, remove items
+ * Bill breakdown: Subtotal, delivery fee, taxes, total
+ * Empty cart state, proceed to checkout button
+ */
+import React from 'react';
+import { IoIosArrowRoundBack } from 'react-icons/io';
+import { FaShoppingCart, FaReceipt } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import CartItemCard from '../components/CartItemCard';
 
 function CartPage() {
   const navigate = useNavigate();
@@ -11,7 +18,7 @@ function CartPage() {
 
   const deliveryFee = 40;
   const platformFee = 5;
-  const gst = Math.round(totalAmount * 0.05); 
+  const gst = Math.round(totalAmount * 0.05);
   const grandTotal = totalAmount + deliveryFee + platformFee + gst;
 
   return (
@@ -20,7 +27,7 @@ function CartPage() {
         {}
         <div className="flex items-center gap-4 mb-8">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
             className="p-2 hover:bg-white rounded-full transition-colors"
             aria-label="Go back"
           >
@@ -35,7 +42,6 @@ function CartPage() {
         </div>
 
         {cartItems?.length === 0 ? (
-          
           <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-200">
             <FaShoppingCart className="text-gray-300 text-6xl mx-auto mb-4" />
             <h3 className="text-gray-900 text-xl font-bold mb-2">
@@ -45,14 +51,13 @@ function CartPage() {
               Looks like you haven't added anything to your cart yet
             </p>
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate('/')}
               className="px-6 py-3 bg-[#E23744] text-white font-semibold rounded-lg hover:bg-[#c02a35] transition-colors"
             >
               Browse Food Items
             </button>
           </div>
         ) : (
-          
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {}
             <div className="lg:col-span-2 space-y-4">
@@ -106,7 +111,7 @@ function CartPage() {
                 </div>
 
                 <button
-                  onClick={() => navigate("/checkout")}
+                  onClick={() => navigate('/checkout')}
                   className="w-full bg-[#E23744] text-white px-6 py-3.5 rounded-lg text-lg font-bold hover:bg-[#c02a35] transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   Proceed to Checkout
