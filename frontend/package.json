@@ -16,7 +16,6 @@
     "@stripe/stripe-js": "^8.11.0",
     "@tailwindcss/vite": "^4.2.1",
     "axios": "^1.13.4",
-    "firebase": "^12.10.0",
     "framer-motion": "^12.38.0",
     "leaflet": "^1.9.4",
     "marked": "^17.0.3",
