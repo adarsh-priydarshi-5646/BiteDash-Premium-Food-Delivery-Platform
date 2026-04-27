@@ -68,27 +68,141 @@ BiteDash is a complete food delivery platform connecting customers, restaurant o
 
 ## Architecture
 
-### System Design
+### System Architecture
 
-```
-Client (React) → Load Balancer → Backend Services (Node.js)
-                                        ↓
-                                   MongoDB Atlas
-                                        ↓
-                              External Services (Stripe, Cloudinary, etc.)
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        A[React Application]
+        B[Redux Store]
+        C[Socket.IO Client]
+    end
+    
+    subgraph "AWS Cloud"
+        D[Application Load Balancer]
+        
+        subgraph "ECS Cluster"
+            E1[Frontend Service<br/>2-6 Tasks]
+            E2[Backend Service<br/>2-10 Tasks]
+        end
+        
+        F[ECR Repository]
+        G[CloudWatch Logs]
+    end
+    
+    subgraph "External Services"
+        H[(MongoDB Atlas)]
+        I[Cloudinary]
+        J[Stripe]
+        K[SendGrid]
+        L[Firebase Auth]
+    end
+    
+    A --> D
+    B --> A
+    C --> A
+    D --> E1
+    D --> E2
+    E2 --> H
+    E2 --> I
+    E2 --> J
+    E2 --> K
+    A --> L
+    F --> E1
+    F --> E2
+    E1 --> G
+    E2 --> G
 ```
 
 ### Request Flow
-```
-User Action → React Component → Redux Action → API Call
-→ Express Route → Controller → MongoDB → Response
-→ Redux Store Update → UI Re-render
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant R as React App
+    participant ALB as Load Balancer
+    participant API as Backend API
+    participant DB as MongoDB
+    participant S as External Services
+    
+    U->>R: User Action
+    R->>R: Dispatch Redux Action
+    R->>ALB: HTTP Request
+    ALB->>API: Route to Backend
+    API->>API: Validate & Process
+    API->>DB: Query Database
+    DB-->>API: Return Data
+    API->>S: Call External Service
+    S-->>API: Service Response
+    API-->>ALB: JSON Response
+    ALB-->>R: Forward Response
+    R->>R: Update Redux Store
+    R-->>U: Update UI
 ```
 
 ### Real-time Communication
+
+```mermaid
+sequenceDiagram
+    participant C as Customer
+    participant S as Socket.IO Server
+    participant O as Owner
+    participant D as Delivery Partner
+    
+    C->>S: Place Order
+    S->>O: Emit 'newOrder' Event
+    O->>S: Accept Order
+    S->>C: Emit 'orderStatusUpdate'
+    S->>D: Emit 'deliveryAssigned'
+    D->>S: Update Location
+    S->>C: Emit 'updateDeliveryLocation'
+    D->>S: Delivery Complete
+    S->>C: Emit 'orderStatusUpdate'
+    S->>O: Emit 'orderStatusUpdate'
 ```
-Server Event → Socket.IO Emit → Client Socket Listener
-→ Redux Action → State Update → UI Update
+
+### AWS Infrastructure
+
+```mermaid
+graph LR
+    subgraph "GitHub"
+        A[Code Repository]
+        B[GitHub Actions]
+    end
+    
+    subgraph "AWS ECS"
+        C[ECR Registry]
+        D[ECS Cluster]
+        E[Frontend Tasks]
+        F[Backend Tasks]
+        G[Auto Scaling]
+    end
+    
+    subgraph "Networking"
+        H[Application Load Balancer]
+        I[Target Groups]
+        J[Security Groups]
+    end
+    
+    subgraph "Monitoring"
+        K[CloudWatch Logs]
+        L[Container Insights]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    G --> E
+    G --> F
+    H --> I
+    I --> E
+    I --> F
+    J --> H
+    E --> K
+    F --> K
+    D --> L
 ```
 
 ---
@@ -350,103 +464,6 @@ GET    /api/health               Server health status
 
 ---
 
-## Key Technical Implementations
-
-### Geospatial Delivery Assignment
-
-MongoDB geospatial queries find delivery partners within 10km radius:
-
-```javascript
-const nearByDeliveryBoys = await User.find({
-  role: 'deliveryBoy',
-  location: {
-    $near: {
-      $geometry: {
-        type: 'Point',
-        coordinates: [longitude, latitude]
-      },
-      $maxDistance: 10000
-    }
-  }
-});
-```
-
-Database index for efficient queries:
-```javascript
-userSchema.index({ location: '2dsphere' });
-```
-
-### Real-Time Order Tracking
-
-Socket.IO implementation for bidirectional communication:
-
-```javascript
-// Server-side
-socket.on('identity', async ({ userId }) => {
-  await User.findByIdAndUpdate(userId, {
-    socketId: socket.id,
-    isOnline: true
-  });
-  socket.join(userId);
-});
-
-// Emit to specific user
-io.to(userSocketId).emit('orderStatusUpdate', orderData);
-```
-
-### Payment Processing
-
-Stripe Checkout Session integration:
-
-```javascript
-const session = await stripe.checkout.sessions.create({
-  payment_method_types: ['card'],
-  line_items: orderItems,
-  mode: 'payment',
-  success_url: `${FRONTEND_URL}/order-placed?session_id={CHECKOUT_SESSION_ID}`,
-  cancel_url: `${FRONTEND_URL}/checkout`
-});
-```
-
-### Cluster Mode
-
-Multi-core utilization for better performance:
-
-```javascript
-if (cluster.isPrimary) {
-  const numCPUs = os.cpus().length;
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
-} else {
-  require('./index.js');
-}
-```
-
-### Caching Strategy
-
-In-memory cache with TTL for frequently accessed data:
-
-```javascript
-class Cache {
-  set(key, value, ttlSeconds = 300) {
-    this.store.set(key, value);
-    this.ttlStore.set(key, Date.now() + ttlSeconds * 1000);
-  }
-  
-  get(key) {
-    const expiry = this.ttlStore.get(key);
-    if (!expiry || Date.now() > expiry) {
-      this.delete(key);
-      return null;
-    }
-    return this.store.get(key);
-  }
-}
-```
-
----
-
 ## Security
 
 ### Authentication
@@ -540,69 +557,6 @@ VITE_GEOAPIKEY                Geoapify API key
 VITE_STRIPE_PUBLISHABLE_KEY   Stripe publishable key
 VITE_RAZORPAY_KEY_ID          Razorpay key ID
 VITE_API_BASE                 Backend API URL
-```
-
----
-
-## Database Schema
-
-### User Model
-```javascript
-{
-  fullName: String,
-  email: String (unique, indexed),
-  password: String (hashed),
-  mobile: String,
-  role: String (user/owner/deliveryBoy),
-  location: {
-    type: { type: String, default: 'Point' },
-    coordinates: [Number] // [longitude, latitude]
-  },
-  socketId: String,
-  isOnline: Boolean,
-  city: String
-}
-```
-
-### Shop Model
-```javascript
-{
-  name: String,
-  description: String,
-  image: String,
-  owner: ObjectId (ref: User),
-  city: String (indexed),
-  address: String,
-  location: {
-    type: { type: String, default: 'Point' },
-    coordinates: [Number]
-  },
-  category: String,
-  rating: Number,
-  isOpen: Boolean
-}
-```
-
-### Order Model
-```javascript
-{
-  user: ObjectId (ref: User),
-  shop: ObjectId (ref: Shop),
-  items: [{
-    item: ObjectId (ref: Item),
-    quantity: Number,
-    price: Number
-  }],
-  totalAmount: Number,
-  deliveryAddress: String,
-  status: String (pending/accepted/preparing/ready/picked/delivered/cancelled),
-  paymentMethod: String (stripe/cod),
-  paymentStatus: String,
-  deliveryBoy: ObjectId (ref: User),
-  otp: String,
-  createdAt: Date,
-  updatedAt: Date
-}
 ```
 
 ---
