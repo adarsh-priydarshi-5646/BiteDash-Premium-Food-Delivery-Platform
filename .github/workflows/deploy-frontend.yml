@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - aws-ecs-deployment
     paths:
       - 'frontend/**'
       - '.github/workflows/deploy-frontend.yml'
