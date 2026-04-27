@@ -74,6 +74,11 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
+    // Only connect socket if user is authenticated
+    if (!userData) {
+      return;
+    }
+
     const socketInstance = io(serverUrl, {
       withCredentials: true,
       reconnection: true,
