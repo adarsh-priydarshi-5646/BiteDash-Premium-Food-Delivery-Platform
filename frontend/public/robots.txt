@@ -3,11 +3,13 @@ Allow: /
 Allow: /docs
 Allow: /signin
 Allow: /signup
-Allow: /restaurants
 
 Disallow: /profile
 Disallow: /checkout
 Disallow: /orders
 Disallow: /dashboard
+Disallow: /cart
+Disallow: /my-orders
+Disallow: /track-order
 
-Sitemap: https://bitedash-food.vercel.app/sitemap.xml
+Sitemap: http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com/sitemap.xml
