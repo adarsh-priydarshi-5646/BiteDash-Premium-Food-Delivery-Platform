@@ -1,0 +1,145 @@
+name: Update URLs for HTTPS
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_url:
+        description: 'New HTTPS URL (e.g., https://bitedash.example.com)'
+        required: true
+        type: string
+
+env:
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: bitedash-cluster
+
+jobs:
+  update-backend:
+    name: Update Backend URLs
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get current backend task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition bitedash-backend-task \
+            --region ${{ env.AWS_REGION }} \
+            --query 'taskDefinition' > task-def.json
+
+      - name: Update environment variables
+        run: |
+          cat task-def.json | jq --arg url "${{ inputs.new_url }}" '
+            del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy) |
+            .containerDefinitions[0].environment |= map(
+              if .name == "FRONTEND_URL" then .value = $url
+              elif .name == "BACKEND_URL" then .value = $url
+              else . end
+            )
+          ' > task-def-updated.json
+
+      - name: Register new task definition
+        run: |
+          aws ecs register-task-definition \
+            --cli-input-json file://task-def-updated.json \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Update backend service
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service bitedash-backend-service \
+            --task-definition bitedash-backend-task \
+            --force-new-deployment \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Wait for backend service
+        run: |
+          echo "Waiting for backend service to stabilize..."
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services bitedash-backend-service \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Success message
+        run: |
+          echo "✅ Backend URLs updated successfully!"
+          echo ""
+          echo "New URL: ${{ inputs.new_url }}"
+          echo ""
+          echo "Next steps:"
+          echo "1. Rebuild and deploy frontend with new API URL"
+          echo "2. Update Google OAuth URLs in Google Console"
+          echo "3. Test the application"
+
+  update-frontend:
+    name: Update Frontend and Deploy
+    needs: update-backend
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push frontend with new URL
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            --build-arg VITE_API_BASE=${{ inputs.new_url }} \
+            -t $ECR_REGISTRY/bitedash-frontend:$IMAGE_TAG \
+            -t $ECR_REGISTRY/bitedash-frontend:latest \
+            -f frontend/Dockerfile \
+            ./frontend
+          
+          docker push $ECR_REGISTRY/bitedash-frontend:$IMAGE_TAG
+          docker push $ECR_REGISTRY/bitedash-frontend:latest
+
+      - name: Update frontend service
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service bitedash-frontend-service \
+            --force-new-deployment \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Wait for frontend service
+        run: |
+          echo "Waiting for frontend service to stabilize..."
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services bitedash-frontend-service \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Final success message
+        run: |
+          echo "🎉 All services updated successfully!"
+          echo ""
+          echo "Your application is now accessible at:"
+          echo "${{ inputs.new_url }}"
+          echo ""
+          echo "⚠️ IMPORTANT: Update Google OAuth URLs"
+          echo "1. Go to: https://console.cloud.google.com/apis/credentials"
+          echo "2. Update Authorized JavaScript origins: ${{ inputs.new_url }}"
+          echo "3. Update Authorized redirect URIs: ${{ inputs.new_url }}/api/auth/google/callback"
+          echo ""
+          echo "✅ Your app is now 100% production ready with HTTPS!"
