@@ -52,10 +52,12 @@ const LoadingFallback = () => (
   </div>
 );
 
-export const serverUrl = import.meta.env.VITE_API_BASE || 
+const rawServerUrl = import.meta.env.VITE_API_BASE || 
   (import.meta.env.PROD
     ? 'http://bitedash-alb-443240071.us-east-1.elb.amazonaws.com'
     : 'http://localhost:8000');
+
+export const serverUrl = rawServerUrl.replace(/\/+$/, '');
 
 function App() {
   const { userData, authLoading } = useSelector((state) => state.user);
