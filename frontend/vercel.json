@@ -7,7 +7,7 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/"
+      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -37,12 +37,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "VITE_API_BASE": "@vite_api_base",
-    "VITE_FIREBASE_APIKEY": "@vite_firebase_apikey",
-    "VITE_GEOAPIKEY": "@vite_geoapikey",
-    "VITE_RAZORPAY_KEY_ID": "@vite_razorpay_key_id",
-    "VITE_STRIPE_PUBLISHABLE_KEY": "@vite_stripe_publishable_key"
-  }
+  ]
 }
