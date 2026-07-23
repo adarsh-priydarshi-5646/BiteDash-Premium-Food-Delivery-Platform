@@ -26,6 +26,9 @@ authRouter.post('/google-auth', authRateLimiter, googleAuth);
 authRouter.get(
   '/google',
   (req, res, next) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+      return res.status(503).json({ error: 'Google OAuth is currently disabled' });
+    }
     const { mobile, role } = req.query;
     const state = JSON.stringify({ mobile, role });
     passport.authenticate('google', {
@@ -37,7 +40,12 @@ authRouter.get(
 
 authRouter.get(
   '/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: `${process.env.FRONTEND_URL}/signin` }),
+  (req, res, next) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+      return res.redirect(`${process.env.FRONTEND_URL}/signin?error=oauth_disabled`);
+    }
+    passport.authenticate('google', { session: false, failureRedirect: `${process.env.FRONTEND_URL}/signin` })(req, res, next);
+  },
   async (req, res) => {
     try {
       const token = await genToken(req.user._id);
